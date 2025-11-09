@@ -1,0 +1,81 @@
+Build a personal portfolio website titled “Reyan Makes” for Reyan Bhattacharjee, a high-school student and maker from Plainsboro, NJ.
+
+The site should look simple, handcrafted, and authentic — like a maker’s journal, not a corporate site.
+
+Use: HTML + CSS + JS (no frameworks).
+Tone: genuine, creative, resourceful, outdoorsy.
+
+🏠 Homepage (index.html)
+
+Headline:
+“Hi, I’m Reyan — I design and build things.”
+
+Intro paragraph (based on essay + resume):
+“I’m a builder at heart. From go-karts to furniture to shelters made from scrap wood, I love turning ideas into real things with my hands. I’ve been designing and fabricating since middle school, teaching myself woodworking, welding, and metalwork. I believe creativity isn’t about having perfect tools — it’s about making the most of what’s around you.”
+
+Include 2–3 big project photos (Go-Kart, Lake House, Bed Build) and a button → ‘See My Projects’.
+
+Footer: “© 2025 Reyan Bhattacharjee | reyanmakes.com”
+
+🔧 Projects Page (projects.html)
+
+Display a clean grid gallery of projects (cards with title + image).
+When a user clicks a card, open a project page or modal with:
+
+Short story and what you learned
+
+Skills used (woodworking, welding, metal fabrication, sketching)
+
+Materials (often reclaimed / recycled)
+
+Example projects:
+
+The Lake House — a multi-room fort built from trash that survived storms and floods.
+
+Go-Kart — welded together from scrap metal and spare parts.
+
+Bed Frame — custom loft bed designed and built from scratch.
+
+Canoe Trailer — for hauling a canoe by bike.
+
+Full Tang Knife — hand-forged winter project.
+
+Each project should have a before/after photo and 2-3 sentences about the build process.
+
+🧠 About Page (about.html)
+
+Use this summary (adapted from your essay + resume):
+
+“I can always cut something off, but I can’t add it back on — that’s the cornerstone of both engineering and my life. I’ve learned to measure twice, build once, and make things work no matter what. Whether I’m welding, sketching, or salvaging materials, I’m happiest when I’m creating.
+
+I’m currently a senior at West Windsor-Plainsboro High School South, planning to study Industrial Design or Engineering. I’ve completed NJIT’s Summer Architecture and Portfolio Program and work as a lifeguard and swim instructor. I’m also an Eagle Scout and a maker who believes learning happens best when you build.”
+
+Add links/buttons:
+
+Download Resume (PDF)
+
+View Portfolio PDF (optional)
+
+Contact Me (form using Formspree)
+
+🎨 Style Guide
+
+Color palette: off-white (#F8F7F3), charcoal gray (#333), warm wood brown (#A67B5B), accent orange (#E67E22)
+
+Font: Poppins or Montserrat
+
+Rounded image cards, subtle shadows
+
+Mobile-responsive layout
+
+Simple animated hammer/wrench icon in header
+
+Navbar: Home | Projects | About
+
+✨ Extras
+
+Optional “Build Log” page: journal entries for new projects (“Rebuilding the Go-Kart,” “Trying Out TIG Welding,” etc.)
+
+Social icons for email, YouTube, or Instagram (optional)
+
+SEO title tag: Reyan Makes — Builder, Designer, Maker

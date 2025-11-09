@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects — Reyan Makes</title>
+    <meta name="description" content="A collection of builds and projects by Reyan Bhattacharjee - from welded go-karts to hand-forged knives.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Reyan Makes</a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="projects.html" class="nav-link active">Projects</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="projects-header">
+        <div class="container">
+            <h1>My Builds</h1>
+            <p>A collection of things I've designed and built over the years</p>
+        </div>
+    </section>
+
+    <section class="projects-gallery">
+        <div class="container">
+            <div class="projects-grid">
+                <div class="project-card" data-project="lakehouse">
+                    <div class="project-image">
+                        <img src="images/lakehouse.jpg" alt="The Lake House" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22%3E%3Crect fill=%22%23A67B5B%22 width=%22600%22 height=%22400%22/%3E%3Ctext fill=%22%23F8F7F3%22 font-size=%2242%22 font-family=%22Arial%22 x=%22150%22 y=%22220%22%3ELake House%3C/text%3E%3C/svg%3E'">
+                    </div>
+                    <h3>The Lake House</h3>
+                    <p class="project-subtitle">Multi-room fort built from reclaimed materials</p>
+                </div>
+
+                <div class="project-card" data-project="gokart">
+                    <div class="project-image">
+                        <img src="images/gokart.jpg" alt="Go-Kart" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22%3E%3Crect fill=%22%23A67B5B%22 width=%22600%22 height=%22400%22/%3E%3Ctext fill=%22%23F8F7F3%22 font-size=%2248%22 font-family=%22Arial%22 x=%22180%22 y=%22220%22%3EGo-Kart%3C/text%3E%3C/svg%3E'">
+                    </div>
+                    <h3>Go-Kart</h3>
+                    <p class="project-subtitle">Welded together from scrap metal</p>
+                </div>
+
+                <div class="project-card" data-project="bed">
+                    <div class="project-image">
+                        <img src="images/bed.jpg" alt="Bed Frame" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22%3E%3Crect fill=%22%23A67B5B%22 width=%22600%22 height=%22400%22/%3E%3Ctext fill=%22%23F8F7F3%22 font-size=%2242%22 font-family=%22Arial%22 x=%22160%22 y=%22220%22%3EBed Frame%3C/text%3E%3C/svg%3E'">
+                    </div>
+                    <h3>Custom Bed Frame</h3>
+                    <p class="project-subtitle">Loft bed designed from scratch</p>
+                </div>
+
+                <div class="project-card" data-project="canoe">
+                    <div class="project-image">
+                        <img src="images/canoe-trailer.jpg" alt="Canoe Trailer" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22%3E%3Crect fill=%22%23A67B5B%22 width=%22600%22 height=%22400%22/%3E%3Ctext fill=%22%23F8F7F3%22 font-size=%2236%22 font-family=%22Arial%22 x=%22120%22 y=%22220%22%3ECanoe Trailer%3C/text%3E%3C/svg%3E'">
+                    </div>
+                    <h3>Canoe Trailer</h3>
+                    <p class="project-subtitle">For hauling a canoe by bike</p>
+                </div>
+
+                <div class="project-card" data-project="knife">
+                    <div class="project-image">
+                        <img src="images/knife.jpg" alt="Hand-forged knife" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22%3E%3Crect fill=%22%23A67B5B%22 width=%22600%22 height=%22400%22/%3E%3Ctext fill=%22%23F8F7F3%22 font-size=%2242%22 font-family=%22Arial%22 x=%22140%22 y=%22220%22%3EFull Tang Knife%3C/text%3E%3C/svg%3E'">
+                    </div>
+                    <h3>Full Tang Knife</h3>
+                    <p class="project-subtitle">Hand-forged winter project</p>
+                </div>
+
+                <div class="project-card" data-project="more">
+                    <div class="project-image placeholder">
+                        <div class="placeholder-content">
+                            <span>+</span>
+                            <p>More builds coming soon</p>
+                        </div>
+                    </div>
+                    <h3>More Projects</h3>
+                    <p class="project-subtitle">Always building something new</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Reyan Bhattacharjee | reyanmakes.com</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

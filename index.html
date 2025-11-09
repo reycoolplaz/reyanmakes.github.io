@@ -3,211 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reyan Makes - Maker Portfolio</title>
+    <title>Reyan Makes — Builder, Designer, Maker</title>
+    <meta name="description" content="Reyan Bhattacharjee is a high school maker from Plainsboro, NJ who designs and builds things from go-karts to furniture.">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <a href="#" class="logo">Reyan Makes</a>
+            <a href="index.html" class="logo">Reyan Makes</a>
             <ul class="nav-menu">
-                <li><a href="#home" class="nav-link">Home</a></li>
-                <li><a href="#featured" class="nav-link">Featured</a></li>
-                <li><a href="#timeline" class="nav-link">Journey</a></li>
-                <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li><a href="index.html" class="nav-link active">Home</a></li>
+                <li><a href="projects.html" class="nav-link">Projects</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
             </ul>
         </div>
     </nav>
 
-    <section id="home" class="hero">
+    <section class="hero">
         <div class="hero-content">
-            <h1 class="hero-title">Hi, I'm Reyan</h1>
-            <p class="hero-subtitle">High School Maker • Creator • Builder</p>
-            <p class="hero-description">I've been building things for years - from code to hardware. Here's my journey.</p>
-            <a href="#featured" class="cta-button">Explore My Work</a>
+            <h1>Hi, I'm Reyan — I design and build things.</h1>
+            <p class="intro">I'm a builder at heart. From go-karts to furniture to shelters made from scrap wood, I love turning ideas into real things with my hands. I've been designing and fabricating since middle school, teaching myself woodworking, welding, and metalwork. I believe creativity isn't about having perfect tools — it's about making the most of what's around you.</p>
         </div>
     </section>
 
-    <section id="featured" class="featured-projects">
+    <section class="featured-builds">
         <div class="container">
-            <h2 class="section-title">Featured Projects</h2>
-            <p class="section-subtitle">My best work that showcases my skills and creativity</p>
-            
-            <div class="projects-grid">
-                <div class="project-card featured">
-                    <div class="project-image">
-                        <img src="images/projects/featured1.jpg" alt="Featured Project 1" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%236366f1%22 width=%22400%22 height=%22300%22/%3E%3Ctext fill=%22white%22 font-size=%2248%22 x=%22160%22 y=%22160%22%3E🚀%3C/text%3E%3C/svg%3E'">
+            <div class="builds-grid">
+                <div class="build-card">
+                    <div class="build-image">
+                        <img src="images/gokart.jpg" alt="Custom welded go-kart" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22%3E%3Crect fill=%22%23A67B5B%22 width=%22600%22 height=%22400%22/%3E%3Ctext fill=%22%23F8F7F3%22 font-size=%2248%22 font-family=%22Arial%22 x=%22180%22 y=%22220%22%3EGo-Kart%3C/text%3E%3C/svg%3E'">
                     </div>
-                    <div class="project-content">
-                        <span class="year-badge">2024</span>
-                        <h3>Featured Project Title</h3>
-                        <p class="project-description">Your most impressive recent project. What problem did it solve? What did you learn? What impact did it have?</p>
-                        <div class="project-tags">
-                            <span class="tag">Your</span>
-                            <span class="tag">Skills</span>
-                            <span class="tag">Here</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" class="project-link">View Project →</a>
-                            <a href="#" class="project-link secondary">GitHub</a>
-                        </div>
-                    </div>
+                    <h3>The Go-Kart</h3>
+                    <p>Welded from scrap metal and spare parts</p>
                 </div>
 
-                <div class="project-card">
-                    <div class="project-image">
-                        <img src="images/projects/featured2.jpg" alt="Featured Project 2" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%238b5cf6%22 width=%22400%22 height=%22300%22/%3E%3Ctext fill=%22white%22 font-size=%2248%22 x=%22160%22 y=%22160%22%3E🎨%3C/text%3E%3C/svg%3E'">
+                <div class="build-card">
+                    <div class="build-image">
+                        <img src="images/lakehouse.jpg" alt="Multi-room fort built from reclaimed materials" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22%3E%3Crect fill=%22%23A67B5B%22 width=%22600%22 height=%22400%22/%3E%3Ctext fill=%22%23F8F7F3%22 font-size=%2242%22 font-family=%22Arial%22 x=%22150%22 y=%22220%22%3ELake House%3C/text%3E%3C/svg%3E'">
                     </div>
-                    <div class="project-content">
-                        <span class="year-badge">2024</span>
-                        <h3>Another Great Project</h3>
-                        <p class="project-description">Describe what makes this project special and what you learned from building it.</p>
-                        <div class="project-tags">
-                            <span class="tag">Tech</span>
-                            <span class="tag">Stack</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" class="project-link">View Project →</a>
-                        </div>
-                    </div>
+                    <h3>The Lake House</h3>
+                    <p>Multi-room fort that survived storms and floods</p>
                 </div>
 
-                <div class="project-card">
-                    <div class="project-image">
-                        <img src="images/projects/featured3.jpg" alt="Featured Project 3" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23667eea%22 width=%22400%22 height=%22300%22/%3E%3Ctext fill=%22white%22 font-size=%2248%22 x=%22160%22 y=%22160%22%3E⚡%3C/text%3E%3C/svg%3E'">
+                <div class="build-card">
+                    <div class="build-image">
+                        <img src="images/bed.jpg" alt="Custom loft bed built from scratch" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22%3E%3Crect fill=%22%23A67B5B%22 width=%22600%22 height=%22400%22/%3E%3Ctext fill=%22%23F8F7F3%22 font-size=%2242%22 font-family=%22Arial%22 x=%22160%22 y=%22220%22%3EBed Frame%3C/text%3E%3C/svg%3E'">
                     </div>
-                    <div class="project-content">
-                        <span class="year-badge">2023</span>
-                        <h3>Cool Innovation</h3>
-                        <p class="project-description">What unique approach did you take? What challenges did you overcome?</p>
-                        <div class="project-tags">
-                            <span class="tag">Innovation</span>
-                            <span class="tag">Design</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" class="project-link">View Project →</a>
-                        </div>
-                    </div>
+                    <h3>Custom Bed Frame</h3>
+                    <p>Loft bed designed and built from scratch</p>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <section id="timeline" class="timeline">
-        <div class="container">
-            <h2 class="section-title">My Maker Journey</h2>
-            <p class="section-subtitle">How I've grown as a builder over the years</p>
-            
-            <div class="timeline-container">
-                <div class="timeline-item">
-                    <div class="timeline-year">2024</div>
-                    <div class="timeline-content">
-                        <h3>Senior Year Projects</h3>
-                        <ul class="project-list">
-                            <li>
-                                <strong>Project Name</strong> - Brief description of what you built and the impact
-                                <span class="mini-tags">Tech • Used</span>
-                            </li>
-                            <li>
-                                <strong>Another Project</strong> - What you learned or achieved
-                                <span class="mini-tags">Skills</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-year">2023</div>
-                    <div class="timeline-content">
-                        <h3>Junior Year Projects</h3>
-                        <ul class="project-list">
-                            <li>
-                                <strong>Project Name</strong> - What you created and why it mattered
-                                <span class="mini-tags">Technologies</span>
-                            </li>
-                            <li>
-                                <strong>Another Build</strong> - Key learnings and outcomes
-                                <span class="mini-tags">Skills</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-year">2022</div>
-                    <div class="timeline-content">
-                        <h3>Sophomore Year Exploration</h3>
-                        <ul class="project-list">
-                            <li>
-                                <strong>Early Project</strong> - How you started in this area
-                                <span class="mini-tags">First steps</span>
-                            </li>
-                            <li>
-                                <strong>Learning Project</strong> - What sparked your interest
-                                <span class="mini-tags">Discovery</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-year">Earlier</div>
-                    <div class="timeline-content">
-                        <h3>Where It All Started</h3>
-                        <ul class="project-list">
-                            <li>
-                                <strong>First Projects</strong> - Your earliest creations and what inspired you to start making
-                                <span class="mini-tags">Origins</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="about" class="about">
-        <div class="container">
-            <h2 class="section-title">About Me</h2>
-            <div class="about-content">
-                <div class="about-text">
-                    <p>I'm a high school student who's been building and creating for years. What started as curiosity has grown into a passion for solving real problems through technology and innovation.</p>
-                    <p>I believe in learning by doing - every project teaches me something new, whether it's a technical skill or how to approach complex challenges. I'm always looking for the next thing to build.</p>
-                    
-                    <h3>Skills & Experience</h3>
-                    <div class="skills-grid">
-                        <div class="skill">Web Development</div>
-                        <div class="skill">Hardware Projects</div>
-                        <div class="skill">3D Design</div>
-                        <div class="skill">Electronics</div>
-                        <div class="skill">Programming</div>
-                        <div class="skill">Problem Solving</div>
-                    </div>
-
-                    <h3>What Drives Me</h3>
-                    <p>I'm passionate about creating things that make a difference, whether that's helping people, solving a problem, or just making something cool. I love the process of going from an idea to a working prototype.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="contact">
-        <div class="container">
-            <h2 class="section-title">Let's Connect</h2>
-            <p class="contact-description">Want to collaborate on a project or just chat about making things?</p>
-            <div class="contact-links">
-                <a href="https://github.com/reyanmakes" class="contact-button" target="_blank">GitHub</a>
-                <a href="https://twitter.com/reyanmakes" class="contact-button" target="_blank">Twitter</a>
-                <a href="mailto:hello@reyanmakes.com" class="contact-button">Email</a>
+            <div class="cta-section">
+                <a href="projects.html" class="cta-button">See My Projects</a>
             </div>
         </div>
     </section>
 
     <footer class="footer">
-        <div class="container">
-            <p>&copy; 2024 Reyan Makes. Built with code and curiosity.</p>
-        </div>
+        <p>&copy; 2025 Reyan Bhattacharjee | reyanmakes.com</p>
     </footer>
 
     <script src="script.js"></script>

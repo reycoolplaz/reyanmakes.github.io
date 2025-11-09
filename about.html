@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — Reyan Makes</title>
+    <meta name="description" content="About Reyan Bhattacharjee - high school maker, Eagle Scout, and aspiring industrial designer from Plainsboro, NJ.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Reyan Makes</a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="projects.html" class="nav-link">Projects</a></li>
+                <li><a href="about.html" class="nav-link active">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="about-hero">
+        <div class="container">
+            <h1>About Me</h1>
+        </div>
+    </section>
+
+    <section class="about-content">
+        <div class="container">
+            <div class="about-text">
+                <p class="lead">"I can always cut something off, but I can't add it back on" — that's the cornerstone of both engineering and my life.</p>
+                
+                <p>I've learned to measure twice, build once, and make things work no matter what. Whether I'm welding, sketching, or salvaging materials, I'm happiest when I'm creating.</p>
+
+                <p>I'm currently a senior at West Windsor-Plainsboro High School South, planning to study Industrial Design or Engineering. I've completed NJIT's Summer Architecture and Portfolio Program and work as a lifeguard and swim instructor. I'm also an Eagle Scout and a maker who believes learning happens best when you build.</p>
+
+                <h2>What I Do</h2>
+                <div class="skills-list">
+                    <div class="skill-item">
+                        <h3>Woodworking</h3>
+                        <p>Custom furniture, structures, and anything that needs to be built from lumber</p>
+                    </div>
+                    <div class="skill-item">
+                        <h3>Welding & Metalwork</h3>
+                        <p>MIG welding, metal fabrication, working with scrap steel and aluminum</p>
+                    </div>
+                    <div class="skill-item">
+                        <h3>Design & Sketching</h3>
+                        <p>Hand sketches and technical drawings to plan builds before cutting</p>
+                    </div>
+                    <div class="skill-item">
+                        <h3>Resourcefulness</h3>
+                        <p>Finding creative solutions with reclaimed and recycled materials</p>
+                    </div>
+                </div>
+
+                <h2>Background</h2>
+                <p>I grew up in Plainsboro, NJ, and have been building things for as long as I can remember. My projects range from small-scale crafts to large structures, and I'm always looking for the next challenge. I believe in hands-on learning and making the most of available resources.</p>
+
+                <div class="cta-buttons">
+                    <a href="#" class="btn-primary" onclick="alert('Resume PDF coming soon! For now, please email me.'); return false;">Download Resume</a>
+                    <a href="#contact" class="btn-secondary">Contact Me</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2>Get in Touch</h2>
+            <p>Have a project idea, question, or just want to chat about making things? Send me a message!</p>
+            
+            <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="contact-form">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+                </div>
+                
+                <button type="submit" class="btn-primary">Send Message</button>
+            </form>
+
+            <div class="contact-note">
+                <p><strong>Note:</strong> To enable the contact form, sign up at <a href="https://formspree.io" target="_blank">Formspree.io</a> (free), create a form, and replace <code>YOUR_FORM_ID</code> in the form action URL above with your actual form ID.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2025 Reyan Bhattacharjee | reyanmakes.com</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
