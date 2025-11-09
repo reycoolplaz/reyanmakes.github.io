@@ -98,6 +98,11 @@
                     item.appendChild(img);
                     gallery.appendChild(item);
                 });
+
+                // Reinitialize lightbox after images are loaded
+                if (typeof initializeGallery === 'function') {
+                    initializeGallery();
+                }
             })
             .catch(error => {
                 console.error('Error loading gallery:', error);
