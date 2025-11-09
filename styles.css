@@ -687,12 +687,16 @@ section {
         aspect-ratio: 1/1;
         border-radius: 6px;
         max-height: 120px;
+        cursor: pointer;
+        background: var(--bg-secondary);
     }
 
     .gallery-image {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        max-width: 120px;
+        max-height: 120px;
     }
 
     .gallery-item:hover {

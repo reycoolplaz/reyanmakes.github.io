@@ -61,7 +61,9 @@
         // To add/remove images: just add/remove files from the folder and run generate_manifests.py
         const gallery = document.getElementById('gallery');
         const basePath = '../images/Engeneering/Gokart/';
+        const thumbPath = '../images/Engeneering/Gokart/thumbnails/';
         const manifestPath = '../manifests/gokart.json';
+        const isMobile = window.innerWidth <= 768;
 
         // Fetch and load images from manifest
         fetch(manifestPath)
@@ -83,20 +85,15 @@
 
                     const img = document.createElement('img');
 
-                    // For mobile: only load first 20 images initially, rest on scroll
-                    if (window.innerWidth <= 768 && index >= 20) {
-                        img.dataset.src = basePath + filename;
-                        img.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3C/svg%3E';
-                    } else {
-                        img.src = basePath + filename;
-                    }
+                    // Use thumbnails on mobile, full images on desktop
+                    const thumbFilename = filename.replace(/\.(jpg|jpeg|png|JPG|JPEG|PNG)$/i, '.jpg');
+                    img.src = isMobile ? thumbPath + thumbFilename : basePath + filename;
 
+                    // Store full image path for lightbox
+                    img.dataset.fullImage = basePath + filename;
                     img.alt = 'Go-Kart build';
                     img.className = 'gallery-image';
                     img.loading = 'lazy';
-
-                    // Add click to view in lightbox
-                    img.dataset.index = index;
 
                     item.appendChild(img);
                     gallery.appendChild(item);

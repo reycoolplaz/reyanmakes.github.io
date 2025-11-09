@@ -114,7 +114,9 @@ class Lightbox {
 
     updateImage() {
         const currentImage = this.images[this.currentIndex];
-        this.lightboxImg.src = currentImage.src;
+
+        // Use full image if available (for mobile thumbnails), otherwise use src
+        this.lightboxImg.src = currentImage.dataset.fullImage || currentImage.src;
         this.lightboxImg.alt = currentImage.alt || '';
 
         // Update counter
