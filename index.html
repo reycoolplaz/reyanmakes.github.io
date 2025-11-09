@@ -12,56 +12,176 @@
         <div class="nav-container">
             <a href="index.html" class="logo">Reyan Makes</a>
             <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link active">Home</a></li>
-                <li><a href="projects.html" class="nav-link">Projects</a></li>
-                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#featured" class="nav-link">Featured</a></li>
+                <li><a href="#timeline" class="nav-link">Journey</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
         </div>
     </nav>
 
-    <section class="hero">
+    <section id="home" class="hero">
         <div class="hero-content">
-            <h1>Hi, I'm Reyan — I design and build things.</h1>
-            <p class="intro">I'm a builder at heart. From go-karts to furniture to shelters made from scrap wood, I love turning ideas into real things with my hands. I've been designing and fabricating since middle school, teaching myself woodworking, welding, and metalwork. I believe creativity isn't about having perfect tools — it's about making the most of what's around you.</p>
+            <h1 class="hero-title">Hi, I'm Reyan</h1>
+            <p class="hero-subtitle">High School Maker • Builder • Creator</p>
+            <p class="hero-description">I design and build things with my hands. From welded go-karts to custom furniture to structures made from reclaimed materials — I've been making since middle school.</p>
+            <a href="#featured" class="cta-button">Explore My Work</a>
         </div>
     </section>
 
-    <section class="featured-builds">
+    <section id="featured" class="featured-projects">
         <div class="container">
-            <div class="builds-grid">
-                <div class="build-card">
-                    <div class="build-image">
-                        <img src="images/gokart.jpg" alt="Custom welded go-kart" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22%3E%3Crect fill=%22%23A67B5B%22 width=%22600%22 height=%22400%22/%3E%3Ctext fill=%22%23F8F7F3%22 font-size=%2248%22 font-family=%22Arial%22 x=%22180%22 y=%22220%22%3EGo-Kart%3C/text%3E%3C/svg%3E'">
+            <h2 class="section-title">Featured Builds</h2>
+            <p class="section-subtitle">My best work showcasing woodworking, welding, and creative problem-solving</p>
+            
+            <div class="projects-grid">
+                <div class="project-card featured">
+                    <div class="project-image">
+                        <img src="images/gokart.jpg" alt="Custom welded go-kart" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%236366f1%22 width=%22400%22 height=%22300%22/%3E%3Ctext fill=%22white%22 font-size=%2248%22 x=%22140%22 y=%22160%22%3EGo-Kart%3C/text%3E%3C/svg%3E'">
                     </div>
-                    <h3>The Go-Kart</h3>
-                    <p>Welded from scrap metal and spare parts</p>
+                    <div class="project-content">
+                        <span class="year-badge">Recent</span>
+                        <h3>Go-Kart</h3>
+                        <p class="project-description">Welded together from scrap metal and spare parts. Taught myself MIG welding to make this happen.</p>
+                        <div class="project-tags">
+                            <span class="tag">Welding</span>
+                            <span class="tag">Metal Fab</span>
+                            <span class="tag">Mechanical</span>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="build-card">
-                    <div class="build-image">
-                        <img src="images/lakehouse.jpg" alt="Multi-room fort built from reclaimed materials" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22%3E%3Crect fill=%22%23A67B5B%22 width=%22600%22 height=%22400%22/%3E%3Ctext fill=%22%23F8F7F3%22 font-size=%2242%22 font-family=%22Arial%22 x=%22150%22 y=%22220%22%3ELake House%3C/text%3E%3C/svg%3E'">
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="images/lakehouse.jpg" alt="Multi-room fort" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%238b5cf6%22 width=%22400%22 height=%22300%22/%3E%3Ctext fill=%22white%22 font-size=%2236%22 x=%22120%22 y=%22160%22%3ELake House%3C/text%3E%3C/svg%3E'">
                     </div>
-                    <h3>The Lake House</h3>
-                    <p>Multi-room fort that survived storms and floods</p>
+                    <div class="project-content">
+                        <span class="year-badge">Ongoing</span>
+                        <h3>The Lake House</h3>
+                        <p class="project-description">Multi-room structure built from reclaimed materials. Survived multiple storms and floods.</p>
+                        <div class="project-tags">
+                            <span class="tag">Woodworking</span>
+                            <span class="tag">Structural</span>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="build-card">
-                    <div class="build-image">
-                        <img src="images/bed.jpg" alt="Custom loft bed built from scratch" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22%3E%3Crect fill=%22%23A67B5B%22 width=%22600%22 height=%22400%22/%3E%3Ctext fill=%22%23F8F7F3%22 font-size=%2242%22 font-family=%22Arial%22 x=%22160%22 y=%22220%22%3EBed Frame%3C/text%3E%3C/svg%3E'">
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="images/bed.jpg" alt="Custom bed frame" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23667eea%22 width=%22400%22 height=%22300%22/%3E%3Ctext fill=%22white%22 font-size=%2236%22 x=%22120%22 y=%22160%22%3EBed Frame%3C/text%3E%3C/svg%3E'">
                     </div>
-                    <h3>Custom Bed Frame</h3>
-                    <p>Loft bed designed and built from scratch</p>
+                    <div class="project-content">
+                        <span class="year-badge">2023</span>
+                        <h3>Custom Bed Frame</h3>
+                        <p class="project-description">Loft bed designed and built from scratch to maximize room space.</p>
+                        <div class="project-tags">
+                            <span class="tag">Carpentry</span>
+                            <span class="tag">Design</span>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <div class="cta-section">
-                <a href="projects.html" class="cta-button">See My Projects</a>
+    <section id="timeline" class="timeline">
+        <div class="container">
+            <h2 class="section-title">My Maker Journey</h2>
+            <p class="section-subtitle">How I've grown as a builder over the years</p>
+            
+            <div class="timeline-container">
+                <div class="timeline-item">
+                    <div class="timeline-year">2024</div>
+                    <div class="timeline-content">
+                        <h3>Senior Year Projects</h3>
+                        <ul class="project-list">
+                            <li>
+                                <strong>Go-Kart Build</strong> - Welded from scrap metal, taught myself MIG welding through YouTube and practice
+                                <span class="mini-tags">Welding • Metal Fabrication</span>
+                            </li>
+                            <li>
+                                <strong>Knife Forging</strong> - Hand-forged full tang knife during winter break, learned blacksmithing basics
+                                <span class="mini-tags">Blacksmithing • Tool Making</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">2023</div>
+                    <div class="timeline-content">
+                        <h3>Junior Year Builds</h3>
+                        <ul class="project-list">
+                            <li>
+                                <strong>Custom Bed Frame</strong> - Designed and built a loft bed to maximize room space
+                                <span class="mini-tags">Woodworking • Design</span>
+                            </li>
+                            <li>
+                                <strong>Canoe Trailer</strong> - Bike-mounted trailer for hauling canoe to the lake
+                                <span class="mini-tags">Welding • Problem Solving</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-year">Earlier</div>
+                    <div class="timeline-content">
+                        <h3>Where It All Started</h3>
+                        <ul class="project-list">
+                            <li>
+                                <strong>The Lake House</strong> - Multi-room fort built entirely from reclaimed materials, ongoing project that's survived storms
+                                <span class="mini-tags">Woodworking • Resourcefulness</span>
+                            </li>
+                            <li>
+                                <strong>First Builds</strong> - Started making things in middle school, learning through trial and error
+                                <span class="mini-tags">Foundation</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>"I can always cut something off, but I can't add it back on" — that's the cornerstone of both engineering and my life.</p>
+                    <p>I'm a senior at West Windsor-Plainsboro High School South, planning to study Industrial Design or Engineering. I've completed NJIT's Summer Architecture and Portfolio Program and work as a lifeguard and swim instructor. I'm also an Eagle Scout and a maker who believes learning happens best when you build.</p>
+                    
+                    <h3>Skills & Experience</h3>
+                    <div class="skills-grid">
+                        <div class="skill">Woodworking</div>
+                        <div class="skill">Welding & Metalwork</div>
+                        <div class="skill">Design & Sketching</div>
+                        <div class="skill">Resourcefulness</div>
+                        <div class="skill">Problem Solving</div>
+                        <div class="skill">Fabrication</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Let's Connect</h2>
+            <p class="contact-description">Want to collaborate on a project or just chat about making things?</p>
+            <div class="contact-links">
+                <a href="https://github.com/reyanmakes" class="contact-button" target="_blank">GitHub</a>
+                <a href="mailto:hello@reyanmakes.com" class="contact-button">Email</a>
             </div>
         </div>
     </section>
 
     <footer class="footer">
-        <p>&copy; 2025 Reyan Bhattacharjee | reyanmakes.com</p>
+        <div class="container">
+            <p>&copy; 2025 Reyan Bhattacharjee | Built with passion</p>
+        </div>
     </footer>
 
     <script src="script.js"></script>
