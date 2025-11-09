@@ -77,15 +77,26 @@
                 subtitle.textContent = `From concept to completion - ${manifest.count} images documenting the entire build process`;
 
                 // Load each image
-                manifest.images.forEach(filename => {
+                manifest.images.forEach((filename, index) => {
                     const item = document.createElement('div');
                     item.className = 'gallery-item';
 
                     const img = document.createElement('img');
-                    img.src = basePath + filename;
+
+                    // For mobile: only load first 20 images initially, rest on scroll
+                    if (window.innerWidth <= 768 && index >= 20) {
+                        img.dataset.src = basePath + filename;
+                        img.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3C/svg%3E';
+                    } else {
+                        img.src = basePath + filename;
+                    }
+
                     img.alt = 'Go-Kart build';
                     img.className = 'gallery-image';
                     img.loading = 'lazy';
+
+                    // Add click to view in lightbox
+                    img.dataset.index = index;
 
                     item.appendChild(img);
                     gallery.appendChild(item);
