@@ -65,7 +65,12 @@
 
         // Fetch and load images from manifest
         fetch(manifestPath)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(manifest => {
                 // Update subtitle with actual count
                 const subtitle = document.querySelector('.section-subtitle');
@@ -88,7 +93,7 @@
             })
             .catch(error => {
                 console.error('Error loading gallery:', error);
-                gallery.innerHTML = '<p style="text-align:center; color: var(--text-light);">Error loading images. Please try refreshing the page.</p>';
+                gallery.innerHTML = `<p style="text-align:center; color: var(--text-light);">Error loading images: ${error.message}. Please try refreshing the page.</p>`;
             });
     </script>
 
