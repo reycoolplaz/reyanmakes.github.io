@@ -175,19 +175,30 @@ def generate_page_html(manifest_path, project_key, is_bsa=False):
         print(f"⚠ No metadata found for {project_key}, skipping...")
         return None
 
+    asset_prefix = '../' if not is_bsa else '../../'
+    home_link = f'{asset_prefix}index.html'
+    featured_link = f'{home_link}#featured'
+    timeline_link = f'{home_link}#timeline'
+    about_link = f'{home_link}#about'
+    contact_link = f'{home_link}#contact'
+    styles_path = f'{asset_prefix}styles.css'
+    script_path = f'{asset_prefix}lightbox.js'
+
     # Determine paths
     if is_bsa:
-        images_path = f'../images/Engeneering/BSA/{manifest["project"]}/'
-        manifest_rel_path = f'../manifests/bsa/{project_key}.json'
+        images_path = f'{asset_prefix}images/Engeneering/BSA/{manifest["project"]}/'
+        manifest_rel_path = f'{asset_prefix}manifests/bsa/{project_key}.json'
         output_file = f'bsa/{project_key}.html'
         breadcrumb_name = metadata['title']
-        back_link = '../index.html'
+        back_link = home_link
     else:
-        images_path = f'../images/Engeneering/{manifest["project"]}/' if project_key != 'drawings' else '../images/Drawings/'
-        manifest_rel_path = f'../manifests/{project_key}.json'
+        images_path = (f'{asset_prefix}images/Engeneering/{manifest["project"]}/'
+                       if project_key != 'drawings'
+                       else f'{asset_prefix}images/Drawings/')
+        manifest_rel_path = f'{asset_prefix}manifests/{project_key}.json'
         output_file = f'{project_key}.html'
         breadcrumb_name = metadata['title']
-        back_link = '../index.html'
+        back_link = home_link
 
     # Generate HTML
     html = f'''<!DOCTYPE html>
@@ -197,18 +208,18 @@ def generate_page_html(manifest_path, project_key, is_bsa=False):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{metadata['title']} | Reyan Makes</title>
     <meta name="description" content="{metadata['description']}">
-    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="{styles_path}">
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <a href="../index.html" class="logo">Reyan Makes</a>
+            <a href="{home_link}" class="logo">Reyan Makes</a>
             <ul class="nav-menu">
-                <li><a href="../index.html" class="nav-link">Home</a></li>
-                <li><a href="../index.html#featured" class="nav-link">Featured</a></li>
-                <li><a href="../index.html#timeline" class="nav-link">Journey</a></li>
-                <li><a href="../index.html#about" class="nav-link">About</a></li>
-                <li><a href="../index.html#contact" class="nav-link">Contact</a></li>
+                <li><a href="{home_link}" class="nav-link">Home</a></li>
+                <li><a href="{featured_link}" class="nav-link">Featured</a></li>
+                <li><a href="{timeline_link}" class="nav-link">Journey</a></li>
+                <li><a href="{about_link}" class="nav-link">About</a></li>
+                <li><a href="{contact_link}" class="nav-link">Contact</a></li>
             </ul>
         </div>
     </nav>
@@ -216,7 +227,7 @@ def generate_page_html(manifest_path, project_key, is_bsa=False):
     <div class="breadcrumb">
         <div class="container">
             <ul class="breadcrumb-list">
-                <li><a href="../index.html" class="breadcrumb-link">Home</a></li>
+                <li><a href="{home_link}" class="breadcrumb-link">Home</a></li>
                 <li><span class="breadcrumb-current">{breadcrumb_name}</span></li>
             </ul>
         </div>
@@ -259,7 +270,7 @@ def generate_page_html(manifest_path, project_key, is_bsa=False):
         </div>
     </footer>
 
-    <script src="../lightbox.js"></script>
+    <script src="{script_path}"></script>
     <script>
         // Load gallery images dynamically from manifest
         // To add/remove images: just add/remove files from the folder and run generate_manifests.py

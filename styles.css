@@ -241,85 +241,159 @@ section {
     background: white;
 }
 
-.timeline-container {
-    max-width: 800px;
-    margin: 0 auto;
+.timeline--infographic {
+    background: #f8f9fb;
     position: relative;
+    overflow: hidden;
 }
 
-.timeline-container::before {
+.journey-timeline {
+    position: relative;
+    margin-top: 3rem;
+    padding: 2rem 0 1rem;
+}
+
+.journey-timeline::before {
     content: '';
     position: absolute;
-    left: 80px;
+    left: 50%;
     top: 0;
     bottom: 0;
-    width: 2px;
-    background: var(--border-color);
+    width: 4px;
+    background: linear-gradient(180deg, var(--primary-color), var(--secondary-color));
+    transform: translateX(-50%);
+    border-radius: 999px;
 }
 
-.timeline-item {
-    display: flex;
-    gap: 2rem;
-    margin-bottom: 3rem;
-    position: relative;
-}
-
-.timeline-year {
-    flex-shrink: 0;
-    width: 80px;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--primary-color);
-    text-align: right;
-    position: relative;
-}
-
-.timeline-year::after {
+.journey-timeline::after {
     content: '';
     position: absolute;
-    right: -1.5rem;
-    top: 0.5rem;
-    width: 12px;
-    height: 12px;
-    background: var(--primary-color);
-    border-radius: 50%;
-    box-shadow: 0 0 0 4px white, 0 0 0 6px var(--primary-color);
+    left: 50%;
+    bottom: -18px;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 14px solid var(--secondary-color);
 }
 
-.timeline-content {
-    flex: 1;
-    padding-left: 1.5rem;
+
+.journey-item {
+    position: relative;
+    width: 50%;
+    padding: 2.5rem 3rem;
+    left: 50%;
+    text-align: left;
 }
 
-.timeline-content h3 {
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
-    color: var(--text-color);
-}
-
-.project-list {
-    list-style: none;
-}
-
-.project-list li {
-    margin-bottom: 1rem;
-    padding: 1rem;
-    background: var(--bg-secondary);
-    border-radius: 8px;
-    border-left: 3px solid var(--primary-color);
-}
-
-.project-list strong {
-    color: var(--text-color);
+.journey-card {
+    background: white;
+    border-radius: 18px;
+    padding: 2rem;
+    box-shadow: var(--shadow-lg);
+    position: relative;
     display: block;
+}
+
+.journey-node {
+    position: absolute;
+    top: calc(50% - 20px);
+    width: 120px;
+    text-align: center;
+    color: var(--text-light);
+}
+
+.journey-item .journey-node {
+    left: -60px;
+}
+
+.journey-year {
+    display: block;
+    font-weight: 700;
+    letter-spacing: 0.05em;
     margin-bottom: 0.25rem;
 }
 
-.mini-tags {
-    display: inline-block;
-    font-size: 0.875rem;
+.journey-symbol {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: white;
+    border: 6px solid rgba(99, 102, 241, 0.15);
+    color: var(--primary-color);
+    font-weight: 700;
+    font-size: 1rem;
+    box-shadow: 0 0 0 8px #f8f9fb;
+}
+
+.journey-card h3 {
+    font-size: 1.35rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.journey-summary {
     color: var(--text-light);
-    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.journey-pill-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.journey-pill {
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    background: rgba(99, 102, 241, 0.1);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.journey-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.journey-link {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.journey-link:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    box-shadow: 0 6px 12px rgba(99, 102, 241, 0.15);
+}
+
+@media (max-width: 1100px) {
+    .journey-item {
+        padding: 2rem 2rem;
+    }
+
+    .journey-node {
+        width: 100px;
+    }
+
+    .journey-card {
+        padding: 1.75rem;
+    }
 }
 
 .about {
@@ -759,35 +833,47 @@ section {
     }
 
     /* Timeline - Mobile Optimized */
-    .timeline-container::before {
-        left: 50px;
+    .journey-timeline {
+        padding-left: 1.5rem;
     }
 
-    .timeline-item {
-        gap: 1.5rem;
-        margin-bottom: 2.5rem;
+    .journey-timeline::before {
+        left: 20px;
     }
 
-    .timeline-year {
-        width: 50px;
-        font-size: 1.15rem;
+    .journey-item {
+        width: 100%;
+        padding: 2rem 0 2rem 2.75rem;
+        text-align: left;
     }
 
-    .timeline-content {
-        padding-left: 1rem;
+    .journey-item:nth-child(odd),
+    .journey-item:nth-child(even) {
+        text-align: left;
+        left: 0;
     }
 
-    .timeline-content h3 {
-        font-size: 1.15rem;
+    .journey-item .journey-card {
+        margin-left: 0;
+        width: 100%;
     }
 
-    .project-list li {
-        padding: 0.85rem;
-        font-size: 0.95rem;
+    .journey-item:nth-child(odd) .journey-node,
+    .journey-item:nth-child(even) .journey-node {
+        position: absolute;
+        left: -5px;
+        right: auto;
+        text-align: left;
     }
 
-    .mini-tags {
-        font-size: 0.8rem;
+    .journey-symbol {
+        width: 48px;
+        height: 48px;
+        font-size: 0.9rem;
+    }
+
+    .journey-year {
+        font-size: 0.85rem;
     }
 
     /* About Section - Mobile Optimized */
