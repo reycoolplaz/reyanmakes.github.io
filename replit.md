@@ -78,4 +78,6 @@ Simple static site deployment - no special configuration needed:
 
 ## Recent Changes
 - November 10, 2025: Imported from GitHub, configured for Replit deployment
-- Static server workflow set up on port 5000 for webview compatibility
+  - Static server workflow set up on port 5000 for webview compatibility
+  - Fixed GitHub link to point to correct repository: https://github.com/reycoolplaz/reyanmakes.github.io
+  - Deployment configuration set up for autoscale static hosting
