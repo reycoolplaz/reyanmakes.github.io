@@ -9,6 +9,8 @@ Usage: python3 generate_project_pages.py
 import json
 from pathlib import Path
 
+ASSET_VERSION = "20241110"
+
 # Project metadata - titles, descriptions, years, and tags
 PROJECT_METADATA = {
     "lakehouse": {
@@ -176,13 +178,15 @@ def generate_page_html(manifest_path, project_key, is_bsa=False):
         return None
 
     asset_prefix = '../' if not is_bsa else '../../'
+    version_suffix = f'?v={ASSET_VERSION}'
+
     home_link = f'{asset_prefix}index.html'
     featured_link = f'{home_link}#featured'
     timeline_link = f'{home_link}#timeline'
     about_link = f'{home_link}#about'
     contact_link = f'{home_link}#contact'
-    styles_path = f'{asset_prefix}styles.css'
-    script_path = f'{asset_prefix}lightbox.js'
+    styles_path = f'{asset_prefix}styles.css{version_suffix}'
+    script_path = f'{asset_prefix}lightbox.js{version_suffix}'
 
     # Determine paths
     if is_bsa:
