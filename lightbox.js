@@ -115,8 +115,8 @@ class Lightbox {
     updateImage() {
         const currentImage = this.images[this.currentIndex];
 
-        // Use full image if available (for mobile thumbnails), otherwise use src
-        this.lightboxImg.src = (currentImage.dataset && currentImage.dataset.fullImage) || currentImage.src;
+        // src is already the full image path (set in initializeGallery)
+        this.lightboxImg.src = currentImage.src;
         this.lightboxImg.alt = currentImage.alt || '';
 
         // Update counter
@@ -160,11 +160,10 @@ function initializeGallery() {
     galleryImages.forEach((img, index) => {
         img.style.cursor = 'pointer';
         img.addEventListener('click', () => {
-            // Get all images in the gallery
-            const allImages = Array.from(galleryImages).map(img => ({
-                src: img.dataset.fullImage || img.src,
-                alt: img.alt,
-                dataset: { fullImage: img.dataset.fullImage || img.src }
+            // Get all images in the gallery - use full image path if available
+            const allImages = Array.from(galleryImages).map(imgEl => ({
+                src: imgEl.dataset.fullImage || imgEl.src,
+                alt: imgEl.alt
             }));
 
             lightbox.open(allImages, index);
