@@ -36,13 +36,27 @@ The project runs automatically via the configured workflow:
 - Cache headers are disabled for development
 
 ## Recent Changes
-- **2025-11-10**: Initial Replit setup
+- **2025-11-10**: Initial Replit setup & Mobile Optimization
   - Installed Python 3.11
   - Created HTTP server with cache control headers
   - Configured workflow for webview on port 5000
-  - Verified site loads and displays correctly
+  - Configured deployment for autoscale
+  - **Mobile Optimizations & Fullscreen Fix:**
+    - Updated lightbox.js to properly handle dynamically loaded images
+    - Fixed click-to-fullscreen functionality for all 13 gallery pages
+    - Implemented true fullscreen lightbox on mobile devices (100vh/100vw)
+    - Added improved touch feedback and visual cues for thumbnails
+    - Enhanced swipe navigation for image galleries
+    - Added proper event handling to prevent duplicate listeners
+    - Gallery now loads thumbnails on mobile for faster performance
+    - Fullscreen lightbox uses full viewport on mobile with solid black background
+    - Improved touch controls with better button sizing and positioning
+    - All gallery pages now properly call initializeGallery() after images load
 
 ## Notes
 - Some featured project thumbnail images (gokart.jpg, lakehouse.jpg, bed.jpg) are referenced but not in the main images folder - they use fallback SVG placeholders
 - All actual project images are stored in subdirectories under `images/`
 - The site uses modern CSS features like CSS Grid, Flexbox, and CSS variables
+- Gallery pages dynamically load images from JSON manifests in the `manifests/` directory
+- On mobile (<768px), thumbnails are loaded first for performance, then full images shown in lightbox
+- Touch interactions include visual feedback (opacity changes) for better UX

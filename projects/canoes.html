@@ -59,6 +59,8 @@
         // Load gallery images dynamically from manifest
         const gallery = document.getElementById('gallery');
         const basePath = '../images/Engeneering/Canoes/';
+        const isMobile = window.innerWidth <= 768;
+        const thumbPath = basePath.replace(/\/$/, '') + '/thumbnails/';
         const manifestPath = '../manifests/canoes.json';
 
         fetch(manifestPath)
@@ -72,7 +74,12 @@
                     item.className = 'gallery-item';
 
                     const img = document.createElement('img');
-                    img.src = basePath + filename;
+                    
+                    const thumbFilename = filename.replace(/\.(jpg|jpeg|png|JPG|JPEG|PNG)$/i, '.jpg');
+                    img.src = isMobile ? thumbPath + thumbFilename : basePath + filename;
+                    
+                    // Store full image path for lightbox
+                    img.dataset.fullImage = basePath + filename;
                     img.alt = 'Canoe Projects';
                     img.className = 'gallery-image';
                     img.loading = 'lazy';
@@ -80,6 +87,13 @@
                     item.appendChild(img);
                     gallery.appendChild(item);
                 });
+
+                // Initialize lightbox after images are loaded
+                if (typeof initializeGallery === 'function') {
+                    setTimeout(() => {
+                        initializeGallery();
+                    }, 100);
+                }
             })
             .catch(error => {
                 console.error('Error loading gallery:', error);

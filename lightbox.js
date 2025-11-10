@@ -1,6 +1,7 @@
 /**
  * Lightbox Image Viewer
  * Simple, responsive lightbox for image galleries
+ * Optimized for mobile with fullscreen support
  */
 
 class Lightbox {
@@ -12,7 +13,6 @@ class Lightbox {
     }
 
     init() {
-        // Create lightbox HTML structure
         const lightboxHTML = `
             <div class="lightbox" id="lightbox">
                 <div class="lightbox-overlay"></div>
@@ -26,10 +26,8 @@ class Lightbox {
             </div>
         `;
 
-        // Add to body
         document.body.insertAdjacentHTML('beforeend', lightboxHTML);
 
-        // Get elements
         this.lightbox = document.getElementById('lightbox');
         this.lightboxImg = this.lightbox.querySelector('.lightbox-image');
         this.lightboxCounter = this.lightbox.querySelector('.lightbox-counter');
@@ -38,20 +36,23 @@ class Lightbox {
         this.nextBtn = this.lightbox.querySelector('.lightbox-next');
         this.overlay = this.lightbox.querySelector('.lightbox-overlay');
 
-        // Bind events
         this.bindEvents();
     }
 
     bindEvents() {
-        // Close button
         this.closeBtn.addEventListener('click', () => this.close());
         this.overlay.addEventListener('click', () => this.close());
 
-        // Navigation buttons
-        this.prevBtn.addEventListener('click', () => this.prev());
-        this.nextBtn.addEventListener('click', () => this.next());
+        this.prevBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.prev();
+        });
+        
+        this.nextBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.next();
+        });
 
-        // Keyboard navigation
         document.addEventListener('keydown', (e) => {
             if (!this.isOpen) return;
 
@@ -68,7 +69,6 @@ class Lightbox {
             }
         });
 
-        // Touch swipe support
         let touchStartX = 0;
         let touchEndX = 0;
 
@@ -88,9 +88,9 @@ class Lightbox {
 
         if (Math.abs(diff) > swipeThreshold) {
             if (diff > 0) {
-                this.next(); // Swipe left = next
+                this.next();
             } else {
-                this.prev(); // Swipe right = previous
+                this.prev();
             }
         }
     }
@@ -101,7 +101,7 @@ class Lightbox {
         this.isOpen = true;
 
         this.lightbox.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Prevent background scroll
+        document.body.style.overflow = 'hidden';
 
         this.updateImage();
     }
@@ -109,20 +109,17 @@ class Lightbox {
     close() {
         this.isOpen = false;
         this.lightbox.classList.remove('active');
-        document.body.style.overflow = ''; // Restore scroll
+        document.body.style.overflow = '';
     }
 
     updateImage() {
         const currentImage = this.images[this.currentIndex];
 
-        // src is already the full image path (set in initializeGallery)
         this.lightboxImg.src = currentImage.src;
         this.lightboxImg.alt = currentImage.alt || '';
 
-        // Update counter
         this.lightboxCounter.textContent = `${this.currentIndex + 1} / ${this.images.length}`;
 
-        // Show/hide navigation buttons
         this.prevBtn.style.display = this.currentIndex === 0 ? 'none' : 'block';
         this.nextBtn.style.display = this.currentIndex === this.images.length - 1 ? 'none' : 'block';
     }
@@ -142,31 +139,56 @@ class Lightbox {
     }
 }
 
-// Initialize lightbox when DOM is ready
 let lightbox;
 document.addEventListener('DOMContentLoaded', () => {
     lightbox = new Lightbox();
-
-    // Auto-attach to gallery images
     initializeGallery();
 });
 
-/**
- * Initialize gallery - attach click handlers to images
- */
 function initializeGallery() {
     const galleryImages = document.querySelectorAll('.gallery-image');
+    
+    if (galleryImages.length === 0) {
+        console.log('No gallery images found yet');
+        return;
+    }
 
     galleryImages.forEach((img, index) => {
+        if (img.dataset.lightboxInitialized) {
+            return;
+        }
+        
+        img.dataset.lightboxInitialized = 'true';
         img.style.cursor = 'pointer';
-        img.addEventListener('click', () => {
-            // Get all images in the gallery - use full image path if available
-            const allImages = Array.from(galleryImages).map(imgEl => ({
+        
+        const clickHandler = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const allImages = Array.from(document.querySelectorAll('.gallery-image')).map(imgEl => ({
                 src: imgEl.dataset.fullImage || imgEl.src,
                 alt: imgEl.alt
             }));
 
-            lightbox.open(allImages, index);
+            if (lightbox) {
+                lightbox.open(allImages, index);
+            }
+        };
+        
+        img.addEventListener('click', clickHandler);
+        img.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            clickHandler(e);
+        });
+        
+        img.addEventListener('touchstart', function() {
+            this.style.opacity = '0.8';
+        });
+        
+        img.addEventListener('touchcancel', function() {
+            this.style.opacity = '1';
         });
     });
+    
+    console.log(`Gallery initialized with ${galleryImages.length} images`);
 }

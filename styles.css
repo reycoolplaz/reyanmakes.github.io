@@ -708,6 +708,8 @@ section {
         max-height: 120px;
         cursor: pointer;
         background: var(--bg-secondary);
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+        touch-action: manipulation;
     }
 
     .gallery-image {
@@ -716,6 +718,9 @@ section {
         object-fit: cover;
         max-width: 120px;
         max-height: 120px;
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
     }
 
     .gallery-item:hover {
@@ -724,6 +729,7 @@ section {
 
     .gallery-item:active {
         transform: scale(0.95);
+        opacity: 0.8;
     }
 
     .project-hero {
@@ -759,51 +765,66 @@ section {
     }
 
     .lightbox-content {
-        max-width: 95vw;
-        max-height: 80vh;
+        max-width: 100vw;
+        max-height: 100vh;
+        width: 100%;
+        height: 100%;
     }
 
     .lightbox-image {
-        max-height: 80vh;
-        border-radius: 4px;
+        max-width: 100%;
+        max-height: 100vh;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 0;
+    }
+
+    .lightbox-overlay {
+        background: rgba(0, 0, 0, 1);
     }
 
     .lightbox-prev,
     .lightbox-next {
-        font-size: 1.5rem;
-        padding: 0.5rem 0.75rem;
-        background: rgba(0, 0, 0, 0.5);
+        font-size: 2rem;
+        padding: 1rem 1.25rem;
+        background: rgba(0, 0, 0, 0.6);
         border: 1px solid rgba(255, 255, 255, 0.3);
+        backdrop-filter: blur(5px);
+        z-index: 10001;
     }
 
     .lightbox-prev {
-        left: 5px;
+        left: 10px;
     }
 
     .lightbox-next {
-        right: 5px;
+        right: 10px;
     }
 
     .lightbox-close {
         font-size: 2.5rem;
-        top: 10px;
-        right: 10px;
-        background: rgba(0, 0, 0, 0.5);
+        top: 15px;
+        right: 15px;
+        background: rgba(0, 0, 0, 0.6);
         border-radius: 50%;
-        width: 45px;
-        height: 45px;
+        width: 50px;
+        height: 50px;
         display: flex;
         align-items: center;
         justify-content: center;
+        z-index: 10001;
+        border: 1px solid rgba(255, 255, 255, 0.3);
     }
 
     .lightbox-counter {
-        font-size: 0.875rem;
-        bottom: 10px;
+        font-size: 0.9rem;
+        bottom: 20px;
         left: 50%;
         transform: translateX(-50%);
         background: rgba(0, 0, 0, 0.7);
-        padding: 0.4rem 0.8rem;
+        padding: 0.5rem 1rem;
+        z-index: 10001;
     }
 
     .section-title {

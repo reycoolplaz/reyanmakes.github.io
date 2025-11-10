@@ -60,6 +60,8 @@
         // To add/remove images: just add/remove files from the folder and run generate_manifests.py
         const gallery = document.getElementById('gallery');
         const basePath = '../images/Engeneering/Canoe Hauler For Bike/';
+        const isMobile = window.innerWidth <= 768;
+        const thumbPath = basePath.replace(/\/$/, '') + '/thumbnails/';
         const manifestPath = '../manifests/canoe-hauler-for-bike.json';
 
         // Fetch and load images from manifest
@@ -76,7 +78,12 @@
                     item.className = 'gallery-image';
 
                     const img = document.createElement('img');
-                    img.src = basePath + filename;
+                    
+                    const thumbFilename = filename.replace(/\.(jpg|jpeg|png|JPG|JPEG|PNG)$/i, '.jpg');
+                    img.src = isMobile ? thumbPath + thumbFilename : basePath + filename;
+                    
+                    // Store full image path for lightbox
+                    img.dataset.fullImage = basePath + filename;
                     img.alt = 'Bike Canoe Hauler';
                     img.className = 'gallery-image';
                     img.loading = 'lazy';
@@ -84,6 +91,13 @@
                     item.appendChild(img);
                     gallery.appendChild(item);
                 });
+
+                // Initialize lightbox after images are loaded
+                if (typeof initializeGallery === 'function') {
+                    setTimeout(() => {
+                        initializeGallery();
+                    }, 100);
+                }
             })
             .catch(error => {
                 console.error('Error loading gallery:', error);
