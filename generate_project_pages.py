@@ -247,6 +247,19 @@ def generate_page_html(manifest_path, project_key, is_bsa=False):
         </div>
     </section>
 
+    <section style="padding: 3rem 0; text-align: center;">
+        <div class="container">
+            <a href="{back_link}" class="contact-button">← Back to Home</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Reyan Bhattacharjee | Built with passion</p>
+        </div>
+    </footer>
+
+    <script src="../lightbox.js"></script>
     <script>
         // Load gallery images dynamically from manifest
         // To add/remove images: just add/remove files from the folder and run generate_manifests.py
@@ -269,6 +282,7 @@ def generate_page_html(manifest_path, project_key, is_bsa=False):
 
                     const img = document.createElement('img');
                     img.src = basePath + filename;
+                    img.dataset.fullImage = basePath + filename;
                     img.alt = '{metadata['title']}';
                     img.className = 'gallery-image';
                     img.loading = 'lazy';
@@ -276,26 +290,16 @@ def generate_page_html(manifest_path, project_key, is_bsa=False):
                     item.appendChild(img);
                     gallery.appendChild(item);
                 }});
+
+                if (typeof initializeGallery === 'function') {{
+                    initializeGallery();
+                }}
             }})
             .catch(error => {{
                 console.error('Error loading gallery:', error);
                 gallery.innerHTML = '<p style="text-align:center; color: var(--text-light);">Error loading images. Please try refreshing the page.</p>';
             }});
     </script>
-
-    <section style="padding: 3rem 0; text-align: center;">
-        <div class="container">
-            <a href="{back_link}" class="contact-button">← Back to Home</a>
-        </div>
-    </section>
-
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 Reyan Bhattacharjee | Built with passion</p>
-        </div>
-    </footer>
-
-    <script src="../lightbox.js"></script>
 </body>
 </html>
 '''

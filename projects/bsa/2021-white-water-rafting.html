@@ -5,18 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>White Water Rafting 2021 | Reyan Makes</title>
     <meta name="description" content="BSA white water rafting adventure. Teamwork, paddling, and outdoor skills on the rapids.">
-    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="../styles.css">
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <a href="../../index.html" class="logo">Reyan Makes</a>
+            <a href="../index.html" class="logo">Reyan Makes</a>
             <ul class="nav-menu">
-                <li><a href="../../index.html" class="nav-link">Home</a></li>
-                <li><a href="../../index.html#featured" class="nav-link">Featured</a></li>
-                <li><a href="../../index.html#timeline" class="nav-link">Journey</a></li>
-                <li><a href="../../index.html#about" class="nav-link">About</a></li>
-                <li><a href="../../index.html#contact" class="nav-link">Contact</a></li>
+                <li><a href="../index.html" class="nav-link">Home</a></li>
+                <li><a href="../index.html#featured" class="nav-link">Featured</a></li>
+                <li><a href="../index.html#timeline" class="nav-link">Journey</a></li>
+                <li><a href="../index.html#about" class="nav-link">About</a></li>
+                <li><a href="../index.html#contact" class="nav-link">Contact</a></li>
             </ul>
         </div>
     </nav>
@@ -24,8 +24,7 @@
     <div class="breadcrumb">
         <div class="container">
             <ul class="breadcrumb-list">
-                <li><a href="../../index.html" class="breadcrumb-link">Home</a></li>
-                <li><a href="../../index.html#timeline" class="breadcrumb-link">BSA</a></li>
+                <li><a href="../index.html" class="breadcrumb-link">Home</a></li>
                 <li><span class="breadcrumb-current">White Water Rafting 2021</span></li>
             </ul>
         </div>
@@ -47,8 +46,8 @@
 
     <section style="padding: 4rem 0; background: var(--bg-secondary);">
         <div class="container">
-            <h2 class="section-title">Adventure Gallery</h2>
-            <p class="section-subtitle">Outdoor adventure and teamwork</p>
+            <h2 class="section-title">Build Gallery</h2>
+            <p class="section-subtitle">From concept to completion - documenting the entire build process</p>
 
             <div class="gallery-grid" id="gallery">
                 <!-- Images will be loaded dynamically from the images array -->
@@ -56,45 +55,9 @@
         </div>
     </section>
 
-    <script>
-        // Load gallery images dynamically from manifest
-        // To add/remove images: just add/remove files from the folder and run generate_manifests.py
-        const gallery = document.getElementById('gallery');
-        const basePath = '../../images/Engeneering/BSA/2021 White Water Rafting/';
-        const manifestPath = '../../manifests/bsa/2021-white-water-rafting.json';
-
-        // Fetch and load images from manifest
-        fetch(manifestPath)
-            .then(response => response.json())
-            .then(manifest => {
-                // Update subtitle with actual count
-                const subtitle = document.querySelector('.section-subtitle');
-                subtitle.textContent = `Outdoor adventure and teamwork - ${manifest.count} images`;
-
-                // Load each image
-                manifest.images.forEach(filename => {
-                    const item = document.createElement('div');
-                    item.className = 'gallery-item';
-
-                    const img = document.createElement('img');
-                    img.src = basePath + filename;
-                    img.alt = 'White Water Rafting 2021';
-                    img.className = 'gallery-image';
-                    img.loading = 'lazy';
-
-                    item.appendChild(img);
-                    gallery.appendChild(item);
-                });
-            })
-            .catch(error => {
-                console.error('Error loading gallery:', error);
-                gallery.innerHTML = '<p style="text-align:center; color: var(--text-light);">Error loading images. Please try refreshing the page.</p>';
-            });
-    </script>
-
     <section style="padding: 3rem 0; text-align: center;">
         <div class="container">
-            <a href="../../index.html" class="contact-button">← Back to Home</a>
+            <a href="../index.html" class="contact-button">← Back to Home</a>
         </div>
     </section>
 
@@ -104,6 +67,46 @@
         </div>
     </footer>
 
-    <script src="../../lightbox.js"></script>
+    <script src="../lightbox.js"></script>
+    <script>
+        // Load gallery images dynamically from manifest
+        // To add/remove images: just add/remove files from the folder and run generate_manifests.py
+        const gallery = document.getElementById('gallery');
+        const basePath = '../images/Engeneering/BSA/2021 White Water Rafting/';
+        const manifestPath = '../manifests/bsa/2021-white-water-rafting.json';
+
+        // Fetch and load images from manifest
+        fetch(manifestPath)
+            .then(response => response.json())
+            .then(manifest => {
+                // Update subtitle with actual count
+                const subtitle = document.querySelector('.section-subtitle');
+                subtitle.textContent = `From concept to completion - ${manifest.count} images documenting the entire build process`;
+
+                // Load each image
+                manifest.images.forEach(filename => {
+                    const item = document.createElement('div');
+                    item.className = 'gallery-item';
+
+                    const img = document.createElement('img');
+                    img.src = basePath + filename;
+                    img.dataset.fullImage = basePath + filename;
+                    img.alt = 'White Water Rafting 2021';
+                    img.className = 'gallery-image';
+                    img.loading = 'lazy';
+
+                    item.appendChild(img);
+                    gallery.appendChild(item);
+                });
+
+                if (typeof initializeGallery === 'function') {
+                    initializeGallery();
+                }
+            })
+            .catch(error => {
+                console.error('Error loading gallery:', error);
+                gallery.innerHTML = '<p style="text-align:center; color: var(--text-light);">Error loading images. Please try refreshing the page.</p>';
+            });
+    </script>
 </body>
 </html>

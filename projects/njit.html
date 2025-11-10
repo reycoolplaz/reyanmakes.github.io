@@ -32,7 +32,7 @@
 
     <section class="project-hero">
         <div class="project-hero-content">
-            <h1>NJIT Engineering Projects</h1>
+            <h1>NJIT Projects</h1>
             <div class="project-hero-meta">
                 <span class="year-badge">2021-2024</span>
                 <span>•</span>
@@ -46,7 +46,7 @@
 
     <section style="padding: 4rem 0; background: var(--bg-secondary);">
         <div class="container">
-            <h2 class="section-title">Project Gallery</h2>
+            <h2 class="section-title">Build Gallery</h2>
             <p class="section-subtitle">From concept to completion - documenting the entire build process</p>
 
             <div class="gallery-grid" id="gallery">
@@ -55,13 +55,24 @@
         </div>
     </section>
 
+    <section style="padding: 3rem 0; text-align: center;">
+        <div class="container">
+            <a href="../index.html" class="contact-button">← Back to Home</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Reyan Bhattacharjee | Built with passion</p>
+        </div>
+    </footer>
+
+    <script src="../lightbox.js"></script>
     <script>
         // Load gallery images dynamically from manifest
         // To add/remove images: just add/remove files from the folder and run generate_manifests.py
         const gallery = document.getElementById('gallery');
         const basePath = '../images/Engeneering/NJIT/';
-        const isMobile = window.innerWidth <= 768;
-        const thumbPath = basePath.replace(/\/$/, '') + '/thumbnails/';
         const manifestPath = '../manifests/njit.json';
 
         // Fetch and load images from manifest
@@ -78,11 +89,7 @@
                     item.className = 'gallery-item';
 
                     const img = document.createElement('img');
-                    
-                    const thumbFilename = filename.replace(/\.(jpg|jpeg|png|JPG|JPEG|PNG)$/i, '.jpg');
-                    img.src = isMobile ? thumbPath + thumbFilename : basePath + filename;
-                    
-                    // Store full image path for lightbox
+                    img.src = basePath + filename;
                     img.dataset.fullImage = basePath + filename;
                     img.alt = 'NJIT Projects';
                     img.className = 'gallery-image';
@@ -92,11 +99,8 @@
                     gallery.appendChild(item);
                 });
 
-                // Initialize lightbox after images are loaded
                 if (typeof initializeGallery === 'function') {
-                    setTimeout(() => {
-                        initializeGallery();
-                    }, 100);
+                    initializeGallery();
                 }
             })
             .catch(error => {
@@ -104,19 +108,5 @@
                 gallery.innerHTML = '<p style="text-align:center; color: var(--text-light);">Error loading images. Please try refreshing the page.</p>';
             });
     </script>
-
-    <section style="padding: 3rem 0; text-align: center;">
-        <div class="container">
-            <a href="../index.html" class="contact-button">← Back to Home</a>
-        </div>
-    </section>
-
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2025 Reyan Bhattacharjee | Built with passion</p>
-        </div>
-    </footer>
-
-    <script src="../lightbox.js"></script>
 </body>
 </html>

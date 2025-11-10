@@ -46,60 +46,14 @@
 
     <section style="padding: 4rem 0; background: var(--bg-secondary);">
         <div class="container">
-            <h2 class="section-title">Project Gallery</h2>
-            <p class="section-subtitle">Watercraft repairs and modifications</p>
+            <h2 class="section-title">Build Gallery</h2>
+            <p class="section-subtitle">From concept to completion - documenting the entire build process</p>
 
             <div class="gallery-grid" id="gallery">
                 <!-- Images will be loaded dynamically from the images array -->
             </div>
         </div>
     </section>
-
-    <script>
-        // Load gallery images dynamically from manifest
-        const gallery = document.getElementById('gallery');
-        const basePath = '../images/Engeneering/Canoes/';
-        const isMobile = window.innerWidth <= 768;
-        const thumbPath = basePath.replace(/\/$/, '') + '/thumbnails/';
-        const manifestPath = '../manifests/canoes.json';
-
-        fetch(manifestPath)
-            .then(response => response.json())
-            .then(manifest => {
-                const subtitle = document.querySelector('.section-subtitle');
-                subtitle.textContent = `Watercraft repairs and modifications - ${manifest.count} images`;
-
-                manifest.images.forEach(filename => {
-                    const item = document.createElement('div');
-                    item.className = 'gallery-item';
-
-                    const img = document.createElement('img');
-                    
-                    const thumbFilename = filename.replace(/\.(jpg|jpeg|png|JPG|JPEG|PNG)$/i, '.jpg');
-                    img.src = isMobile ? thumbPath + thumbFilename : basePath + filename;
-                    
-                    // Store full image path for lightbox
-                    img.dataset.fullImage = basePath + filename;
-                    img.alt = 'Canoe Projects';
-                    img.className = 'gallery-image';
-                    img.loading = 'lazy';
-
-                    item.appendChild(img);
-                    gallery.appendChild(item);
-                });
-
-                // Initialize lightbox after images are loaded
-                if (typeof initializeGallery === 'function') {
-                    setTimeout(() => {
-                        initializeGallery();
-                    }, 100);
-                }
-            })
-            .catch(error => {
-                console.error('Error loading gallery:', error);
-                gallery.innerHTML = '<p style="text-align:center; color: var(--text-light);">Error loading images. Please try refreshing the page.</p>';
-            });
-    </script>
 
     <section style="padding: 3rem 0; text-align: center;">
         <div class="container">
@@ -114,5 +68,45 @@
     </footer>
 
     <script src="../lightbox.js"></script>
+    <script>
+        // Load gallery images dynamically from manifest
+        // To add/remove images: just add/remove files from the folder and run generate_manifests.py
+        const gallery = document.getElementById('gallery');
+        const basePath = '../images/Engeneering/Canoes/';
+        const manifestPath = '../manifests/canoes.json';
+
+        // Fetch and load images from manifest
+        fetch(manifestPath)
+            .then(response => response.json())
+            .then(manifest => {
+                // Update subtitle with actual count
+                const subtitle = document.querySelector('.section-subtitle');
+                subtitle.textContent = `From concept to completion - ${manifest.count} images documenting the entire build process`;
+
+                // Load each image
+                manifest.images.forEach(filename => {
+                    const item = document.createElement('div');
+                    item.className = 'gallery-item';
+
+                    const img = document.createElement('img');
+                    img.src = basePath + filename;
+                    img.dataset.fullImage = basePath + filename;
+                    img.alt = 'Canoe Projects';
+                    img.className = 'gallery-image';
+                    img.loading = 'lazy';
+
+                    item.appendChild(img);
+                    gallery.appendChild(item);
+                });
+
+                if (typeof initializeGallery === 'function') {
+                    initializeGallery();
+                }
+            })
+            .catch(error => {
+                console.error('Error loading gallery:', error);
+                gallery.innerHTML = '<p style="text-align:center; color: var(--text-light);">Error loading images. Please try refreshing the page.</p>';
+            });
+    </script>
 </body>
 </html>

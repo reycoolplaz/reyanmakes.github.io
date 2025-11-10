@@ -56,60 +56,6 @@
         </div>
     </section>
 
-    <script>
-        // Load gallery images dynamically from manifest
-        // To add/remove images: just add/remove files from the folder and run generate_manifests.py
-        const gallery = document.getElementById('gallery');
-        const basePath = '../images/Engeneering/Gokart/';
-        const thumbPath = '../images/Engeneering/Gokart/thumbnails/';
-        const manifestPath = '../manifests/gokart.json';
-        const isMobile = window.innerWidth <= 768;
-
-        // Fetch and load images from manifest
-        fetch(manifestPath)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(manifest => {
-                // Update subtitle with actual count
-                const subtitle = document.querySelector('.section-subtitle');
-                subtitle.textContent = `From concept to completion - ${manifest.count} images documenting the entire build process`;
-
-                // Load each image
-                manifest.images.forEach((filename, index) => {
-                    const item = document.createElement('div');
-                    item.className = 'gallery-item';
-
-                    const img = document.createElement('img');
-
-                    // Use thumbnails on mobile, full images on desktop
-                    const thumbFilename = filename.replace(/\.(jpg|jpeg|png|JPG|JPEG|PNG)$/i, '.jpg');
-                    img.src = isMobile ? thumbPath + thumbFilename : basePath + filename;
-
-                    // Store full image path for lightbox
-                    img.dataset.fullImage = basePath + filename;
-                    img.alt = 'Go-Kart build';
-                    img.className = 'gallery-image';
-                    img.loading = 'lazy';
-
-                    item.appendChild(img);
-                    gallery.appendChild(item);
-                });
-
-                // Reinitialize lightbox after images are loaded
-                if (typeof initializeGallery === 'function') {
-                    initializeGallery();
-                }
-            })
-            .catch(error => {
-                console.error('Error loading gallery:', error);
-                gallery.innerHTML = `<p style="text-align:center; color: var(--text-light);">Error loading images: ${error.message}. Please try refreshing the page.</p>`;
-            });
-    </script>
-
     <section style="padding: 3rem 0; text-align: center;">
         <div class="container">
             <a href="../index.html" class="contact-button">← Back to Home</a>
@@ -123,5 +69,50 @@
     </footer>
 
     <script src="../lightbox.js"></script>
+    <script>
+        // Load gallery images dynamically from manifest
+        // To add/remove images: just add/remove files from the folder and run generate_manifests.py
+        const gallery = document.getElementById('gallery');
+        const basePath = '../images/Engeneering/Gokart/';
+        const thumbPath = '../images/Engeneering/Gokart/thumbnails/';
+        const manifestPath = '../manifests/gokart.json';
+        const isMobile = window.innerWidth <= 768;
+
+        fetch(manifestPath)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(manifest => {
+                const subtitle = document.querySelector('.section-subtitle');
+                subtitle.textContent = `From concept to completion - ${manifest.count} images documenting the entire build process`;
+
+                manifest.images.forEach(filename => {
+                    const item = document.createElement('div');
+                    item.className = 'gallery-item';
+
+                    const img = document.createElement('img');
+                    const thumbFilename = filename.replace(/\.(jpg|jpeg|png|JPG|JPEG|PNG)$/i, '.jpg');
+                    img.src = isMobile ? thumbPath + thumbFilename : basePath + filename;
+                    img.dataset.fullImage = basePath + filename;
+                    img.alt = 'Go-Kart build';
+                    img.className = 'gallery-image';
+                    img.loading = 'lazy';
+
+                    item.appendChild(img);
+                    gallery.appendChild(item);
+                });
+
+                if (typeof initializeGallery === 'function') {
+                    initializeGallery();
+                }
+            })
+            .catch(error => {
+                console.error('Error loading gallery:', error);
+                gallery.innerHTML = `<p style="text-align:center; color: var(--text-light);">Error loading images: ${error.message}. Please try refreshing the page.</p>`;
+            });
+    </script>
 </body>
 </html>
