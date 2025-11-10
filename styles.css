@@ -661,20 +661,22 @@ section {
     }
 
     .nav-container {
-        padding: 0 1rem;
+        padding: 0 0.75rem;
     }
 
     .logo {
-        font-size: 1.25rem;
+        font-size: 1.1rem;
+        margin-right: 0.5rem;
     }
 
     .nav-menu {
-        gap: 0.5rem;
-        font-size: 0.85rem;
+        gap: 0.3rem;
+        font-size: 0.75rem;
     }
 
     .nav-link {
-        padding: 0.25rem 0.5rem;
+        padding: 0.25rem 0.4rem;
+        white-space: nowrap;
     }
 
     .projects-grid {
