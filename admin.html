@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Reyan Makes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .auth-section {
+            display: block;
+        }
+
+        .auth-section.hidden {
+            display: none;
+        }
+
+        .admin-section {
+            display: none;
+        }
+
+        .admin-section.visible {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .btn-success:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(17, 153, 142, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(235, 51, 73, 0.4);
+        }
+
+        .status-box {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .status-item:last-child {
+            border-bottom: none;
+        }
+
+        .status-label {
+            font-weight: 600;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .status-value {
+            color: #333;
+            font-size: 14px;
+        }
+
+        .status-running {
+            color: #f59e0b;
+            font-weight: 600;
+        }
+
+        .status-success {
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .status-error {
+            color: #ef4444;
+            font-weight: 600;
+        }
+
+        .output-box {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .output-box:empty {
+            display: none;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .back-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Admin Panel</h1>
+            <p>Manage your portfolio website</p>
+        </div>
+
+        <div class="content">
+            <!-- Authentication Section -->
+            <div id="authSection" class="auth-section">
+                <div id="authError" class="alert alert-error" style="display: none;"></div>
+
+                <div class="form-group">
+                    <label for="password">Enter Admin Password</label>
+                    <input type="password" id="password" placeholder="Password" autocomplete="current-password">
+                </div>
+
+                <button class="btn btn-primary" id="loginBtn" onclick="authenticate()">
+                    Login
+                </button>
+            </div>
+
+            <!-- Admin Section -->
+            <div id="adminSection" class="admin-section">
+                <div id="adminAlert" class="alert" style="display: none;"></div>
+
+                <button class="btn btn-success" id="buildBtn" onclick="triggerBuild()">
+                    <span id="buildBtnText">Run Build Script</span>
+                </button>
+
+                <button class="btn btn-danger" onclick="logout()">
+                    Logout
+                </button>
+
+                <div class="status-box">
+                    <h3 style="margin-bottom: 16px; color: #333;">Build Status</h3>
+                    <div class="status-item">
+                        <span class="status-label">Status:</span>
+                        <span class="status-value" id="statusRunning">Not running</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Last Run:</span>
+                        <span class="status-value" id="statusLastRun">Never</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Last Result:</span>
+                        <span class="status-value" id="statusLastResult">No builds yet</span>
+                    </div>
+                </div>
+
+                <div id="outputBox" class="output-box"></div>
+
+                <div class="back-link">
+                    <a href="/">← Back to Main Site</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let password = '';
+        let statusInterval = null;
+
+        // Check if already authenticated
+        const savedPassword = sessionStorage.getItem('adminPassword');
+        if (savedPassword) {
+            password = savedPassword;
+            showAdminPanel();
+        }
+
+        // Handle Enter key in password field
+        document.getElementById('password').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                authenticate();
+            }
+        });
+
+        function authenticate() {
+            const passwordInput = document.getElementById('password').value;
+            if (!passwordInput) {
+                showAuthError('Please enter a password');
+                return;
+            }
+
+            password = passwordInput;
+            sessionStorage.setItem('adminPassword', password);
+
+            // Test authentication by checking build status
+            fetch('/api/build/status')
+                .then(response => response.json())
+                .then(() => {
+                    hideAuthError();
+                    showAdminPanel();
+                })
+                .catch(error => {
+                    showAuthError('Failed to connect to server');
+                });
+        }
+
+        function logout() {
+            password = '';
+            sessionStorage.removeItem('adminPassword');
+            if (statusInterval) {
+                clearInterval(statusInterval);
+            }
+            hideAdminPanel();
+        }
+
+        function showAuthError(message) {
+            const errorDiv = document.getElementById('authError');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        function hideAuthError() {
+            const errorDiv = document.getElementById('authError');
+            errorDiv.style.display = 'none';
+        }
+
+        function showAdminPanel() {
+            document.getElementById('authSection').classList.add('hidden');
+            document.getElementById('adminSection').classList.add('visible');
+            updateStatus();
+            statusInterval = setInterval(updateStatus, 2000);
+        }
+
+        function hideAdminPanel() {
+            document.getElementById('authSection').classList.remove('hidden');
+            document.getElementById('adminSection').classList.remove('visible');
+            document.getElementById('password').value = '';
+        }
+
+        function showAdminAlert(message, isError = false) {
+            const alertDiv = document.getElementById('adminAlert');
+            alertDiv.textContent = message;
+            alertDiv.className = 'alert ' + (isError ? 'alert-error' : 'alert-success');
+            alertDiv.style.display = 'block';
+
+            setTimeout(() => {
+                alertDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        async function triggerBuild() {
+            const buildBtn = document.getElementById('buildBtn');
+            const buildBtnText = document.getElementById('buildBtnText');
+
+            try {
+                buildBtn.disabled = true;
+                buildBtnText.innerHTML = '<span class="spinner"></span>Starting build...';
+
+                const response = await fetch('/api/build', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ password })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        showAdminAlert('Authentication failed. Please logout and login again.', true);
+                        setTimeout(logout, 2000);
+                    } else {
+                        showAdminAlert(data.error || 'Failed to start build', true);
+                    }
+                    buildBtn.disabled = false;
+                    buildBtnText.textContent = 'Run Build Script';
+                    return;
+                }
+
+                showAdminAlert('Build started successfully!', false);
+                updateStatus();
+
+            } catch (error) {
+                showAdminAlert('Error: ' + error.message, true);
+                buildBtn.disabled = false;
+                buildBtnText.textContent = 'Run Build Script';
+            }
+        }
+
+        async function updateStatus() {
+            try {
+                const response = await fetch('/api/build/status');
+                const status = await response.json();
+
+                // Update running status
+                const statusRunning = document.getElementById('statusRunning');
+                const buildBtn = document.getElementById('buildBtn');
+                const buildBtnText = document.getElementById('buildBtnText');
+
+                if (status.running) {
+                    statusRunning.innerHTML = '<span class="spinner"></span>Running...';
+                    statusRunning.className = 'status-value status-running';
+                    buildBtn.disabled = true;
+                    buildBtnText.textContent = 'Build in progress...';
+                } else {
+                    statusRunning.textContent = 'Not running';
+                    statusRunning.className = 'status-value';
+                    buildBtn.disabled = false;
+                    buildBtnText.textContent = 'Run Build Script';
+                }
+
+                // Update last run time
+                const statusLastRun = document.getElementById('statusLastRun');
+                if (status.last_run) {
+                    const lastRun = new Date(status.last_run * 1000);
+                    statusLastRun.textContent = lastRun.toLocaleString();
+                } else {
+                    statusLastRun.textContent = 'Never';
+                }
+
+                // Update last result
+                const statusLastResult = document.getElementById('statusLastResult');
+                if (status.last_result) {
+                    if (status.last_result.success) {
+                        statusLastResult.textContent = 'Success';
+                        statusLastResult.className = 'status-value status-success';
+                    } else {
+                        statusLastResult.textContent = 'Failed';
+                        statusLastResult.className = 'status-value status-error';
+                    }
+                } else {
+                    statusLastResult.textContent = 'No builds yet';
+                    statusLastResult.className = 'status-value';
+                }
+
+                // Update output box
+                const outputBox = document.getElementById('outputBox');
+                if (status.output) {
+                    outputBox.textContent = status.output;
+                    outputBox.scrollTop = outputBox.scrollHeight;
+                } else if (status.last_result && status.last_result.error) {
+                    outputBox.textContent = 'Error: ' + status.last_result.error;
+                }
+
+            } catch (error) {
+                console.error('Failed to update status:', error);
+            }
+        }
+    </script>
+</body>
+</html>

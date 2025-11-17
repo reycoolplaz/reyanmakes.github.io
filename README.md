@@ -58,28 +58,65 @@ reyanmakes.github.io/
 └── README.md                        # This file
 ```
 
-## Local Development
-1. (Optional) Activate a virtualenv if you plan to run the Python helpers.
-2. Install Pillow if you need thumbnail generation: `pip install Pillow`.
-3. Launch the dev server: `python server.py` → visit `http://localhost:5000`.
-4. Manual reloads are enough—there is no build step.
+## 🖥️ Local Development
 
-## Content Workflow
+### Quick Start
+```bash
+# Run the development server (automatically sets up venv)
+./run_server.sh
+```
+
+Or manually:
+```bash
+# Install dependencies
+python3 -m venv venv
+./venv/bin/pip install -r requirements.txt
+
+# Start server
+./venv/bin/python server.py
+```
+
+Then visit:
+- **Main site**: http://localhost:5000
+- **Admin panel**: http://localhost:5000/admin
+
+### Admin Panel Features
+
+The admin panel (`/admin`) provides a web interface to:
+- ✅ Run the build script with a button click
+- ✅ Monitor build progress in real-time
+- ✅ View build output and logs
+- ✅ Check build status and history
+
+**Default password**: `reyan2025` (change via `ADMIN_PASSWORD` environment variable)
+
+## 📸 Content Workflow
+
+### Two Ways to Build
+
+#### Option 1: Command Line (Fastest)
+```bash
+# After adding/removing images
+python3 build_site.py
+```
+
+#### Option 2: Admin Panel (Easiest)
+1. Start the server: `./run_server.sh`
+2. Visit http://localhost:5000/admin
+3. Login with password: `reyan2025`
+4. Click "Run Build Script" button
+5. Watch progress in real-time
+
 ### Add or Remove Project Images
-1. Drop/remove files inside the relevant folder under `images/Engeneering/YourProject/` (or `images/Drawings/`).
-2. Run `python generate_manifests.py` so JSON stays in sync.
-3. (Recommended) Run `python generate_thumbnails.py` to refresh 200px thumbs for mobile.
-4. Commit images **and** updated manifests/thumbnails.
+1. Drop/remove files in `images/Your Project/`
+2. Run build (command line or admin panel)
+3. Commit and push
 
 ### Create a New Project Gallery
-1. Add a new folder under `images/Engeneering/YourProject/` and populate it with photos.
-2. Regenerate manifests and thumbnails (commands above).
-3. Add metadata for the new key inside `PROJECT_METADATA` (or `BSA_METADATA`) in `generate_project_pages.py`.
-4. Run `python generate_project_pages.py` to emit the corresponding HTML into `projects/`.
-5. Link to the new page from `index.html` (featured card, timeline item, etc.).
-
-### Update Homepage Imagery
-- Hero/featured cards expect `images/gokart.jpg`, `images/lakehouse.jpg`, and `images/bed.jpg`. Replace those filenames directly to update the tiles; the markup already includes SVG fallbacks if a file is missing.
+1. Create folder under `images/` with your photos
+2. (Optional) Edit `projects-metadata.json` to add title, description, tags
+3. Run build script
+4. Done! New gallery page auto-generated
 
 ## Tips & Gotchas
 - Supported formats: JPG, JPEG, PNG, GIF, WEBP (others should be converted first).
@@ -87,45 +124,28 @@ reyanmakes.github.io/
 - When previewing galleries locally, always run through `server.py`; the fetch API requires an HTTP origin to load manifests.
 - Keep raw images below ~5 MB for faster publish times—use the provided `convert_heic.py` / `convert_cr2.py` scripts if needed.
 
-With this workflow every gallery page stays in sync with the filesystem, lightbox interactions work on desktop/mobile, and publishing new projects is just a matter of dropping photos plus a quick manifest refresh.
-
-## 📝 Complete Workflow
-
-### 1. Setup (One Time)
-
-```bash
-pip install Pillow
-```
-
-### 2. Add New Project
-
-```bash
-# Add images
-mkdir "images/My Cool Project"
-cp ~/Downloads/*.jpg "images/My Cool Project/"
-
-# Edit projects-metadata.json (optional)
-# Run build
-python3 build_site.py
-```
-
-### 3. Update Existing Project
-
-```bash
-# Add/remove images
-cp ~/more-photos/*.jpg "images/Existing Project/"
-
-# Rebuild
-python3 build_site.py
-```
-
 ## 🎯 Key Files
 
-- `projects-metadata.json` - Edit project info here
-- `build_site.py` - Run this after any changes
+- `build_site.py` - Master build script (run after image changes)
+- `projects-metadata.json` - Edit project titles, descriptions, tags
+- `server.py` - Flask development server with admin API
+- `admin.html` - Web-based admin panel for builds
+- `run_server.sh` - Quick start script for development
+- `requirements.txt` - Python dependencies (Flask, Pillow)
 - `/gen/` - Auto-generated (thumbnails, manifests, index)
 - `/projects/` - Auto-generated gallery pages
 
+## 💡 Tips & Best Practices
+
+- **Image formats**: JPG, JPEG, PNG, GIF, WEBP supported
+- **File naming**: Use descriptive names; manifests are alphabetical
+- **Image size**: Keep under ~5 MB for faster loading
+- **Admin panel**: Best for quick builds when testing locally
+- **Command line**: Best for automation and batch operations
+- **Preview**: Always test galleries through the server (not file://)
+
 ---
 
-**Need help?** Run `python3 build_site.py` to regenerate everything!
+**Quick Help**:
+- Command line build: `python3 build_site.py`
+- Web admin panel: `./run_server.sh` → http://localhost:5000/admin (password: `reyan2025`)
