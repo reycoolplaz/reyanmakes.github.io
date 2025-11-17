@@ -1,0 +1,132 @@
+{
+  "$schema": "Project metadata for Reyan Makes portfolio site",
+  "$comment": "Edit this file to update project titles, descriptions, tags, and years. The build script reads from here.",
+
+  "projects": {
+    "makers-stuff-go-cart": {
+      "title": "Go-Kart Build",
+      "year": "2024",
+      "tags": "Welding • Metal Fabrication • Mechanical",
+      "description": "Welded together from scrap metal and spare parts. Taught myself MIG welding through YouTube and practice. This project pushed me to learn new skills and problem-solve on the fly.",
+      "featured": true,
+      "category": "makers"
+    },
+
+    "makers-stuff-furniture-bed": {
+      "title": "Custom Bed Frame",
+      "year": "2023",
+      "tags": "Woodworking • Furniture • Design",
+      "description": "Loft bed designed and built from scratch to maximize room space. Custom joinery and finishing work.",
+      "featured": true,
+      "category": "makers"
+    },
+
+    "makers-stuff-furniture-shelf": {
+      "title": "Under-Bed Storage Shelf",
+      "year": "2023",
+      "tags": "Woodworking • Storage • Design",
+      "description": "Custom storage solution built to fit perfectly under the bed frame. Maximizing space efficiency.",
+      "featured": false,
+      "category": "makers"
+    },
+
+    "makers-stuff-furniture-temple": {
+      "title": "Temple Construction",
+      "year": "2023",
+      "tags": "Carpentry • Community • Woodworking",
+      "description": "Traditional temple construction project showcasing woodworking and carpentry skills. Learning from master craftsmen.",
+      "featured": false,
+      "category": "makers"
+    },
+
+    "makers-stuff-metal-work": {
+      "title": "Metal Work Projects",
+      "year": "2024",
+      "tags": "Metalworking • Forging • Tools",
+      "description": "Hand-crafted knife, axe, and rings. Learning metalworking, grinding, and forging techniques.",
+      "featured": false,
+      "category": "makers"
+    },
+
+    "makers-stuff-wood-work": {
+      "title": "Woodworking Projects",
+      "year": "2023-2024",
+      "tags": "Woodworking • Craftsmanship • Design",
+      "description": "Various woodworking projects exploring different techniques and materials.",
+      "featured": false,
+      "category": "makers"
+    },
+
+    "makers-stuff-clay": {
+      "title": "Clay Sculptures",
+      "year": "2023",
+      "tags": "Sculpture • Art • 3D Form",
+      "description": "Exploring sculptural forms and artistic expression through clay work.",
+      "featured": false,
+      "category": "art"
+    },
+
+    "photograph": {
+      "title": "Photography Portfolio",
+      "year": "2024",
+      "tags": "Photography • Visual Art • Nature",
+      "description": "Capturing moments and exploring composition through the lens. Bees, canyons, and motion.",
+      "featured": false,
+      "category": "art"
+    },
+
+    "sketching": {
+      "title": "Sketches & Drawings",
+      "year": "2023-2024",
+      "tags": "Sketching • Design • Visualization",
+      "description": "Design sketches, still life, and imaginative drawings. Building visualization skills.",
+      "featured": false,
+      "category": "art"
+    },
+
+    "school": {
+      "title": "School Design Projects",
+      "year": "2024",
+      "tags": "Engineering • Design • Education",
+      "description": "Design engineering projects from school, including the ball sorter mechanism and other engineering challenges.",
+      "featured": false,
+      "category": "education"
+    },
+
+    "njit-hcad-program-prototype": {
+      "title": "NJIT Cave Shed Prototype",
+      "year": "2024",
+      "tags": "Architecture • Design • NJIT Program",
+      "description": "Cave shed design prototype from NJIT's HCAD summer architecture program. Complete architectural drawings, blueprints, and perspectives.",
+      "featured": false,
+      "category": "education"
+    }
+  },
+
+  "categories": {
+    "makers": {
+      "title": "Maker Projects",
+      "description": "Hands-on building, fabrication, and making"
+    },
+    "art": {
+      "title": "Art & Creative",
+      "description": "Photography, sculpture, and visual art"
+    },
+    "education": {
+      "title": "School & Learning",
+      "description": "Academic projects and design education"
+    },
+    "community": {
+      "title": "Community & Service",
+      "description": "Volunteer work and community projects"
+    }
+  },
+
+  "defaults": {
+    "year": "2024",
+    "tags": "Project • Build • Maker",
+    "description": "Documentation of a maker project.",
+    "featured": false,
+    "category": "makers"
+  }
+}

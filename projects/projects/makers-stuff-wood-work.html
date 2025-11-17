@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Woodworking Projects | Reyan Makes</title>
+    <meta name="description" content="Various woodworking projects exploring different techniques and materials.">
+    <link rel="stylesheet" href="../styles.css?v=20251116">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">Reyan Makes</a>
+            <ul class="nav-menu">
+                <li><a href="../index.html" class="nav-link">Home</a></li>
+                <li><a href="../index.html#featured" class="nav-link">Featured</a></li>
+                <li><a href="../index.html#timeline" class="nav-link">Journey</a></li>
+                <li><a href="../index.html#about" class="nav-link">About</a></li>
+                <li><a href="../index.html#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="breadcrumb">
+        <div class="container">
+            <ul class="breadcrumb-list">
+                <li><a href="../index.html" class="breadcrumb-link">Home</a></li>
+                <li><span class="breadcrumb-current">Woodworking Projects</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <section class="project-hero">
+        <div class="project-hero-content">
+            <h1>Woodworking Projects</h1>
+            <div class="project-hero-meta">
+                <span class="year-badge">2023-2024</span>
+                <span>•</span>
+                <span>Woodworking • Craftsmanship • Design</span>
+            </div>
+            <p class="project-hero-description">
+                Various woodworking projects exploring different techniques and materials.
+            </p>
+        </div>
+    </section>
+
+    <section style="padding: 4rem 0; background: var(--bg-secondary);">
+        <div class="container">
+            <h2 class="section-title">Gallery</h2>
+            <p class="section-subtitle">Documenting the entire process - 5 images</p>
+
+            <div class="gallery-grid" id="gallery">
+                <!-- Images will be loaded dynamically from the manifest -->
+            </div>
+        </div>
+    </section>
+
+    <section style="padding: 3rem 0; text-align: center;">
+        <div class="container">
+            <a href="../index.html" class="contact-button">← Back to Home</a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Reyan Bhattacharjee | Built with passion</p>
+        </div>
+    </footer>
+
+    <script src="../lightbox.js?v=20251116"></script>
+    <script>
+        // Load gallery images dynamically from manifest
+        const gallery = document.getElementById('gallery');
+        const basePath = '../images/Makers stuff/wood-work/';
+        const thumbPath = '../gen/thumbnails/Makers stuff/wood-work/';
+        const manifestPath = '../gen/manifests/makers-stuff-wood-work.json';
+        const isMobile = window.innerWidth <= 768;
+
+        fetch(manifestPath)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(manifest => {
+                manifest.images.forEach(filename => {
+                    const item = document.createElement('div');
+                    item.className = 'gallery-item';
+
+                    const img = document.createElement('img');
+                    const thumbFilename = filename.replace(/\.(jpg|jpeg|png|JPG|JPEG|PNG)$/i, '.jpg');
+                    img.src = isMobile ? thumbPath + thumbFilename : basePath + filename;
+                    img.dataset.fullImage = basePath + filename;
+                    img.alt = 'Woodworking Projects';
+                    img.className = 'gallery-image';
+                    img.loading = 'lazy';
+
+                    item.appendChild(img);
+                    gallery.appendChild(item);
+                });
+
+                if (typeof initializeGallery === 'function') {
+                    initializeGallery();
+                }
+            })
+            .catch(error => {
+                console.error('Error loading gallery:', error);
+                gallery.innerHTML = `<p style="text-align:center; color: var(--text-light);">Error loading images: ${error.message}. Please try refreshing the page.</p>`;
+            });
+    </script>
+</body>
+</html>

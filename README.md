@@ -1,31 +1,61 @@
-# Reyan Makes Portfolio Website
+# Reyan Makes - Portfolio Website
 
-Personal site for Reyan Bhattacharjee showcasing hands-on builds, project galleries, and tooling scripts for keeping everything in sync. The repo is intentionally framework-free so it can be hosted anywhere static files are supported (GitHub Pages, Replit, etc.).
+Personal portfolio website showcasing maker projects, woodworking, welding, photography, and creative work by Reyan Bhattacharjee.
 
-## Tech Stack & Key Pieces
-- Static HTML (`index.html` plus `projects/*.html`) styled by a single `styles.css`
-- Vanilla JS for UX (`script.js` for navigation/animations, `lightbox.js` + `gallery-init.js` for galleries)
-- Python helper scripts to auto-generate JSON manifests, thumbnails, and project pages
-- Simple dev server (`server.py`) with cache-busting headers for local previews on port 5000
+The site is intentionally framework-free and uses an **automated build system** to keep everything in sync. Just add images and run one command!
 
-## Repository Structure
+## 🚀 Quick Start - The Easy Way
+
+**Just added new images? Run this ONE command:**
+
+```bash
+python3 build_site.py
+```
+
+That's it! The script automatically:
+- ✅ Discovers all image folders
+- ✅ Generates optimized thumbnails in `/gen/thumbnails/`
+- ✅ Creates manifest files in `/gen/manifests/`
+- ✅ Generates project gallery pages
+- ✅ Updates the complete site index
+
+## 🛠️ Tech Stack
+
+- Static HTML + CSS (no framework)
+- Vanilla JavaScript for navigation and lightbox galleries
+- Python build system for automation
+- PIL/Pillow for image processing
+
+## 📁 Directory Structure
+
 ```
 reyanmakes.github.io/
-├── index.html            # Landing page with hero, featured work, timeline, about/contact
-├── styles.css            # Global design system + responsive layout
-├── script.js             # Smooth scrolling, IntersectionObserver animations
-├── lightbox.js           # Fullscreen gallery viewer with keyboard & touch support
-├── gallery-init.js       # Fetches manifests, injects gallery images, hooks lightbox
-├── projects/             # Generated project galleries (include gallery-init + lightbox)
-├── images/
-│   ├── Engeneering/      # Project photos (each folder can include thumbnails/)
-│   └── Drawings/         # Sketch archives (also supports thumbnails/)
-├── manifests/            # Auto-generated JSON image manifests (plus manifests/bsa/)
-├── generate_manifests.py # Scans images/* and writes manifests
-├── generate_thumbnails.py# Creates 200px JPEG thumbs for mobile perf
-├── generate_project_pages.py # Renders HTML pages from manifests + metadata
-├── convert_*.py          # Optional helpers for HEIC/CR2 to JPEG
-└── server.py             # Local preview server
+├── images/                          # 📸 ADD YOUR IMAGES HERE
+│   ├── Makers stuff/
+│   │   ├── Go-Cart/
+│   │   ├── Furniture/
+│   │   ├── metal-work/
+│   │   └── wood-work/
+│   ├── photograph/
+│   ├── sketching/
+│   └── school/
+│
+├── gen/                             # ⚙️ AUTO-GENERATED (by build_site.py)
+│   ├── thumbnails/                  # Optimized 200x200 thumbnails
+│   ├── manifests/                   # JSON image lists
+│   └── site-index.json              # Complete project index
+│
+├── projects/                        # 📄 AUTO-GENERATED PAGES
+│   ├── makers-stuff-go-cart.html
+│   ├── photograph.html
+│   └── ... (17 project pages)
+│
+├── build_site.py                    # 🏗️ MASTER BUILD SCRIPT (RUN THIS!)
+├── projects-metadata.json           # ✏️ EDIT PROJECT INFO HERE
+├── index.html                       # Main homepage
+├── styles.css                       # Site styling
+├── lightbox.js                      # Gallery viewer
+└── README.md                        # This file
 ```
 
 ## Local Development
@@ -58,3 +88,44 @@ reyanmakes.github.io/
 - Keep raw images below ~5 MB for faster publish times—use the provided `convert_heic.py` / `convert_cr2.py` scripts if needed.
 
 With this workflow every gallery page stays in sync with the filesystem, lightbox interactions work on desktop/mobile, and publishing new projects is just a matter of dropping photos plus a quick manifest refresh.
+
+## 📝 Complete Workflow
+
+### 1. Setup (One Time)
+
+```bash
+pip install Pillow
+```
+
+### 2. Add New Project
+
+```bash
+# Add images
+mkdir "images/My Cool Project"
+cp ~/Downloads/*.jpg "images/My Cool Project/"
+
+# Edit projects-metadata.json (optional)
+# Run build
+python3 build_site.py
+```
+
+### 3. Update Existing Project
+
+```bash
+# Add/remove images
+cp ~/more-photos/*.jpg "images/Existing Project/"
+
+# Rebuild
+python3 build_site.py
+```
+
+## 🎯 Key Files
+
+- `projects-metadata.json` - Edit project info here
+- `build_site.py` - Run this after any changes
+- `/gen/` - Auto-generated (thumbnails, manifests, index)
+- `/projects/` - Auto-generated gallery pages
+
+---
+
+**Need help?** Run `python3 build_site.py` to regenerate everything!

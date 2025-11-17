@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Journey</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #ffffff;
+      min-height: 100%;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Header Section */
+    .header {
+      text-align: center;
+      padding: 60px 20px;
+      animation: fadeInDown 1s ease-out;
+    }
+
+    .header h1 {
+      font-size: 3.5em;
+      margin: 0 0 10px 0;
+      font-weight: 800;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .header p {
+      font-size: 1.3em;
+      opacity: 0.95;
+      margin: 0;
+    }
+
+    /* Journey Timeline */
+    .journey-section {
+      padding: 40px 20px;
+    }
+
+    .journey-title {
+      text-align: center;
+      font-size: 2.5em;
+      margin-bottom: 60px;
+      font-weight: 700;
+    }
+
+    .timeline {
+      position: relative;
+      padding: 20px 0;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: rgba(255,255,255,0.3);
+      transform: translateX(-50%);
+    }
+
+    .milestone {
+      position: relative;
+      margin-bottom: 60px;
+      opacity: 0;
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    .milestone:nth-child(1) { animation-delay: 0.2s; }
+    .milestone:nth-child(2) { animation-delay: 0.4s; }
+    .milestone:nth-child(3) { animation-delay: 0.6s; }
+    .milestone:nth-child(4) { animation-delay: 0.8s; }
+
+    .milestone-content {
+      width: 45%;
+      padding: 25px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .milestone-content:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+    }
+
+    .milestone:nth-child(odd) .milestone-content {
+      margin-left: 0;
+      margin-right: auto;
+    }
+
+    .milestone:nth-child(even) .milestone-content {
+      margin-left: auto;
+      margin-right: 0;
+    }
+
+    .milestone-dot {
+      position: absolute;
+      left: 50%;
+      top: 30px;
+      width: 20px;
+      height: 20px;
+      background: #ffffff;
+      border-radius: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 0 0 8px rgba(255,255,255,0.2);
+      z-index: 1;
+    }
+
+    .milestone-year {
+      position: absolute;
+      left: 50%;
+      top: 60px;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,0.25);
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.9em;
+      white-space: nowrap;
+    }
+
+    .milestone h3 {
+      margin: 0 0 10px 0;
+      font-size: 1.5em;
+      font-weight: 700;
+    }
+
+    .milestone p {
+      margin: 0;
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+
+    /* Contact Section */
+    .contact-section {
+      text-align: center;
+      padding: 60px 20px;
+      margin-top: 40px;
+    }
+
+    .contact-section h2 {
+      font-size: 2.5em;
+      margin: 0 0 15px 0;
+      font-weight: 700;
+    }
+
+    .contact-section p {
+      font-size: 1.2em;
+      opacity: 0.9;
+      margin: 0 0 30px 0;
+    }
+
+    .contact-button {
+      display: inline-block;
+      padding: 15px 40px;
+      background: #ffffff;
+      color: #667eea;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 1.1em;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .contact-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 25px rgba(0,0,0,0.3);
+    }
+
+    /* Animations */
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 2.5em;
+      }
+
+      .header p {
+        font-size: 1.1em;
+      }
+
+      .journey-title {
+        font-size: 2em;
+      }
+
+      .timeline::before {
+        left: 30px;
+      }
+
+      .milestone-content {
+        width: calc(100% - 80px);
+        margin-left: 80px !important;
+        margin-right: 0 !important;
+      }
+
+      .milestone-dot {
+        left: 30px;
+      }
+
+      .milestone-year {
+        left: 30px;
+        font-size: 0.8em;
+      }
+
+      .milestone h3 {
+        font-size: 1.3em;
+      }
+
+      .contact-section h2 {
+        font-size: 2em;
+      }
+
+      .contact-section p {
+        font-size: 1em;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header {
+        padding: 40px 20px;
+      }
+
+      .header h1 {
+        font-size: 2em;
+      }
+
+      .header p {
+        font-size: 1em;
+      }
+
+      .journey-title {
+        font-size: 1.6em;
+        margin-bottom: 40px;
+      }
+
+      .milestone-content {
+        width: calc(100% - 60px);
+        margin-left: 60px !important;
+        padding: 20px;
+      }
+
+      .milestone-year {
+        font-size: 0.75em;
+        padding: 6px 15px;
+      }
+
+      .contact-button {
+        padding: 12px 30px;
+        font-size: 1em;
+      }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="container">
+   <header class="header">
+    <h1 id="name">Alex Morgan</h1>
+    <p id="tagline">Creative Designer &amp; Developer</p>
+   </header>
+   <section class="journey-section">
+    <h2 class="journey-title">My Journey</h2>
+    <div class="timeline">
+     <div class="milestone">
+      <div class="milestone-dot"></div>
+      <div class="milestone-year" id="milestone-1-year">
+       2020
+      </div>
+      <div class="milestone-content">
+       <h3 id="milestone-1-title">Started My Journey</h3>
+       <p id="milestone-1-desc">Began exploring design and development, learning the fundamentals of creating beautiful digital experiences.</p>
+      </div>
+     </div>
+     <div class="milestone">
+      <div class="milestone-dot"></div>
+      <div class="milestone-year" id="milestone-2-year">
+       2021
+      </div>
+      <div class="milestone-content">
+       <h3 id="milestone-2-title">First Major Project</h3>
+       <p id="milestone-2-desc">Launched my first professional website, combining creative design with clean, functional code.</p>
+      </div>
+     </div>
+     <div class="milestone">
+      <div class="milestone-dot"></div>
+      <div class="milestone-year" id="milestone-3-year">
+       2022
+      </div>
+      <div class="milestone-content">
+       <h3 id="milestone-3-title">Expanded Skills</h3>
+       <p id="milestone-3-desc">Mastered responsive design and modern frameworks, creating seamless experiences across all devices.</p>
+      </div>
+     </div>
+     <div class="milestone">
+      <div class="milestone-dot"></div>
+      <div class="milestone-year" id="milestone-4-year">
+       2024
+      </div>
+      <div class="milestone-content">
+       <h3 id="milestone-4-title">Leading Projects</h3>
+       <p id="milestone-4-desc">Now leading innovative design projects and helping brands create memorable digital experiences.</p>
+      </div>
+     </div>
+    </div>
+   </section>
+   <section class="contact-section">
+    <h2 id="contact-heading">Let's Connect</h2>
+    <p id="contact-text">Ready to create something amazing together?</p><a href="#" class="contact-button" onclick="event.preventDefault(); alert('Contact form would open here');">Get In Touch</a>
+   </section>
+  </div>
+  <script>
+    const defaultConfig = {
+      background_gradient_start: "#667eea",
+      background_gradient_end: "#764ba2",
+      text_color: "#ffffff",
+      card_background: "rgba(255,255,255,0.15)",
+      button_background: "#ffffff",
+      button_text_color: "#667eea",
+      font_family: "Inter",
+      font_size: 16,
+      name: "Alex Morgan",
+      tagline: "Creative Designer & Developer",
+      milestone_1_year: "2020",
+      milestone_1_title: "Started My Journey",
+      milestone_1_desc: "Began exploring design and development, learning the fundamentals of creating beautiful digital experiences.",
+      milestone_2_year: "2021",
+      milestone_2_title: "First Major Project",
+      milestone_2_desc: "Launched my first professional website, combining creative design with clean, functional code.",
+      milestone_3_year: "2022",
+      milestone_3_title: "Expanded Skills",
+      milestone_3_desc: "Mastered responsive design and modern frameworks, creating seamless experiences across all devices.",
+      milestone_4_year: "2024",
+      milestone_4_title: "Leading Projects",
+      milestone_4_desc: "Now leading innovative design projects and helping brands create memorable digital experiences.",
+      contact_heading: "Let's Connect",
+      contact_text: "Ready to create something amazing together?"
+    };
+
+    async function onConfigChange(config) {
+      const customFont = config.font_family || defaultConfig.font_family;
+      const baseFontSize = config.font_size || defaultConfig.font_size;
+      const baseFontStack = '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+
+      // Apply colors
+      document.body.style.background = `linear-gradient(135deg, ${config.background_gradient_start || defaultConfig.background_gradient_start} 0%, ${config.background_gradient_end || defaultConfig.background_gradient_end} 100%)`;
+      document.body.style.color = config.text_color || defaultConfig.text_color;
+
+      const milestoneContents = document.querySelectorAll('.milestone-content');
+      milestoneContents.forEach(content => {
+        content.style.background = config.card_background || defaultConfig.card_background;
+      });
+
+      const contactButton = document.querySelector('.contact-button');
+      contactButton.style.background = config.button_background || defaultConfig.button_background;
+      contactButton.style.color = config.button_text_color || defaultConfig.button_text_color;
+
+      // Apply fonts
+      document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
+
+      // Apply font sizes
+      document.querySelector('.header h1').style.fontSize = `${baseFontSize * 2.2}px`;
+      document.querySelector('.header p').style.fontSize = `${baseFontSize * 1.1}px`;
+      document.querySelector('.journey-title').style.fontSize = `${baseFontSize * 1.8}px`;
+      document.querySelectorAll('.milestone h3').forEach(h3 => {
+        h3.style.fontSize = `${baseFontSize * 1.3}px`;
+      });
+      document.querySelectorAll('.milestone p').forEach(p => {
+        p.style.fontSize = `${baseFontSize}px`;
+      });
+      document.querySelector('.contact-section h2').style.fontSize = `${baseFontSize * 1.8}px`;
+      document.querySelector('.contact-section p').style.fontSize = `${baseFontSize * 1.1}px`;
+
+      // Update text content
+      document.getElementById('name').textContent = config.name || defaultConfig.name;
+      document.getElementById('tagline').textContent = config.tagline || defaultConfig.tagline;
+      
+      document.getElementById('milestone-1-year').textContent = config.milestone_1_year || defaultConfig.milestone_1_year;
+      document.getElementById('milestone-1-title').textContent = config.milestone_1_title || defaultConfig.milestone_1_title;
+      document.getElementById('milestone-1-desc').textContent = config.milestone_1_desc || defaultConfig.milestone_1_desc;
+      
+      document.getElementById('milestone-2-year').textContent = config.milestone_2_year || defaultConfig.milestone_2_year;
+      document.getElementById('milestone-2-title').textContent = config.milestone_2_title || defaultConfig.milestone_2_title;
+      document.getElementById('milestone-2-desc').textContent = config.milestone_2_desc || defaultConfig.milestone_2_desc;
+      
+      document.getElementById('milestone-3-year').textContent = config.milestone_3_year || defaultConfig.milestone_3_year;
+      document.getElementById('milestone-3-title').textContent = config.milestone_3_title || defaultConfig.milestone_3_title;
+      document.getElementById('milestone-3-desc').textContent = config.milestone_3_desc || defaultConfig.milestone_3_desc;
+      
+      document.getElementById('milestone-4-year').textContent = config.milestone_4_year || defaultConfig.milestone_4_year;
+      document.getElementById('milestone-4-title').textContent = config.milestone_4_title || defaultConfig.milestone_4_title;
+      document.getElementById('milestone-4-desc').textContent = config.milestone_4_desc || defaultConfig.milestone_4_desc;
+      
+      document.getElementById('contact-heading').textContent = config.contact_heading || defaultConfig.contact_heading;
+      document.getElementById('contact-text').textContent = config.contact_text || defaultConfig.contact_text;
+    }
+
+    function mapToCapabilities(config) {
+      return {
+        recolorables: [
+          {
+            get: () => config.background_gradient_start || defaultConfig.background_gradient_start,
+            set: (value) => {
+              config.background_gradient_start = value;
+              window.elementSdk.setConfig({ background_gradient_start: value });
+            }
+          },
+          {
+            get: () => config.background_gradient_end || defaultConfig.background_gradient_end,
+            set: (value) => {
+              config.background_gradient_end = value;
+              window.elementSdk.setConfig({ background_gradient_end: value });
+            }
+          },
+          {
+            get: () => config.text_color || defaultConfig.text_color,
+            set: (value) => {
+              config.text_color = value;
+              window.elementSdk.setConfig({ text_color: value });
+            }
+          },
+          {
+            get: () => config.button_background || defaultConfig.button_background,
+            set: (value) => {
+              config.button_background = value;
+              window.elementSdk.setConfig({ button_background: value });
+            }
+          },
+          {
+            get: () => config.button_text_color || defaultConfig.button_text_color,
+            set: (value) => {
+              config.button_text_color = value;
+              window.elementSdk.setConfig({ button_text_color: value });
+            }
+          }
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => config.font_family || defaultConfig.font_family,
+          set: (value) => {
+            config.font_family = value;
+            window.elementSdk.setConfig({ font_family: value });
+          }
+        },
+        fontSizeable: {
+          get: () => config.font_size || defaultConfig.font_size,
+          set: (value) => {
+            config.font_size = value;
+            window.elementSdk.setConfig({ font_size: value });
+          }
+        }
+      };
+    }
+
+    function mapToEditPanelValues(config) {
+      return new Map([
+        ["name", config.name || defaultConfig.name],
+        ["tagline", config.tagline || defaultConfig.tagline],
+        ["milestone_1_year", config.milestone_1_year || defaultConfig.milestone_1_year],
+        ["milestone_1_title", config.milestone_1_title || defaultConfig.milestone_1_title],
+        ["milestone_1_desc", config.milestone_1_desc || defaultConfig.milestone_1_desc],
+        ["milestone_2_year", config.milestone_2_year || defaultConfig.milestone_2_year],
+        ["milestone_2_title", config.milestone_2_title || defaultConfig.milestone_2_title],
+        ["milestone_2_desc", config.milestone_2_desc || defaultConfig.milestone_2_desc],
+        ["milestone_3_year", config.milestone_3_year || defaultConfig.milestone_3_year],
+        ["milestone_3_title", config.milestone_3_title || defaultConfig.milestone_3_title],
+        ["milestone_3_desc", config.milestone_3_desc || defaultConfig.milestone_3_desc],
+        ["milestone_4_year", config.milestone_4_year || defaultConfig.milestone_4_year],
+        ["milestone_4_title", config.milestone_4_title || defaultConfig.milestone_4_title],
+        ["milestone_4_desc", config.milestone_4_desc || defaultConfig.milestone_4_desc],
+        ["contact_heading", config.contact_heading || defaultConfig.contact_heading],
+        ["contact_text", config.contact_text || defaultConfig.contact_text]
+      ]);
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99c232b7c6743ee0',t:'MTc2Mjc0MjU2Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
