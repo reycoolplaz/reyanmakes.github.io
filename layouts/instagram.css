@@ -1,61 +1,61 @@
-/* Instagram Layout - Square grid, minimal, image-focused, profile-style */
+/* Instagram Layout - Profile page style, square grid, minimal & clean */
 
 /* ============================================
-   HERO SECTION - Profile header style
+   HERO SECTION - Instagram Profile Header
    ============================================ */
 body.layout-instagram .hero {
     min-height: auto;
-    padding: 6rem 2rem 3rem;
+    padding: 5rem 2rem 1.5rem;
     background: var(--bg-color);
     text-align: center;
+    border-bottom: 1px solid var(--border-color, rgba(128,128,128,0.15));
 }
 
 body.layout-instagram .hero::before {
-    display: none; /* No decorative gradient */
+    display: none;
 }
 
 body.layout-instagram .hero-content {
-    max-width: 500px;
+    max-width: 400px;
 }
 
+/* Circular avatar placeholder using first letter */
 body.layout-instagram .hero-title {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     font-weight: 400;
-    margin-bottom: 0.5rem;
-    letter-spacing: -0.01em;
-}
-
-body.layout-instagram .hero-subtitle {
-    font-size: 0.95rem;
-    font-weight: 600;
-    opacity: 1;
     margin-bottom: 0.75rem;
     color: var(--text-color);
 }
 
-body.layout-instagram .hero-description {
+body.layout-instagram .hero-subtitle {
     font-size: 0.9rem;
-    opacity: 0.8;
+    font-weight: 600;
+    opacity: 1;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+body.layout-instagram .hero-description {
+    font-size: 0.875rem;
+    opacity: 0.85;
     line-height: 1.5;
-    margin-bottom: 1.25rem;
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto;
+    margin-bottom: 1rem;
 }
 
 body.layout-instagram .hero-actions {
     flex-direction: row;
     justify-content: center;
-    gap: 0.75rem;
+    gap: 0.5rem;
     margin-top: 1rem;
 }
 
 body.layout-instagram .social-pill {
-    background: transparent;
-    border: 1px solid var(--border-color, rgba(128,128,128,0.3));
+    background: var(--bg-secondary);
+    border: none;
     border-radius: 8px;
     padding: 0.5rem 1rem;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
+    font-weight: 600;
     margin-bottom: 0;
 }
 
@@ -64,7 +64,7 @@ body.layout-instagram .cta-button {
     color: white;
     border-radius: 8px;
     padding: 0.5rem 1.25rem;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 600;
 }
 
@@ -73,12 +73,11 @@ body.layout-instagram .cta-button:hover {
 }
 
 /* ============================================
-   FEATURED PROJECTS - Instagram Square Grid
+   FEATURED PROJECTS - Instagram Grid
    ============================================ */
 body.layout-instagram .featured-projects {
     padding: 0;
     background: var(--bg-color);
-    border-top: 1px solid var(--border-color, rgba(128,128,128,0.2));
 }
 
 body.layout-instagram .featured-projects .container {
@@ -88,7 +87,7 @@ body.layout-instagram .featured-projects .container {
 
 body.layout-instagram .featured-projects .section-title,
 body.layout-instagram .featured-projects .section-subtitle {
-    display: none; /* Instagram hides section titles */
+    display: none;
 }
 
 body.layout-instagram .projects-grid {
@@ -104,20 +103,6 @@ body.layout-instagram .project-card {
     overflow: hidden;
     background: var(--bg-secondary);
     box-shadow: none;
-}
-
-body.layout-instagram .project-card::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0);
-    transition: background 0.2s ease;
-    z-index: 1;
-    pointer-events: none;
-}
-
-body.layout-instagram .project-card:hover::after {
-    background: rgba(0, 0, 0, 0.35);
 }
 
 body.layout-instagram .project-card:hover {
@@ -142,6 +127,20 @@ body.layout-instagram .project-card:hover .project-image img {
     transform: none;
 }
 
+/* Hover overlay */
+body.layout-instagram .project-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0);
+    transition: background 0.15s ease;
+    z-index: 1;
+}
+
+body.layout-instagram .project-card:hover::before {
+    background: rgba(0, 0, 0, 0.3);
+}
+
 body.layout-instagram .project-content {
     position: absolute;
     inset: 0;
@@ -152,7 +151,7 @@ body.layout-instagram .project-content {
     text-align: center;
     padding: 1rem;
     opacity: 0;
-    transition: opacity 0.2s ease;
+    transition: opacity 0.15s ease;
     z-index: 2;
     background: transparent;
 }
@@ -166,11 +165,11 @@ body.layout-instagram .year-badge {
 }
 
 body.layout-instagram .project-content h3 {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
     color: white;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 
 body.layout-instagram .project-description {
@@ -183,34 +182,31 @@ body.layout-instagram .project-tags {
 
 body.layout-instagram .view-gallery-btn {
     display: inline-block;
-    margin-top: 0.5rem;
-    padding: 0.4rem 1rem;
-    border-radius: 6px;
-    font-size: 0.8rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
     background: white;
     color: #262626;
     font-weight: 600;
 }
 
 body.layout-instagram .view-gallery-btn:hover {
-    background: #f5f5f5;
+    background: #fafafa;
 }
 
 /* ============================================
-   TIMELINE - Stats/Highlights Row
+   TIMELINE - Stats Bar Style
    ============================================ */
 body.layout-instagram .timeline,
 body.layout-instagram .timeline--glow {
     background: var(--bg-color);
-    padding: 2rem 1rem;
-    border-top: 1px solid var(--border-color, rgba(128,128,128,0.2));
+    padding: 1.5rem 1rem;
+    border-top: 1px solid var(--border-color, rgba(128,128,128,0.15));
+    border-bottom: 1px solid var(--border-color, rgba(128,128,128,0.15));
 }
 
 body.layout-instagram .timeline--glow .section-title,
-body.layout-instagram .timeline--glow .section-subtitle {
-    display: none; /* Hide titles for cleaner look */
-}
-
+body.layout-instagram .timeline--glow .section-subtitle,
 body.layout-instagram .timeline .container h2,
 body.layout-instagram .timeline .container p {
     display: none;
@@ -220,14 +216,14 @@ body.layout-instagram .journey-track {
     display: flex;
     justify-content: center;
     gap: 3rem;
-    max-width: 800px;
+    max-width: 500px;
     margin: 0 auto;
     padding: 0;
     flex-wrap: wrap;
 }
 
 body.layout-instagram .journey-track::before {
-    display: none; /* Remove vertical timeline line */
+    display: none;
 }
 
 body.layout-instagram .milestone {
@@ -236,7 +232,6 @@ body.layout-instagram .milestone {
     opacity: 1;
     animation: none;
     flex: 0 0 auto;
-    min-width: 120px;
 }
 
 body.layout-instagram .milestone-year,
@@ -248,7 +243,7 @@ body.layout-instagram .milestone-card {
     background: transparent;
     border: none;
     border-radius: 0;
-    padding: 1rem;
+    padding: 0.5rem;
     box-shadow: none;
     backdrop-filter: none;
     color: var(--text-color);
@@ -260,90 +255,86 @@ body.layout-instagram .milestone-card:hover {
 }
 
 body.layout-instagram .milestone-card h3 {
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: var(--text-color);
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.15rem;
 }
 
 body.layout-instagram .milestone-card p {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--text-light);
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
+    opacity: 0.7;
+    white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100px;
 }
 
-body.layout-instagram .milestone-label {
-    display: none;
-}
-
-body.layout-instagram .milestone-pill-group {
-    display: none;
-}
-
-body.layout-instagram .milestone-pill {
-    display: none;
-}
-
+body.layout-instagram .milestone-label,
+body.layout-instagram .milestone-pill-group,
+body.layout-instagram .milestone-pill,
 body.layout-instagram .milestone-links {
-    display: none; /* Hide links for cleaner stats look */
+    display: none;
 }
 
 /* ============================================
    ABOUT SECTION - Bio style
    ============================================ */
 body.layout-instagram .about {
-    padding: 3rem 2rem;
-    background: var(--bg-secondary);
-    border-top: 1px solid var(--border-color, rgba(128,128,128,0.2));
+    padding: 2.5rem 2rem;
+    background: var(--bg-color);
+    border-bottom: 1px solid var(--border-color, rgba(128,128,128,0.15));
 }
 
 body.layout-instagram .about-content {
-    max-width: 600px;
+    max-width: 500px;
     margin: 0 auto;
     text-align: center;
 }
 
 body.layout-instagram .about .section-title {
-    font-size: 1rem;
+    font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     color: var(--text-light);
+    opacity: 0.6;
 }
 
 body.layout-instagram .about-text p {
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+    color: var(--text-color);
 }
 
 body.layout-instagram .about-text h3 {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-light);
+    opacity: 0.6;
 }
 
 body.layout-instagram .skills-grid {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 0.5rem;
-    margin-top: 1rem;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
 }
 
 body.layout-instagram .skill {
     background: transparent;
-    border: 1px solid var(--border-color, rgba(128,128,128,0.3));
-    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--border-color, rgba(128,128,128,0.25));
+    padding: 0.35rem 0.8rem;
     border-radius: 4px;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: var(--text-color);
 }
 
@@ -352,50 +343,55 @@ body.layout-instagram .skill {
    ============================================ */
 body.layout-instagram .contact {
     text-align: center;
-    padding: 3rem 2rem;
-    background: var(--bg-color);
-    border-top: 1px solid var(--border-color, rgba(128,128,128,0.2));
+    padding: 2.5rem 2rem;
+    background: var(--bg-secondary);
 }
 
 body.layout-instagram .contact .section-title {
-    font-size: 1rem;
+    font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-light);
+    opacity: 0.6;
 }
 
 body.layout-instagram .contact-description {
-    font-size: 0.9rem;
-    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+    margin-bottom: 1.25rem;
+    opacity: 0.8;
 }
 
 body.layout-instagram .contact-links {
-    gap: 0.75rem;
+    gap: 0.5rem;
 }
 
 body.layout-instagram .contact-button {
-    background: transparent;
-    border: 1px solid var(--border-color, rgba(128,128,128,0.3));
+    background: #0095f6;
+    color: white;
+    border: none;
     border-radius: 8px;
-    padding: 0.5rem 1.5rem;
-    font-size: 0.85rem;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.8rem;
     font-weight: 600;
 }
 
 body.layout-instagram .contact-button:hover {
-    background: var(--bg-secondary);
+    background: #1877f2;
 }
 
 body.layout-instagram .footer {
-    background: var(--bg-secondary);
-    padding: 1.5rem 0;
-    border-top: 1px solid var(--border-color, rgba(128,128,128,0.2));
+    background: var(--bg-color);
+    padding: 1.25rem 0;
+    border-top: 1px solid var(--border-color, rgba(128,128,128,0.15));
 }
 
 body.layout-instagram .footer p {
-    font-size: 0.75rem;
-    opacity: 0.6;
+    font-size: 0.7rem;
+    opacity: 0.5;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 /* ============================================
@@ -403,52 +399,48 @@ body.layout-instagram .footer p {
    ============================================ */
 @media (max-width: 768px) {
     body.layout-instagram .hero {
-        padding: 5rem 1.5rem 2rem;
+        padding: 4.5rem 1.5rem 1.25rem;
     }
 
     body.layout-instagram .hero-title {
-        font-size: 1.5rem;
+        font-size: 1.25rem;
     }
 
     body.layout-instagram .projects-grid {
-        grid-template-columns: repeat(3, 1fr);
         gap: 2px;
     }
 
     body.layout-instagram .project-content h3 {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
     }
 
     body.layout-instagram .view-gallery-btn {
         font-size: 0.7rem;
-        padding: 0.3rem 0.75rem;
+        padding: 0.3rem 0.7rem;
     }
 
     body.layout-instagram .journey-track {
-        gap: 1.5rem;
-    }
-
-    body.layout-instagram .milestone {
-        min-width: 80px;
+        gap: 2rem;
     }
 
     body.layout-instagram .milestone-card h3 {
-        font-size: 1.2rem;
+        font-size: 1rem;
     }
 
     body.layout-instagram .milestone-card p {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
+        max-width: 70px;
     }
 }
 
 @media (max-width: 480px) {
     body.layout-instagram .hero-description {
-        display: none;
+        font-size: 0.8rem;
     }
 
     body.layout-instagram .hero-actions {
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 0.4rem;
     }
 
     body.layout-instagram .social-pill,
@@ -457,11 +449,20 @@ body.layout-instagram .footer p {
         justify-content: center;
     }
 
-    body.layout-instagram .journey-track {
-        gap: 1rem;
+    body.layout-instagram .projects-grid {
+        gap: 1px;
     }
 
-    body.layout-instagram .milestone {
-        min-width: 70px;
+    body.layout-instagram .journey-track {
+        gap: 1.5rem;
+    }
+
+    body.layout-instagram .milestone-card p {
+        max-width: 60px;
+    }
+
+    body.layout-instagram .about,
+    body.layout-instagram .contact {
+        padding: 2rem 1.5rem;
     }
 }
