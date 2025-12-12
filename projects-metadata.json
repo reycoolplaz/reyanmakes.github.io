@@ -1,6 +1,7 @@
 {
   "$schema": "Project metadata for Reyan Makes portfolio site",
   "$comment": "Edit this file to update project titles, descriptions, tags, and years. The build script reads from here.",
+  "featuredOrder": ["makers-stuff-go-cart", "makers-stuff-furniture-bed", "photograph"],
   "projects": {
     "makers-stuff-go-cart": {
       "title": "Go-Kart Build",

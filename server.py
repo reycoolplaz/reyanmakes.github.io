@@ -298,6 +298,51 @@ def upload_images():
     })
 
 
+@app.route('/api/delete-image', methods=['POST'])
+def delete_image():
+    """Delete an image from a project folder"""
+    data = request.get_json()
+    password = data.get('password', '')
+
+    if password != ADMIN_PASSWORD:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    project_path = data.get('project_path')
+    image_name = data.get('image_name')
+
+    if not project_path or not image_name:
+        return jsonify({'error': 'Missing project path or image name'}), 400
+
+    # Sanitize inputs to prevent path traversal
+    if '..' in project_path or '..' in image_name:
+        return jsonify({'error': 'Invalid path'}), 400
+
+    # Build paths
+    image_path = BASE_DIR / 'images' / project_path / image_name
+
+    # Ensure the path is within images directory
+    if not str(image_path.resolve()).startswith(str((BASE_DIR / 'images').resolve())):
+        return jsonify({'error': 'Invalid image path'}), 400
+
+    if not image_path.exists():
+        return jsonify({'error': 'Image not found'}), 404
+
+    try:
+        # Delete the main image
+        image_path.unlink()
+
+        # Delete thumbnail if it exists
+        thumb_name = Path(image_name).stem + '.jpg'
+        thumb_path = BASE_DIR / 'gen' / 'thumbnails' / project_path / thumb_name
+        if thumb_path.exists():
+            thumb_path.unlink()
+
+        return jsonify({'message': 'Image deleted successfully'})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
 if __name__ == '__main__':
     print("🚀 Starting development server...")
     print("📝 Main site: http://localhost:5000")

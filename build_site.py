@@ -501,18 +501,26 @@ def update_index_featured(discovered_folders, metadata_config):
 
     # Get featured projects from metadata
     projects_meta = metadata_config.get("projects", {})
+    featured_order = metadata_config.get("featuredOrder", [])
     featured_projects = []
 
-    for slug, meta in projects_meta.items():
-        if meta.get('featured', False) and slug in discovered_folders:
-            featured_projects.append((slug, discovered_folders[slug], meta))
+    # Use featuredOrder if available, otherwise fall back to featured flag
+    if featured_order:
+        for slug in featured_order:
+            if slug in projects_meta and slug in discovered_folders:
+                meta = projects_meta[slug]
+                featured_projects.append((slug, discovered_folders[slug], meta))
+    else:
+        # Fallback: use featured flag
+        for slug, meta in projects_meta.items():
+            if meta.get('featured', False) and slug in discovered_folders:
+                featured_projects.append((slug, discovered_folders[slug], meta))
+        # Sort by year (newest first)
+        featured_projects.sort(key=lambda x: x[2].get('year', '0'), reverse=True)
 
     if not featured_projects:
         print("  ⚠️  No featured projects found in metadata")
         return
-
-    # Sort by year (newest first)
-    featured_projects.sort(key=lambda x: x[2].get('year', '0'), reverse=True)
 
     print(f"  Found {len(featured_projects)} featured projects:")
     for slug, _, meta in featured_projects:

@@ -1,7 +1,7 @@
 {
-  "generated": "2025-12-11T23:18:34.689105",
+  "generated": "2025-12-11T23:52:17.123900",
   "total_projects": 11,
-  "total_images": 78,
+  "total_images": 77,
   "projects": {
     "makers-stuff-clay": {
       "path": "Makers stuff/Clay",
@@ -16,7 +16,7 @@
     },
     "makers-stuff-furniture-bed": {
       "path": "Makers stuff/Furniture/Bed",
-      "images": 15,
+      "images": 14,
       "title": "Custom Bed Frame",
       "year": "2023",
       "tags": "Woodworking \u2022 Furniture \u2022 Design",

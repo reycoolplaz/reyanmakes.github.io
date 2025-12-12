@@ -278,6 +278,140 @@
             font-weight: 600;
         }
 
+        /* Featured Order Panel */
+        .featured-order-panel {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+
+        .featured-order-header {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #f59e0b20, #f59e0b05);
+        }
+
+        .featured-order-header span:first-child {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .featured-order-list {
+            padding: 0.5rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .featured-order-item {
+            padding: 0.75rem 1rem;
+            margin: 0.25rem 0;
+            border-radius: 8px;
+            cursor: grab;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: #fef3c7;
+            border: 1px solid #fcd34d;
+        }
+
+        .featured-order-item:hover {
+            background: #fde68a;
+        }
+
+        .featured-order-item.dragging {
+            opacity: 0.5;
+            background: #fcd34d;
+        }
+
+        .featured-order-item .drag-handle {
+            color: var(--text-light);
+            cursor: grab;
+        }
+
+        .featured-order-item .order-num {
+            background: var(--warning);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .featured-order-item .order-title {
+            flex: 1;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .featured-order-item .remove-btn {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 4px;
+            opacity: 0.6;
+        }
+
+        .featured-order-item .remove-btn:hover {
+            opacity: 1;
+            background: #fecaca;
+        }
+
+        .featured-order-empty {
+            padding: 2rem 1rem;
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .add-featured-btn {
+            margin: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--warning);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: calc(100% - 1rem);
+        }
+
+        .add-featured-btn:hover {
+            background: #d97706;
+        }
+
+        /* Add to featured dropdown */
+        .add-featured-dropdown {
+            position: relative;
+            margin: 0.5rem;
+        }
+
+        .add-featured-dropdown select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            background: white;
+        }
+
         /* Content Area */
         .content-area {
             flex: 1;
@@ -398,6 +532,34 @@
             justify-content: center;
             font-size: 0.75rem;
             font-weight: 600;
+        }
+
+        .gallery-item-delete {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: var(--danger);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s, transform 0.2s;
+            z-index: 10;
+        }
+
+        .gallery-item:hover .gallery-item-delete {
+            opacity: 1;
+        }
+
+        .gallery-item-delete:hover {
+            transform: scale(1.1);
+            background: #dc2626;
         }
 
         /* Upload Drop Zone */
@@ -673,6 +835,27 @@
                 </div>
                 <div id="projectList"></div>
             </div>
+
+            <!-- Featured Order Panel -->
+            <div class="featured-order-panel">
+                <div class="featured-order-header">
+                    <span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                        </svg>
+                        Featured Order
+                    </span>
+                    <span id="featuredCount">0</span>
+                </div>
+                <div class="featured-order-list" id="featuredOrderList">
+                    <div class="featured-order-empty">No featured projects</div>
+                </div>
+                <div class="add-featured-dropdown">
+                    <select id="addFeaturedSelect" onchange="addToFeatured(this.value)">
+                        <option value="">+ Add to Featured...</option>
+                    </select>
+                </div>
+            </div>
         </aside>
 
         <!-- Content Area -->
@@ -857,6 +1040,7 @@
                 }
 
                 renderProjectList();
+                renderFeaturedOrder();
                 startStatusPolling();
                 showToast('Portfolio loaded successfully', 'success');
             } catch (error) {
@@ -894,6 +1078,171 @@
                     </div>
                 `;
             }).join('');
+        }
+
+        // Featured Order Functions
+        function renderFeaturedOrder() {
+            const list = document.getElementById('featuredOrderList');
+            const select = document.getElementById('addFeaturedSelect');
+
+            // Get featured order from metadata
+            const featuredOrder = metadata.featuredOrder || [];
+
+            document.getElementById('featuredCount').textContent = featuredOrder.length;
+
+            if (featuredOrder.length === 0) {
+                list.innerHTML = '<div class="featured-order-empty">No featured projects<br><small>Use the dropdown below to add projects</small></div>';
+            } else {
+                list.innerHTML = featuredOrder.map((slug, idx) => {
+                    const project = siteIndex.projects[slug];
+                    const meta = metadata.projects[slug];
+                    const title = meta?.title || project?.title || slug;
+                    return `
+                        <div class="featured-order-item" draggable="true" data-slug="${slug}">
+                            <span class="drag-handle">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                    <circle cx="9" cy="6" r="2"/><circle cx="15" cy="6" r="2"/>
+                                    <circle cx="9" cy="12" r="2"/><circle cx="15" cy="12" r="2"/>
+                                    <circle cx="9" cy="18" r="2"/><circle cx="15" cy="18" r="2"/>
+                                </svg>
+                            </span>
+                            <span class="order-num">${idx + 1}</span>
+                            <span class="order-title">${title}</span>
+                            <button class="remove-btn" onclick="removeFromFeatured('${slug}')" title="Remove from featured">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                                </svg>
+                            </button>
+                        </div>
+                    `;
+                }).join('');
+
+                // Initialize drag and drop for featured items
+                initFeaturedDragDrop();
+            }
+
+            // Populate dropdown with non-featured projects
+            const availableProjects = Object.entries(siteIndex.projects)
+                .filter(([slug]) => !featuredOrder.includes(slug))
+                .sort((a, b) => a[1].title.localeCompare(b[1].title));
+
+            select.innerHTML = '<option value="">+ Add to Featured...</option>' +
+                availableProjects.map(([slug, project]) => {
+                    const meta = metadata.projects[slug];
+                    const title = meta?.title || project.title;
+                    return `<option value="${slug}">${title}</option>`;
+                }).join('');
+        }
+
+        function initFeaturedDragDrop() {
+            const items = document.querySelectorAll('.featured-order-item');
+            let draggedItem = null;
+
+            items.forEach(item => {
+                item.addEventListener('dragstart', (e) => {
+                    draggedItem = item;
+                    item.classList.add('dragging');
+                    e.dataTransfer.effectAllowed = 'move';
+                });
+
+                item.addEventListener('dragend', () => {
+                    item.classList.remove('dragging');
+                    draggedItem = null;
+                    updateFeaturedOrderNumbers();
+                });
+
+                item.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+
+                    if (draggedItem && draggedItem !== item) {
+                        const list = document.getElementById('featuredOrderList');
+                        const allItems = [...list.querySelectorAll('.featured-order-item')];
+                        const draggedIdx = allItems.indexOf(draggedItem);
+                        const targetIdx = allItems.indexOf(item);
+
+                        if (draggedIdx < targetIdx) {
+                            item.parentNode.insertBefore(draggedItem, item.nextSibling);
+                        } else {
+                            item.parentNode.insertBefore(draggedItem, item);
+                        }
+                    }
+                });
+
+                item.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    saveFeaturedOrder();
+                });
+            });
+        }
+
+        function updateFeaturedOrderNumbers() {
+            const items = document.querySelectorAll('.featured-order-item');
+            items.forEach((item, idx) => {
+                const numEl = item.querySelector('.order-num');
+                if (numEl) numEl.textContent = idx + 1;
+            });
+        }
+
+        function saveFeaturedOrder() {
+            const items = document.querySelectorAll('.featured-order-item');
+            const newOrder = [...items].map(item => item.dataset.slug);
+
+            metadata.featuredOrder = newOrder;
+
+            // Update featured flag in each project
+            Object.keys(metadata.projects).forEach(slug => {
+                metadata.projects[slug].featured = newOrder.includes(slug);
+            });
+
+            document.getElementById('featuredCount').textContent = newOrder.length;
+            hasChanges = true;
+            updateChangeIndicator();
+            renderProjectList(); // Update badges in project list
+        }
+
+        function addToFeatured(slug) {
+            if (!slug) return;
+
+            if (!metadata.featuredOrder) {
+                metadata.featuredOrder = [];
+            }
+
+            if (!metadata.featuredOrder.includes(slug)) {
+                metadata.featuredOrder.push(slug);
+
+                // Mark as featured in project metadata
+                if (!metadata.projects[slug]) {
+                    metadata.projects[slug] = {};
+                }
+                metadata.projects[slug].featured = true;
+
+                hasChanges = true;
+                updateChangeIndicator();
+                renderFeaturedOrder();
+                renderProjectList();
+                showToast('Added to featured!', 'success');
+            }
+
+            // Reset dropdown
+            document.getElementById('addFeaturedSelect').value = '';
+        }
+
+        function removeFromFeatured(slug) {
+            if (!metadata.featuredOrder) return;
+
+            metadata.featuredOrder = metadata.featuredOrder.filter(s => s !== slug);
+
+            // Remove featured flag
+            if (metadata.projects[slug]) {
+                metadata.projects[slug].featured = false;
+            }
+
+            hasChanges = true;
+            updateChangeIndicator();
+            renderFeaturedOrder();
+            renderProjectList();
+            showToast('Removed from featured', 'info');
         }
 
         async function selectProject(slug) {
@@ -969,6 +1318,11 @@
                     return `
                         <div class="gallery-item" draggable="true" data-image="${img}">
                             <span class="gallery-item-index">${idx + 1}</span>
+                            <button class="gallery-item-delete" onclick="deleteImage('${img}')" title="Delete image">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                                </svg>
+                            </button>
                             <img src="${thumbPath}/${thumbName}"
                                  onerror="this.src='${imagePath}/${img}'"
                                  alt="${img}">
@@ -1298,6 +1652,55 @@
                 }, 1000);
                 // Clear file input
                 document.getElementById('fileInput').value = '';
+            }
+        }
+
+        async function deleteImage(imageName) {
+            if (!currentProject) {
+                showToast('No project selected', 'error');
+                return;
+            }
+
+            // Confirm deletion
+            if (!confirm(`Delete "${imageName}"?\n\nThis will permanently remove the image and its thumbnail.`)) {
+                return;
+            }
+
+            const project = siteIndex.projects[currentProject];
+            if (!project) {
+                showToast('Project not found', 'error');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/delete-image', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        password,
+                        project_path: project.path,
+                        image_name: imageName
+                    })
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    throw new Error(data.error || 'Delete failed');
+                }
+
+                showToast('Image deleted!', 'success');
+
+                // Remove from image order if present
+                if (imageOrder[currentProject]) {
+                    imageOrder[currentProject] = imageOrder[currentProject].filter(img => img !== imageName);
+                }
+
+                // Reload the gallery
+                await loadGalleryImages(currentProject);
+
+            } catch (error) {
+                showToast(error.message, 'error');
             }
         }
     </script>
