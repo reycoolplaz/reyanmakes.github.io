@@ -2,6 +2,7 @@
   "project": "NJIT-HCAD program prototype",
   "slug": "njit-hcad-program-prototype",
   "count": 12,
+  "total_count": 12,
   "images": [
     "cave_shed_all_view_slide_template.jpg",
     "cave_shed_blueprint1.jpg",
@@ -16,5 +17,5 @@
     "cave_shed_slide_with_blueprints.png",
     "cave_shed_up_view.jpg"
   ],
-  "generated": "2025-12-12T02:57:54.982829"
+  "generated": "2025-12-12T03:28:46.942044"
 }

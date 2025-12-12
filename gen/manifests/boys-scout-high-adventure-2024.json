@@ -2,6 +2,7 @@
   "project": "boys-scout-high-adventure-2024",
   "slug": "boys-scout-high-adventure-2024",
   "count": 95,
+  "total_count": 95,
   "images": [
     "0241ae0a-0f0d-4844-8cb3-9c558cd2ae46.jpg",
     "0241ae0a-0f0d-4844-8cb3-9c558cd2ae46_1.jpg",
@@ -99,5 +100,5 @@
     "ef390c0f-1fbf-4156-91a3-cf32e558aeaa_1.jpg",
     "ef390c0f-1fbf-4156-91a3-cf32e558aeaa_2.jpg"
   ],
-  "generated": "2025-12-12T02:57:54.983267"
+  "generated": "2025-12-12T03:28:46.942775"
 }

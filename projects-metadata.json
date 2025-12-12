@@ -100,6 +100,10 @@
             {
               "label": "Woodworking",
               "project": "makers-stuff-wood-work"
+            },
+            {
+              "label": "Boy Scouts - Whitewater Rafting",
+              "project": "boy-scouts"
             }
           ]
         },
@@ -295,6 +299,14 @@
       "year": "2021",
       "tags": "Project \u2022 Build \u2022 Maker",
       "description": "Boys Scout - High Adventure 2024 project documentation.",
+      "featured": false,
+      "category": "community"
+    },
+    "boy-scouts": {
+      "title": "Boy Scouts - Biking Trip",
+      "year": "2024",
+      "tags": "Project \u2022 Build \u2022 Maker",
+      "description": "Boy Scouts project documentation.",
       "featured": false,
       "category": "community"
     }

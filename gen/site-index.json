@@ -1,7 +1,7 @@
 {
-  "generated": "2025-12-12T02:57:54.987804",
-  "total_projects": 13,
-  "total_images": 221,
+  "generated": "2025-12-12T03:28:46.949100",
+  "total_projects": 14,
+  "total_images": 238,
   "projects": {
     "makers-stuff-clay": {
       "path": "Makers stuff/Clay",
@@ -90,6 +90,17 @@
       "featured": false,
       "page": "projects/njit-hcad-program-prototype.html",
       "manifest": "gen/manifests/njit-hcad-program-prototype.json"
+    },
+    "boy-scouts": {
+      "path": "boy-scouts",
+      "images": 17,
+      "title": "Boy Scouts - Biking Trip",
+      "year": "2024",
+      "tags": "Project \u2022 Build \u2022 Maker",
+      "category": "community",
+      "featured": false,
+      "page": "projects/boy-scouts.html",
+      "manifest": "gen/manifests/boy-scouts.json"
     },
     "boys-scout-high-adventure-2024": {
       "path": "boys-scout-high-adventure-2024",
