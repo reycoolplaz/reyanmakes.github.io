@@ -34,6 +34,7 @@ MANIFESTS_BASE = GEN_BASE / 'manifests'
 PROJECTS_BASE = BASE_DIR / 'projects'
 METADATA_FILE = BASE_DIR / 'projects-metadata.json'
 IMAGE_ORDER_FILE = BASE_DIR / 'image-orders.json'
+HIDDEN_IMAGES_FILE = BASE_DIR / 'hidden-images.json'
 
 THUMBNAIL_SIZE = (200, 200)
 THUMBNAIL_QUALITY = 75
@@ -66,6 +67,15 @@ def load_image_orders():
         return {}
 
     with open(IMAGE_ORDER_FILE, 'r') as f:
+        return json.load(f)
+
+
+def load_hidden_images():
+    """Load hidden images from JSON file"""
+    if not HIDDEN_IMAGES_FILE.exists():
+        return {}
+
+    with open(HIDDEN_IMAGES_FILE, 'r') as f:
         return json.load(f)
 
 # ============================================================================
@@ -191,9 +201,14 @@ def generate_all_thumbnails(discovered_folders):
 # STEP 3: GENERATE MANIFESTS
 # ============================================================================
 
-def generate_manifest(slug, info, image_orders=None):
+def generate_manifest(slug, info, image_orders=None, hidden_images=None):
     """Generate JSON manifest for a project"""
-    images = info['images']
+    images = info['images'].copy()
+
+    # Filter out hidden images
+    if hidden_images and slug in hidden_images:
+        hidden_list = hidden_images[slug]
+        images = [img for img in images if img not in hidden_list]
 
     # Apply custom order if exists
     if image_orders and slug in image_orders:
@@ -202,13 +217,14 @@ def generate_manifest(slug, info, image_orders=None):
         def sort_key(img):
             if img in custom_order:
                 return custom_order.index(img)
-            return len(custom_order) + images.index(img)
+            return len(custom_order) + info['images'].index(img)
         images = sorted(images, key=sort_key)
 
     manifest = {
         "project": str(info['rel_path']),
         "slug": slug,
-        "count": info['image_count'],
+        "count": len(images),  # Count visible images only
+        "total_count": info['image_count'],  # Total including hidden
         "images": images,
         "generated": datetime.now().isoformat()
     }
@@ -222,16 +238,18 @@ def generate_manifest(slug, info, image_orders=None):
 
     return manifest_file
 
-def generate_all_manifests(discovered_folders, image_orders=None):
+def generate_all_manifests(discovered_folders, image_orders=None, hidden_images=None):
     """Generate manifest files for all projects"""
     print("📋 Generating manifests in /gen/manifests/...\n")
 
     for slug, info in discovered_folders.items():
-        manifest_file = generate_manifest(slug, info, image_orders)
+        manifest_file = generate_manifest(slug, info, image_orders, hidden_images)
         rel_manifest = manifest_file.relative_to(BASE_DIR)
         has_custom_order = image_orders and slug in image_orders
+        has_hidden = hidden_images and slug in hidden_images
         order_indicator = " (custom order)" if has_custom_order else ""
-        print(f"  ✓ {slug} → {rel_manifest}{order_indicator}")
+        hidden_indicator = f" ({len(hidden_images[slug])} hidden)" if has_hidden else ""
+        print(f"  ✓ {slug} → {rel_manifest}{order_indicator}{hidden_indicator}")
 
     print(f"\n  📊 Generated {len(discovered_folders)} manifests\n")
 
@@ -905,6 +923,12 @@ def main():
         if image_orders:
             print(f"  ✓ Loaded custom image orders for {len(image_orders)} projects\n")
 
+        # Load hidden images
+        hidden_images = load_hidden_images()
+        if hidden_images:
+            total_hidden = sum(len(v) for v in hidden_images.values())
+            print(f"  ✓ Loaded {total_hidden} hidden images across {len(hidden_images)} projects\n")
+
         # Step 1: Discover all image folders
         discovered = discover_image_folders(IMAGES_BASE)
 
@@ -915,8 +939,8 @@ def main():
         # Step 2: Generate thumbnails
         generate_all_thumbnails(discovered)
 
-        # Step 3: Generate manifests (with custom image orders)
-        generate_all_manifests(discovered, image_orders)
+        # Step 3: Generate manifests (with custom image orders and hidden images)
+        generate_all_manifests(discovered, image_orders, hidden_images)
 
         # Step 4: Generate project pages
         generate_all_project_pages(discovered, metadata_config)

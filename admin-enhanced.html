@@ -655,6 +655,58 @@
             background: #dc2626;
         }
 
+        .gallery-item-hide {
+            position: absolute;
+            top: 0.5rem;
+            right: 2rem;
+            background: var(--warning);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s, transform 0.2s;
+            z-index: 10;
+        }
+
+        .gallery-item:hover .gallery-item-hide {
+            opacity: 1;
+        }
+
+        .gallery-item-hide:hover {
+            transform: scale(1.1);
+            background: #d97706;
+        }
+
+        .gallery-item.hidden-image {
+            opacity: 0.4;
+        }
+
+        .gallery-item.hidden-image::after {
+            content: 'HIDDEN';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            z-index: 5;
+        }
+
+        .gallery-item.hidden-image .gallery-item-hide {
+            opacity: 1;
+            background: var(--success);
+        }
+
         /* Upload Drop Zone */
         .upload-zone {
             border: 2px dashed var(--border);
@@ -1867,6 +1919,7 @@
         let currentProject = null;
         let hasChanges = false;
         let imageOrder = {}; // Track custom image order per project
+        let hiddenImages = {}; // Track hidden images per project
         let currentTemplate = 'default';
         let currentLayout = 'modern';
 
@@ -1940,6 +1993,15 @@
                 const savedOrders = localStorage.getItem('imageOrders');
                 if (savedOrders) {
                     imageOrder = JSON.parse(savedOrders);
+                }
+
+                // Load hidden images from server
+                try {
+                    const hiddenRes = await fetch('/api/hidden-images');
+                    hiddenImages = await hiddenRes.json();
+                } catch (e) {
+                    console.log('No hidden images data');
+                    hiddenImages = {};
                 }
 
                 renderProjectList();
@@ -2343,7 +2405,15 @@
                 const res = await fetch(manifestPath);
                 const manifest = await res.json();
 
-                let images = manifest.images;
+                let images = manifest.images.slice(); // Copy manifest images (visible)
+
+                // Add hidden images back for admin display
+                const projectHidden = hiddenImages[slug] || [];
+                projectHidden.forEach(img => {
+                    if (!images.includes(img)) {
+                        images.push(img);
+                    }
+                });
 
                 // Apply custom order if exists
                 if (imageOrder[slug]) {
@@ -2362,9 +2432,20 @@
 
                 grid.innerHTML = images.map((img, idx) => {
                     const thumbName = img.replace(/\.(jpg|jpeg|png|JPG|JPEG|PNG)$/i, '.jpg');
+                    const isHidden = projectHidden.includes(img);
+                    const hiddenClass = isHidden ? ' hidden-image' : '';
+                    const hideIcon = isHidden
+                        ? '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>'  // eye icon (show)
+                        : '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>'; // eye-off icon (hide)
+                    const hideTitle = isHidden ? 'Show image' : 'Hide image';
                     return `
-                        <div class="gallery-item" draggable="true" data-image="${img}">
+                        <div class="gallery-item${hiddenClass}" draggable="true" data-image="${img}">
                             <span class="gallery-item-index">${idx + 1}</span>
+                            <button class="gallery-item-hide" onclick="toggleImageVisibility('${img}')" title="${hideTitle}">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    ${hideIcon}
+                                </svg>
+                            </button>
                             <button class="gallery-item-delete" onclick="deleteImage('${img}')" title="Delete image">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
@@ -2378,7 +2459,12 @@
                     `;
                 }).join('');
 
-                document.getElementById('imageCount').textContent = `${images.length} images`;
+                const visibleCount = images.length - projectHidden.length;
+                const hiddenCount = projectHidden.length;
+                const countText = hiddenCount > 0
+                    ? `${visibleCount} visible, ${hiddenCount} hidden`
+                    : `${images.length} images`;
+                document.getElementById('imageCount').textContent = countText;
 
                 // Initialize drag and drop
                 initDragDrop();
@@ -2890,6 +2976,62 @@
                 }
 
                 // Reload the gallery
+                await loadGalleryImages(currentProject);
+
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        }
+
+        async function toggleImageVisibility(imageName) {
+            if (!currentProject) {
+                showToast('Select a project first', 'error');
+                return;
+            }
+
+            // Determine current visibility state
+            const projectHidden = hiddenImages[currentProject] || [];
+            const isCurrentlyHidden = projectHidden.includes(imageName);
+            const newHiddenState = !isCurrentlyHidden;
+
+            try {
+                const res = await fetch('/api/toggle-image-visibility', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        password,
+                        project: currentProject,
+                        image: imageName,
+                        hide: newHiddenState
+                    })
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    throw new Error(data.error || 'Toggle failed');
+                }
+
+                // Update local hidden images state
+                if (newHiddenState) {
+                    if (!hiddenImages[currentProject]) {
+                        hiddenImages[currentProject] = [];
+                    }
+                    if (!hiddenImages[currentProject].includes(imageName)) {
+                        hiddenImages[currentProject].push(imageName);
+                    }
+                } else {
+                    if (hiddenImages[currentProject]) {
+                        hiddenImages[currentProject] = hiddenImages[currentProject].filter(img => img !== imageName);
+                        if (hiddenImages[currentProject].length === 0) {
+                            delete hiddenImages[currentProject];
+                        }
+                    }
+                }
+
+                showToast(newHiddenState ? 'Image hidden' : 'Image visible', 'success');
+
+                // Reload the gallery to show updated state
                 await loadGalleryImages(currentProject);
 
             } catch (error) {

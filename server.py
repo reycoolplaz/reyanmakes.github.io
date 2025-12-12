@@ -24,6 +24,7 @@ CORS(app)
 BASE_DIR = Path(__file__).parent
 METADATA_FILE = BASE_DIR / 'projects-metadata.json'
 IMAGE_ORDER_FILE = BASE_DIR / 'image-orders.json'
+HIDDEN_IMAGES_FILE = BASE_DIR / 'hidden-images.json'
 
 # Simple password protection (change this!)
 ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'reyan2025')
@@ -274,6 +275,108 @@ def get_image_orders():
             with open(IMAGE_ORDER_FILE, 'r') as f:
                 return jsonify(json.load(f))
         return jsonify({})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/hidden-images', methods=['POST'])
+def save_hidden_images():
+    """Save hidden images for a project"""
+    data = request.get_json()
+    password = data.get('password', '')
+
+    if password != ADMIN_PASSWORD:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    project = data.get('project')
+    hidden = data.get('hidden', [])
+
+    if not project:
+        return jsonify({'error': 'Missing project'}), 400
+
+    try:
+        # Load existing hidden images
+        hidden_data = {}
+        if HIDDEN_IMAGES_FILE.exists():
+            with open(HIDDEN_IMAGES_FILE, 'r') as f:
+                hidden_data = json.load(f)
+
+        # Update hidden images for this project
+        if hidden:
+            hidden_data[project] = hidden
+        elif project in hidden_data:
+            # Remove project if no hidden images
+            del hidden_data[project]
+
+        # Save
+        with open(HIDDEN_IMAGES_FILE, 'w') as f:
+            json.dump(hidden_data, f, indent=2)
+
+        return jsonify({'message': 'Hidden images saved', 'hidden': hidden})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/hidden-images', methods=['GET'])
+def get_hidden_images():
+    """Get all hidden images"""
+    try:
+        if HIDDEN_IMAGES_FILE.exists():
+            with open(HIDDEN_IMAGES_FILE, 'r') as f:
+                return jsonify(json.load(f))
+        return jsonify({})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/toggle-image-visibility', methods=['POST'])
+def toggle_image_visibility():
+    """Toggle visibility of a single image"""
+    data = request.get_json()
+    password = data.get('password', '')
+
+    if password != ADMIN_PASSWORD:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    project = data.get('project')
+    image = data.get('image')
+    hide = data.get('hide', True)
+
+    if not project or not image:
+        return jsonify({'error': 'Missing project or image'}), 400
+
+    try:
+        # Load existing hidden images
+        hidden_data = {}
+        if HIDDEN_IMAGES_FILE.exists():
+            with open(HIDDEN_IMAGES_FILE, 'r') as f:
+                hidden_data = json.load(f)
+
+        # Get or create hidden list for this project
+        hidden_list = hidden_data.get(project, [])
+
+        if hide and image not in hidden_list:
+            hidden_list.append(image)
+        elif not hide and image in hidden_list:
+            hidden_list.remove(image)
+
+        # Update or remove project entry
+        if hidden_list:
+            hidden_data[project] = hidden_list
+        elif project in hidden_data:
+            del hidden_data[project]
+
+        # Save
+        with open(HIDDEN_IMAGES_FILE, 'w') as f:
+            json.dump(hidden_data, f, indent=2)
+
+        return jsonify({
+            'message': f'Image {"hidden" if hide else "shown"}',
+            'image': image,
+            'hidden': hide
+        })
+
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
