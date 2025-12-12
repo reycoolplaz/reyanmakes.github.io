@@ -747,6 +747,113 @@
             opacity: 0.5;
         }
 
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+        }
+
+        .modal-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 450px;
+            transform: scale(0.9);
+            transition: transform 0.2s;
+        }
+
+        .modal-overlay.visible .modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+            padding: 0;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: var(--text);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-body .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .modal-body .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+        }
+
+        /* Project List Actions */
+        .project-list-actions {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-sm {
+            padding: 0.4rem 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        .btn-outline-danger {
+            background: transparent;
+            border: 1px solid var(--danger);
+            color: var(--danger);
+        }
+
+        .btn-outline-danger:hover:not(:disabled) {
+            background: var(--danger);
+            color: white;
+        }
+
         /* Responsive */
         @media (max-width: 900px) {
             .main-content {
@@ -832,6 +939,20 @@
                 <div class="project-list-header">
                     <span>Projects</span>
                     <span id="projectCount">0</span>
+                </div>
+                <div class="project-list-actions">
+                    <button class="btn btn-sm btn-primary" onclick="showNewProjectModal()" style="flex:1">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        New
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" id="deleteProjectBtn" onclick="deleteCurrentProject()" disabled style="flex:1">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14H7L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
+                        </svg>
+                        Delete
+                    </button>
                 </div>
                 <div id="projectList"></div>
             </div>
@@ -978,6 +1099,46 @@
 
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
+
+    <!-- New Project Modal -->
+    <div class="modal-overlay" id="newProjectModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Create New Project</h3>
+                <button class="modal-close" onclick="closeNewProjectModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="newProjectTitle">Project Title *</label>
+                    <input type="text" id="newProjectTitle" placeholder="e.g., My New Project">
+                </div>
+                <div class="form-group">
+                    <label for="newProjectSlug">Folder Name (slug) *</label>
+                    <input type="text" id="newProjectSlug" placeholder="e.g., my-new-project">
+                    <small style="color: var(--text-light); font-size: 0.75rem;">
+                        Letters, numbers, and hyphens only. Will be created in images/ folder.
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label for="newProjectCategory">Category</label>
+                    <select id="newProjectCategory">
+                        <option value="makers">Maker Projects</option>
+                        <option value="art">Art & Creative</option>
+                        <option value="education">School & Learning</option>
+                        <option value="community">Community & Service</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="newProjectYear">Year</label>
+                    <input type="text" id="newProjectYear" placeholder="2024" value="2024">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeNewProjectModal()">Cancel</button>
+                <button class="btn btn-success" onclick="createNewProject()">Create Project</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         // State
@@ -1262,6 +1423,7 @@
             // Update UI
             document.getElementById('emptyState').style.display = 'none';
             document.getElementById('projectEditor').style.display = 'block';
+            document.getElementById('deleteProjectBtn').disabled = false;
 
             // Fill metadata form
             document.getElementById('projectTitle').value = meta.title || project.title;
@@ -1652,6 +1814,149 @@
                 }, 1000);
                 // Clear file input
                 document.getElementById('fileInput').value = '';
+            }
+        }
+
+        // Project Management Functions
+        function showNewProjectModal() {
+            document.getElementById('newProjectModal').classList.add('visible');
+            document.getElementById('newProjectTitle').value = '';
+            document.getElementById('newProjectSlug').value = '';
+            document.getElementById('newProjectYear').value = new Date().getFullYear();
+            document.getElementById('newProjectTitle').focus();
+        }
+
+        function closeNewProjectModal() {
+            document.getElementById('newProjectModal').classList.remove('visible');
+        }
+
+        // Auto-generate slug from title
+        document.addEventListener('DOMContentLoaded', () => {
+            const titleInput = document.getElementById('newProjectTitle');
+            const slugInput = document.getElementById('newProjectSlug');
+            if (titleInput && slugInput) {
+                titleInput.addEventListener('input', () => {
+                    slugInput.value = titleInput.value
+                        .toLowerCase()
+                        .replace(/[^a-z0-9]+/g, '-')
+                        .replace(/^-|-$/g, '');
+                });
+            }
+        });
+
+        async function createNewProject() {
+            const title = document.getElementById('newProjectTitle').value.trim();
+            const slug = document.getElementById('newProjectSlug').value.trim();
+            const category = document.getElementById('newProjectCategory').value;
+            const year = document.getElementById('newProjectYear').value.trim();
+
+            if (!title) {
+                showToast('Please enter a project title', 'error');
+                return;
+            }
+
+            if (!slug) {
+                showToast('Please enter a folder name', 'error');
+                return;
+            }
+
+            // Validate slug format
+            if (!/^[a-z0-9-]+$/.test(slug)) {
+                showToast('Folder name can only contain lowercase letters, numbers, and hyphens', 'error');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/create-project', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        password,
+                        title,
+                        slug,
+                        category,
+                        year
+                    })
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    throw new Error(data.error || 'Failed to create project');
+                }
+
+                closeNewProjectModal();
+                showToast('Project created! Run Build to update site.', 'success');
+
+                // Reload data
+                const metaRes = await fetch('/projects-metadata.json');
+                metadata = await metaRes.json();
+                renderProjectList();
+                renderFeaturedOrder();
+
+            } catch (error) {
+                showToast(error.message, 'error');
+            }
+        }
+
+        async function deleteCurrentProject() {
+            if (!currentProject) {
+                showToast('No project selected', 'error');
+                return;
+            }
+
+            const project = siteIndex.projects[currentProject];
+            const title = metadata.projects[currentProject]?.title || project?.title || currentProject;
+
+            if (!confirm(`Delete "${title}"?\n\nThis will permanently delete:\n- All images in this project\n- All thumbnails\n- The project page\n\nThis cannot be undone!`)) {
+                return;
+            }
+
+            // Double confirm for safety
+            if (!confirm('Are you REALLY sure? Type "delete" in the next prompt to confirm.')) {
+                return;
+            }
+
+            const confirmText = prompt('Type "delete" to confirm:');
+            if (confirmText !== 'delete') {
+                showToast('Deletion cancelled', 'info');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/delete-project', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        password,
+                        slug: currentProject
+                    })
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    throw new Error(data.error || 'Failed to delete project');
+                }
+
+                showToast('Project deleted!', 'success');
+
+                // Clear selection
+                currentProject = null;
+                document.getElementById('emptyState').style.display = 'block';
+                document.getElementById('projectEditor').style.display = 'none';
+                document.getElementById('deleteProjectBtn').disabled = true;
+
+                // Reload data
+                const indexRes = await fetch('/gen/site-index.json');
+                siteIndex = await indexRes.json();
+                const metaRes = await fetch('/projects-metadata.json');
+                metadata = await metaRes.json();
+                renderProjectList();
+                renderFeaturedOrder();
+
+            } catch (error) {
+                showToast(error.message, 'error');
             }
         }
 

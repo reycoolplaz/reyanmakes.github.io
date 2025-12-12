@@ -8,6 +8,7 @@ from flask_cors import CORS
 import subprocess
 import os
 import json
+import shutil
 from pathlib import Path
 import threading
 import time
@@ -338,6 +339,148 @@ def delete_image():
             thumb_path.unlink()
 
         return jsonify({'message': 'Image deleted successfully'})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/create-project', methods=['POST'])
+def create_project():
+    """Create a new project folder and add to metadata"""
+    data = request.get_json()
+    password = data.get('password', '')
+
+    if password != ADMIN_PASSWORD:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    title = data.get('title', '').strip()
+    slug = data.get('slug', '').strip()
+    category = data.get('category', 'makers')
+    year = data.get('year', str(time.localtime().tm_year))
+
+    if not title or not slug:
+        return jsonify({'error': 'Title and slug are required'}), 400
+
+    # Validate slug format
+    import re
+    if not re.match(r'^[a-z0-9-]+$', slug):
+        return jsonify({'error': 'Slug can only contain lowercase letters, numbers, and hyphens'}), 400
+
+    # Check if project already exists
+    project_dir = BASE_DIR / 'images' / slug
+    if project_dir.exists():
+        return jsonify({'error': 'A project with this folder name already exists'}), 409
+
+    try:
+        # Create the project folder
+        project_dir.mkdir(parents=True, exist_ok=True)
+
+        # Add to metadata
+        with open(METADATA_FILE, 'r') as f:
+            metadata = json.load(f)
+
+        metadata['projects'][slug] = {
+            'title': title,
+            'year': year,
+            'tags': 'Project • Build • Maker',
+            'description': f'{title} project documentation.',
+            'featured': False,
+            'category': category
+        }
+
+        with open(METADATA_FILE, 'w') as f:
+            json.dump(metadata, f, indent=2)
+
+        return jsonify({
+            'message': 'Project created successfully',
+            'slug': slug,
+            'path': str(project_dir)
+        })
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/delete-project', methods=['POST'])
+def delete_project():
+    """Delete a project and all its files"""
+    data = request.get_json()
+    password = data.get('password', '')
+
+    if password != ADMIN_PASSWORD:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    slug = data.get('slug', '').strip()
+
+    if not slug:
+        return jsonify({'error': 'Project slug is required'}), 400
+
+    # Prevent path traversal
+    if '..' in slug or '/' in slug or '\\' in slug:
+        return jsonify({'error': 'Invalid project slug'}), 400
+
+    try:
+        deleted_items = []
+
+        # Delete images folder
+        images_dir = BASE_DIR / 'images' / slug
+        if images_dir.exists():
+            shutil.rmtree(images_dir)
+            deleted_items.append(f'images/{slug}')
+
+        # Also check for "Makers stuff" style paths
+        for parent in ['Makers stuff', 'Engeneering']:
+            alt_dir = BASE_DIR / 'images' / parent / slug
+            if alt_dir.exists():
+                shutil.rmtree(alt_dir)
+                deleted_items.append(f'images/{parent}/{slug}')
+
+        # Delete thumbnails folder
+        thumb_dir = BASE_DIR / 'gen' / 'thumbnails' / slug
+        if thumb_dir.exists():
+            shutil.rmtree(thumb_dir)
+            deleted_items.append(f'gen/thumbnails/{slug}')
+
+        # Also check alternative thumbnail paths
+        for parent in ['Makers stuff', 'Engeneering']:
+            alt_thumb = BASE_DIR / 'gen' / 'thumbnails' / parent / slug
+            if alt_thumb.exists():
+                shutil.rmtree(alt_thumb)
+                deleted_items.append(f'gen/thumbnails/{parent}/{slug}')
+
+        # Delete manifest
+        manifest_file = BASE_DIR / 'gen' / 'manifests' / f'{slug}.json'
+        if manifest_file.exists():
+            manifest_file.unlink()
+            deleted_items.append(f'gen/manifests/{slug}.json')
+
+        # Delete project page
+        project_page = BASE_DIR / 'projects' / f'{slug}.html'
+        if project_page.exists():
+            project_page.unlink()
+            deleted_items.append(f'projects/{slug}.html')
+
+        # Remove from metadata
+        with open(METADATA_FILE, 'r') as f:
+            metadata = json.load(f)
+
+        if slug in metadata.get('projects', {}):
+            del metadata['projects'][slug]
+
+        # Remove from featuredOrder if present
+        if 'featuredOrder' in metadata and slug in metadata['featuredOrder']:
+            metadata['featuredOrder'].remove(slug)
+
+        with open(METADATA_FILE, 'w') as f:
+            json.dump(metadata, f, indent=2)
+
+        # Regenerate site index by running build script
+        subprocess.run(['python3', 'build_site.py'], cwd=BASE_DIR, capture_output=True)
+
+        return jsonify({
+            'message': 'Project deleted successfully',
+            'deleted': deleted_items
+        })
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
