@@ -195,7 +195,9 @@
     "makers-stuff-go-cart",
     "makers-stuff-furniture-bed",
     "photograph",
-    "test"
+    "test",
+    "boys-scout-high-adventure-2024",
+    "makers-stuff-metal-work"
   ],
   "projects": {
     "makers-stuff-go-cart": {
@@ -235,7 +237,7 @@
       "year": "2024",
       "tags": "Metalworking \u2022 Forging \u2022 Tools",
       "description": "Hand-crafted knife, axe, and rings. Learning metalworking, grinding, and forging techniques.",
-      "featured": false,
+      "featured": true,
       "category": "makers"
     },
     "makers-stuff-wood-work": {
@@ -299,7 +301,7 @@
       "year": "2021",
       "tags": "Project \u2022 Build \u2022 Maker",
       "description": "Boys Scout - High Adventure 2024 project documentation.",
-      "featured": false,
+      "featured": true,
       "category": "community"
     },
     "boy-scouts": {
