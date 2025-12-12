@@ -1,0 +1,351 @@
+/* Portfolio Layout - Bold agency style, dramatic typography, full-width */
+
+/* Hero - Full screen with bold typography */
+body.layout-portfolio .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 0 5%;
+}
+
+body.layout-portfolio .hero::before {
+    background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 100%);
+}
+
+body.layout-portfolio .hero-content {
+    max-width: 900px;
+}
+
+body.layout-portfolio .hero h1 {
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+}
+
+body.layout-portfolio .hero-subtitle {
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-bottom: 1rem;
+}
+
+body.layout-portfolio .hero-description {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    max-width: 500px;
+    opacity: 0.9;
+}
+
+body.layout-portfolio .hero-actions {
+    margin-top: 3rem;
+    gap: 1.5rem;
+}
+
+body.layout-portfolio .cta-button {
+    padding: 1rem 2.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 0;
+}
+
+body.layout-portfolio .social-pill {
+    border-radius: 0;
+    padding: 1rem 1.5rem;
+}
+
+/* Featured Section - Large showcase cards */
+body.layout-portfolio .featured-projects {
+    padding: 6rem 0;
+}
+
+body.layout-portfolio .featured-projects .section-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    opacity: 0.6;
+}
+
+body.layout-portfolio .featured-projects .section-subtitle {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 3rem;
+}
+
+body.layout-portfolio .projects-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+body.layout-portfolio .project-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 70vh;
+    border-radius: 0;
+    overflow: hidden;
+}
+
+body.layout-portfolio .project-card:nth-child(even) {
+    direction: rtl;
+}
+
+body.layout-portfolio .project-card:nth-child(even) > * {
+    direction: ltr;
+}
+
+body.layout-portfolio .project-image {
+    position: relative;
+    height: 100%;
+    min-height: 400px;
+}
+
+body.layout-portfolio .project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+body.layout-portfolio .project-card:hover .project-image img {
+    transform: scale(1.05);
+}
+
+body.layout-portfolio .project-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem 5%;
+    background: var(--bg-secondary, #1a1a2e);
+}
+
+body.layout-portfolio .year-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--primary, #667eea);
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+body.layout-portfolio .project-card h3 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+}
+
+body.layout-portfolio .project-description {
+    font-size: 1rem;
+    line-height: 1.7;
+    opacity: 0.8;
+    margin-bottom: 1.5rem;
+}
+
+body.layout-portfolio .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+}
+
+body.layout-portfolio .project-tags .tag {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid var(--border-color, rgba(255,255,255,0.2));
+    background: transparent;
+    border-radius: 0;
+}
+
+body.layout-portfolio .view-gallery-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: transparent;
+    border-bottom: 2px solid var(--primary, #667eea);
+    border-radius: 0;
+    width: fit-content;
+    transition: gap 0.3s ease;
+}
+
+body.layout-portfolio .view-gallery-btn:hover {
+    gap: 1rem;
+}
+
+/* Journey Section - Timeline with large year markers */
+body.layout-portfolio .journey {
+    padding: 6rem 0;
+    background: var(--bg-secondary, #1a1a2e);
+}
+
+body.layout-portfolio .journey h2 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 3rem;
+    text-align: center;
+    opacity: 0.6;
+}
+
+body.layout-portfolio .journey-track {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 800px;
+    margin: 0 auto;
+    border-left: 2px solid var(--primary, #667eea);
+    padding-left: 3rem;
+}
+
+body.layout-portfolio .journey-track::before {
+    display: none;
+}
+
+body.layout-portfolio .milestone {
+    position: relative;
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--border-color, rgba(255,255,255,0.1));
+}
+
+body.layout-portfolio .milestone:last-child {
+    border-bottom: none;
+}
+
+body.layout-portfolio .milestone::before {
+    content: '';
+    position: absolute;
+    left: -3rem;
+    top: 2.5rem;
+    width: 12px;
+    height: 12px;
+    background: var(--primary, #667eea);
+    border-radius: 50%;
+    transform: translateX(-50%);
+}
+
+body.layout-portfolio .milestone-content {
+    background: transparent;
+    backdrop-filter: none;
+    padding: 0;
+}
+
+body.layout-portfolio .milestone-content h4 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary, #667eea);
+    margin-bottom: 0.5rem;
+}
+
+body.layout-portfolio .milestone-content p {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+/* About Section - Statement style */
+body.layout-portfolio .about {
+    padding: 8rem 5%;
+}
+
+body.layout-portfolio .about-content {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+body.layout-portfolio .about h2 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    opacity: 0.6;
+}
+
+body.layout-portfolio .about-text {
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 300;
+    line-height: 1.5;
+}
+
+body.layout-portfolio .skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 4rem;
+}
+
+body.layout-portfolio .skill-item {
+    background: transparent;
+    border: 1px solid var(--border-color, rgba(255,255,255,0.2));
+    padding: 0.75rem 1.5rem;
+    border-radius: 0;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+}
+
+/* Contact - Big CTA */
+body.layout-portfolio .contact {
+    padding: 8rem 5%;
+    text-align: center;
+}
+
+body.layout-portfolio .contact h2 {
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+    body.layout-portfolio .project-card {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+
+    body.layout-portfolio .project-card:nth-child(even) {
+        direction: ltr;
+    }
+
+    body.layout-portfolio .project-image {
+        min-height: 300px;
+    }
+
+    body.layout-portfolio .project-content {
+        padding: 3rem 5%;
+    }
+
+    body.layout-portfolio .project-card h3 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    body.layout-portfolio .hero h1 {
+        font-size: 2.5rem;
+    }
+
+    body.layout-portfolio .journey-track {
+        padding-left: 2rem;
+    }
+
+    body.layout-portfolio .milestone::before {
+        left: -2rem;
+    }
+}

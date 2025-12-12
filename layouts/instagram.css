@@ -1,0 +1,266 @@
+/* Instagram Layout - Clean square grid, minimal text, image-focused */
+
+/* Hero - Minimal profile header style */
+body.layout-instagram .hero {
+    min-height: 40vh;
+    padding: 4rem 2rem;
+    text-align: center;
+}
+
+body.layout-instagram .hero::before {
+    display: none;
+}
+
+body.layout-instagram .hero-content {
+    max-width: 500px;
+}
+
+body.layout-instagram .hero h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+body.layout-instagram .hero-subtitle {
+    font-size: 1rem;
+    font-weight: 500;
+    opacity: 0.9;
+    margin-bottom: 0.5rem;
+}
+
+body.layout-instagram .hero-description {
+    font-size: 0.9rem;
+    opacity: 0.7;
+    line-height: 1.5;
+}
+
+body.layout-instagram .hero-actions {
+    margin-top: 1.5rem;
+    gap: 1rem;
+}
+
+body.layout-instagram .social-pill {
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+}
+
+body.layout-instagram .cta-button {
+    border-radius: 8px;
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+}
+
+/* Featured Section - Instagram square grid */
+body.layout-instagram .featured-projects {
+    padding: 0 0 3rem;
+    border-top: 1px solid var(--border-color, rgba(255,255,255,0.1));
+}
+
+body.layout-instagram .featured-projects .container {
+    max-width: 935px;
+    padding: 0;
+}
+
+body.layout-instagram .featured-projects .section-title,
+body.layout-instagram .featured-projects .section-subtitle {
+    display: none;
+}
+
+body.layout-instagram .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+}
+
+body.layout-instagram .project-card {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 0;
+    overflow: hidden;
+}
+
+body.layout-instagram .project-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0);
+    transition: background 0.2s ease;
+}
+
+body.layout-instagram .project-card:hover::after {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+body.layout-instagram .project-image {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+}
+
+body.layout-instagram .project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+body.layout-instagram .project-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 1;
+}
+
+body.layout-instagram .project-card:hover .project-content {
+    opacity: 1;
+}
+
+body.layout-instagram .project-card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: white;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+body.layout-instagram .project-description,
+body.layout-instagram .project-tags,
+body.layout-instagram .year-badge {
+    display: none;
+}
+
+body.layout-instagram .view-gallery-btn {
+    margin-top: 0.5rem;
+    padding: 0.4rem 1rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    background: white;
+    color: #262626;
+    font-weight: 600;
+}
+
+/* Journey Section - Simple stats row */
+body.layout-instagram .journey {
+    padding: 2rem 0;
+    border-top: 1px solid var(--border-color, rgba(255,255,255,0.1));
+    border-bottom: 1px solid var(--border-color, rgba(255,255,255,0.1));
+}
+
+body.layout-instagram .journey h2 {
+    display: none;
+}
+
+body.layout-instagram .journey-track {
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+body.layout-instagram .journey-track::before {
+    display: none;
+}
+
+body.layout-instagram .milestone {
+    text-align: center;
+    padding: 0;
+}
+
+body.layout-instagram .milestone::before {
+    display: none;
+}
+
+body.layout-instagram .milestone-content {
+    background: transparent;
+    backdrop-filter: none;
+    padding: 0;
+}
+
+body.layout-instagram .milestone-content h4 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+body.layout-instagram .milestone-content p {
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+/* About Section - Bio style */
+body.layout-instagram .about {
+    padding: 3rem 2rem;
+}
+
+body.layout-instagram .about-content {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+body.layout-instagram .about h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+body.layout-instagram .about-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+body.layout-instagram .skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+body.layout-instagram .skill-item {
+    background: transparent;
+    border: 1px solid var(--border-color, rgba(255,255,255,0.2));
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+/* Contact - Simple links */
+body.layout-instagram .contact {
+    text-align: center;
+    padding: 3rem 2rem;
+}
+
+body.layout-instagram .contact h2 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    body.layout-instagram .projects-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2px;
+    }
+
+    body.layout-instagram .journey-track {
+        gap: 2rem;
+    }
+
+    body.layout-instagram .milestone-content h4 {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    body.layout-instagram .hero h1 {
+        font-size: 1.5rem;
+    }
+}

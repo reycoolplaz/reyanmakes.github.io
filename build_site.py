@@ -255,7 +255,7 @@ def get_project_metadata(slug, metadata_db, defaults):
         "category": "makers"
     }
 
-def generate_project_page(slug, info, metadata, template='default', layout='modern'):
+def generate_project_page(slug, info, metadata, template='default', layout='default'):
     """Generate HTML page for a project"""
 
     rel_path = info['rel_path']
@@ -394,7 +394,7 @@ def generate_all_project_pages(discovered_folders, metadata_config):
     projects_meta = metadata_config.get("projects", {})
     defaults = metadata_config.get("defaults", {})
     template = metadata_config.get("siteSettings", {}).get("template", "default")
-    layout = metadata_config.get("siteSettings", {}).get("layout", "modern")
+    layout = metadata_config.get("siteSettings", {}).get("layout", "default")
 
     for slug, info in discovered_folders.items():
         metadata = get_project_metadata(slug, projects_meta, defaults)
@@ -540,7 +540,7 @@ def update_index_layout(metadata_config):
     if not index_file.exists():
         return
 
-    layout = metadata_config.get("siteSettings", {}).get("layout", "modern")
+    layout = metadata_config.get("siteSettings", {}).get("layout", "default")
     version_suffix = f'?v={ASSET_VERSION}'
 
     with open(index_file, 'r') as f:

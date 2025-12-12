@@ -1,44 +1,44 @@
-/* Modern Layout - Default (current look) */
+/* Default Layout - Standard portfolio look */
 /* This layout uses the base styles from styles.css */
 /* Only minimal overrides needed since modern is the default */
 
-body.layout-modern .hero {
+body.layout-default .hero {
     min-height: 100vh;
     text-align: center;
 }
 
-body.layout-modern .hero-content {
+body.layout-default .hero-content {
     max-width: 800px;
 }
 
-body.layout-modern .projects-grid {
+body.layout-default .projects-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
 }
 
-body.layout-modern .project-card {
+body.layout-default .project-card {
     flex-direction: column;
 }
 
-body.layout-modern .project-image {
+body.layout-default .project-image {
     height: 200px;
 }
 
-body.layout-modern .journey-track {
+body.layout-default .journey-track {
     display: block;
 }
 
-body.layout-modern .journey-track::before {
+body.layout-default .journey-track::before {
     display: block;
 }
 
-body.layout-modern .about-content {
+body.layout-default .about-content {
     max-width: 800px;
     margin: 0 auto;
 }
 
-body.layout-modern .skills-grid {
+body.layout-default .skills-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;

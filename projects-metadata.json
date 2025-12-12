@@ -10,11 +10,12 @@
       "forest",
       "sunset"
     ],
-    "layout": "modern",
+    "layout": "default",
     "availableLayouts": [
-      "modern",
-      "minimal",
-      "magazine"
+      "default",
+      "pinterest",
+      "instagram",
+      "portfolio"
     ]
   },
   "featuredOrder": [

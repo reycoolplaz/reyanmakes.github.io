@@ -207,7 +207,7 @@ def save_layout():
         return jsonify({'error': 'No layout provided'}), 400
 
     # Validate layout name
-    valid_layouts = ['modern', 'minimal', 'magazine']
+    valid_layouts = ['default', 'pinterest', 'instagram', 'portfolio']
     if layout not in valid_layouts:
         return jsonify({'error': f'Invalid layout. Must be one of: {", ".join(valid_layouts)}'}), 400
 

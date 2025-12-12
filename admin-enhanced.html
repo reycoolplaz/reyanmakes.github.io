@@ -1288,9 +1288,10 @@
 
         // Layout configurations with preview wireframes
         const layoutConfigs = {
-            modern: { name: 'Modern', desc: 'Full-height hero, card grid', icon: '▣ ▣ ▣' },
-            minimal: { name: 'Minimal', desc: 'Compact, list-based layout', icon: '═══' },
-            magazine: { name: 'Magazine', desc: 'Editorial, large images', icon: '▓░░' }
+            default: { name: 'Default', desc: 'Standard card grid layout', icon: '▣ ▣ ▣' },
+            pinterest: { name: 'Pinterest', desc: 'Masonry grid, hover effects', icon: '▦ ▤ ▥' },
+            instagram: { name: 'Instagram', desc: 'Square grid, minimal text', icon: '□ □ □' },
+            portfolio: { name: 'Portfolio', desc: 'Bold agency, dramatic typography', icon: '▓▓▓' }
         };
 
         // Auth
@@ -1340,7 +1341,7 @@
 
                 // Load current template and layout from metadata
                 currentTemplate = metadata.siteSettings?.template || 'default';
-                currentLayout = metadata.siteSettings?.layout || 'modern';
+                currentLayout = metadata.siteSettings?.layout || 'default';
 
                 // Load saved image orders if any
                 const savedOrders = localStorage.getItem('imageOrders');
@@ -1523,7 +1524,7 @@
             const grid = document.getElementById('layoutGrid');
             const layoutLabel = document.getElementById('currentLayout');
 
-            layoutLabel.textContent = layoutConfigs[currentLayout]?.name || 'Modern';
+            layoutLabel.textContent = layoutConfigs[currentLayout]?.name || 'Default';
 
             grid.innerHTML = Object.entries(layoutConfigs).map(([key, config]) => {
                 const isActive = key === currentLayout;
