@@ -301,8 +301,9 @@ def upload_images():
     if not str(target_dir.resolve()).startswith(str((BASE_DIR / 'images').resolve())):
         return jsonify({'error': 'Invalid project path'}), 400
 
+    # Create folder if it doesn't exist
     if not target_dir.exists():
-        return jsonify({'error': 'Project folder not found'}), 404
+        target_dir.mkdir(parents=True, exist_ok=True)
 
     files = request.files.getlist('images')
     if not files:
