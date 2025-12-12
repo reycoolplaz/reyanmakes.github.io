@@ -582,3 +582,77 @@ body.layout-instagram .footer p {
         padding: 2rem 1.5rem;
     }
 }
+
+/* ============================================
+   GALLERY PAGE - Instagram square grid style
+   ============================================ */
+body.layout-instagram .project-hero {
+    padding: 5rem 2rem 2rem;
+    background: var(--bg-color);
+    text-align: center;
+    border-bottom: 1px solid var(--border-color, rgba(128,128,128,0.15));
+}
+
+body.layout-instagram .project-hero-content {
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+body.layout-instagram .project-hero h1 {
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+}
+
+body.layout-instagram .project-hero-meta {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+body.layout-instagram .project-hero-description {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    line-height: 1.5;
+}
+
+body.layout-instagram .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+    max-width: 935px;
+    margin: 0 auto;
+}
+
+body.layout-instagram .gallery-item {
+    aspect-ratio: 1/1;
+    border-radius: 0;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+body.layout-instagram .gallery-item img {
+    transition: opacity 0.2s ease;
+}
+
+body.layout-instagram .gallery-item:hover img {
+    opacity: 0.85;
+}
+
+body.layout-instagram .breadcrumb {
+    background: var(--bg-color);
+    padding: 0.75rem 2rem;
+    border-bottom: 1px solid var(--border-color, rgba(128,128,128,0.15));
+}
+
+@media (max-width: 768px) {
+    body.layout-instagram .gallery-grid {
+        gap: 2px;
+    }
+}
+
+@media (max-width: 480px) {
+    body.layout-instagram .gallery-grid {
+        gap: 1px;
+    }
+}

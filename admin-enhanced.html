@@ -2106,7 +2106,10 @@
                 metadata.siteSettings = metadata.siteSettings || {};
                 metadata.siteSettings.template = templateKey;
                 renderTemplateSelector();
-                showToast(`Theme changed to ${templateConfigs[templateKey].name}. Run Build to apply!`, 'success');
+                showToast(`Theme changed to ${templateConfigs[templateKey].name}. Building site...`, 'success');
+
+                // Auto-trigger build to apply changes
+                await triggerBuild();
             } catch (error) {
                 console.error('Failed to save template:', error);
                 showToast(error.message, 'error');
@@ -2153,7 +2156,10 @@
                 metadata.siteSettings = metadata.siteSettings || {};
                 metadata.siteSettings.layout = layoutKey;
                 renderLayoutSelector();
-                showToast(`Layout changed to ${layoutConfigs[layoutKey].name}. Run Build to apply!`, 'success');
+                showToast(`Layout changed to ${layoutConfigs[layoutKey].name}. Building site...`, 'success');
+
+                // Auto-trigger build to apply changes
+                await triggerBuild();
             } catch (error) {
                 console.error('Failed to save layout:', error);
                 showToast(error.message, 'error');

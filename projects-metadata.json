@@ -68,6 +68,10 @@
             {
               "label": "Photography",
               "project": "photograph"
+            },
+            {
+              "label": "Boys Scout - Eagle Project",
+              "project": "test"
             }
           ]
         },
@@ -140,6 +144,10 @@
             {
               "label": "Clay Sculptures",
               "project": "makers-stuff-clay"
+            },
+            {
+              "label": "Boys Scout - High Adventure 2021",
+              "project": "boys-scout-high-adventure-2024"
             }
           ]
         }

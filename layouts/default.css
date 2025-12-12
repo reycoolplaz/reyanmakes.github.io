@@ -49,3 +49,42 @@ body.layout-default .skills-grid {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
 }
+
+/* ============================================
+   GALLERY PAGE - Default grid layout
+   ============================================ */
+body.layout-default .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+body.layout-default .gallery-item {
+    aspect-ratio: 4/3;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+body.layout-default .gallery-item img {
+    transition: transform 0.3s ease;
+}
+
+body.layout-default .gallery-item:hover img {
+    transform: scale(1.05);
+}
+
+body.layout-default .project-hero {
+    padding: 6rem 0 3rem;
+    text-align: center;
+}
+
+body.layout-default .project-hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+body.layout-default .project-hero-description {
+    max-width: 600px;
+    margin: 0 auto;
+}

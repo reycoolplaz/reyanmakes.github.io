@@ -532,3 +532,107 @@ body.layout-pinterest .footer p {
         margin-top: 0.5rem;
     }
 }
+
+/* ============================================
+   GALLERY PAGE - Pinterest masonry style
+   ============================================ */
+body.layout-pinterest .project-hero {
+    padding: 5rem 2rem 2rem;
+    background: var(--bg-color);
+    text-align: center;
+}
+
+body.layout-pinterest .project-hero-content {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+body.layout-pinterest .project-hero h1 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+body.layout-pinterest .project-hero-meta {
+    font-size: 1rem;
+    font-weight: 400;
+    opacity: 0.7;
+    margin-bottom: 0.5rem;
+}
+
+body.layout-pinterest .project-hero-description {
+    font-size: 0.95rem;
+    opacity: 0.6;
+    line-height: 1.5;
+}
+
+/* True masonry gallery using CSS columns */
+body.layout-pinterest .gallery-grid {
+    display: block;
+    column-count: 5;
+    column-gap: 1rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 0.75rem;
+}
+
+body.layout-pinterest .gallery-item {
+    break-inside: avoid;
+    margin-bottom: 1rem;
+    border-radius: 16px;
+    overflow: hidden;
+    aspect-ratio: auto;
+    height: auto;
+}
+
+body.layout-pinterest .gallery-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+body.layout-pinterest .gallery-item:hover img {
+    transform: scale(1.02);
+}
+
+body.layout-pinterest .breadcrumb {
+    background: var(--bg-color);
+    padding: 0.75rem 2rem;
+}
+
+@media (max-width: 1200px) {
+    body.layout-pinterest .gallery-grid {
+        column-count: 4;
+    }
+}
+
+@media (max-width: 900px) {
+    body.layout-pinterest .gallery-grid {
+        column-count: 3;
+    }
+}
+
+@media (max-width: 600px) {
+    body.layout-pinterest .gallery-grid {
+        column-count: 2;
+        column-gap: 8px;
+    }
+
+    body.layout-pinterest .gallery-item {
+        margin-bottom: 8px;
+        border-radius: 8px;
+    }
+}
+
+@media (max-width: 400px) {
+    body.layout-pinterest .gallery-grid {
+        column-count: 2;
+        column-gap: 4px;
+    }
+
+    body.layout-pinterest .gallery-item {
+        margin-bottom: 4px;
+        border-radius: 8px;
+    }
+}
