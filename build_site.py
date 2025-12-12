@@ -631,13 +631,26 @@ def generate_index_html(discovered_folders, metadata_config):
     footer = site_content.get("footer", {})
 
     # Show ALL projects for all layouts (enables layout switching without rebuild)
+    # Featured projects appear first, then non-featured projects
     featured_cards = []
+    non_featured_cards = []
     defaults = metadata_config.get("defaults", {})
+
     for slug, info in discovered_folders.items():
         meta = projects_meta.get(slug) or get_project_metadata(slug, projects_meta, defaults)
-        featured_cards.append(generate_featured_card(slug, info, meta, is_first=False))
+        project_meta = projects_meta.get(slug, {})
+        is_featured = project_meta.get('featured', False)
+        card = generate_featured_card(slug, info, meta, is_first=False)
 
-    featured_cards_html = '\n\n'.join(featured_cards) if featured_cards else ''
+        if is_featured:
+            featured_cards.append(card)
+        else:
+            non_featured_cards.append(card)
+
+    # Combine: featured first, then non-featured
+    all_cards = featured_cards + non_featured_cards
+
+    featured_cards_html = '\n\n'.join(all_cards) if all_cards else ''
 
     # Calculate stats for Instagram profile header
     total_projects = len(discovered_folders)
