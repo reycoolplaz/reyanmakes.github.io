@@ -1078,12 +1078,29 @@
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
                         </svg>
-                        Site Theme
+                        Color Theme
                     </span>
                     <span id="currentTheme">default</span>
                 </div>
                 <div class="template-grid" id="templateGrid">
                     <!-- Templates will be rendered by JS -->
+                </div>
+            </div>
+
+            <!-- Layout Selector Panel -->
+            <div class="template-panel" style="margin-top: 1rem;">
+                <div class="template-header" style="background: linear-gradient(135deg, #06b6d420, #06b6d405);">
+                    <span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+                        </svg>
+                        Site Layout
+                    </span>
+                    <span id="currentLayout">modern</span>
+                </div>
+                <div class="template-grid" id="layoutGrid">
+                    <!-- Layouts will be rendered by JS -->
                 </div>
             </div>
         </aside>
@@ -1258,6 +1275,7 @@
         let hasChanges = false;
         let imageOrder = {}; // Track custom image order per project
         let currentTemplate = 'default';
+        let currentLayout = 'modern';
 
         // Template configurations with preview colors
         const templateConfigs = {
@@ -1266,6 +1284,13 @@
             ocean: { name: 'Ocean', colors: ['#14b8a6', '#06b6d4', '#f0fdfa'] },
             forest: { name: 'Forest', colors: ['#22c55e', '#84cc16', '#f7fdf7'] },
             sunset: { name: 'Sunset', colors: ['#f97316', '#ef4444', '#fffbf5'] }
+        };
+
+        // Layout configurations with preview wireframes
+        const layoutConfigs = {
+            modern: { name: 'Modern', desc: 'Full-height hero, card grid', icon: '▣ ▣ ▣' },
+            minimal: { name: 'Minimal', desc: 'Compact, list-based layout', icon: '═══' },
+            magazine: { name: 'Magazine', desc: 'Editorial, large images', icon: '▓░░' }
         };
 
         // Auth
@@ -1313,8 +1338,9 @@
                 const metaRes = await fetch('/projects-metadata.json');
                 metadata = await metaRes.json();
 
-                // Load current template from metadata
+                // Load current template and layout from metadata
                 currentTemplate = metadata.siteSettings?.template || 'default';
+                currentLayout = metadata.siteSettings?.layout || 'modern';
 
                 // Load saved image orders if any
                 const savedOrders = localStorage.getItem('imageOrders');
@@ -1325,6 +1351,7 @@
                 renderProjectList();
                 renderFeaturedOrder();
                 renderTemplateSelector();
+                renderLayoutSelector();
                 startStatusPolling();
                 showToast('Portfolio loaded successfully', 'success');
             } catch (error) {
@@ -1488,6 +1515,53 @@
                 showToast(`Theme changed to ${templateConfigs[templateKey].name}. Run Build to apply!`, 'success');
             } catch (error) {
                 console.error('Failed to save template:', error);
+                showToast(error.message, 'error');
+            }
+        }
+
+        function renderLayoutSelector() {
+            const grid = document.getElementById('layoutGrid');
+            const layoutLabel = document.getElementById('currentLayout');
+
+            layoutLabel.textContent = layoutConfigs[currentLayout]?.name || 'Modern';
+
+            grid.innerHTML = Object.entries(layoutConfigs).map(([key, config]) => {
+                const isActive = key === currentLayout;
+                return `
+                    <div class="template-card ${isActive ? 'active' : ''}" onclick="selectLayout('${key}')" style="padding: 0.75rem;">
+                        <div style="font-size: 1.2rem; letter-spacing: 2px; margin-bottom: 0.4rem; color: var(--primary);">${config.icon}</div>
+                        <div class="template-name">${config.name}</div>
+                        <div style="font-size: 0.65rem; opacity: 0.7; margin-top: 0.2rem;">${config.desc}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function selectLayout(layoutKey) {
+            if (layoutKey === currentLayout) return;
+
+            try {
+                const res = await fetch('/api/layout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Admin-Password': password
+                    },
+                    body: JSON.stringify({ layout: layoutKey })
+                });
+
+                if (!res.ok) {
+                    const error = await res.json();
+                    throw new Error(error.error || 'Failed to save layout');
+                }
+
+                currentLayout = layoutKey;
+                metadata.siteSettings = metadata.siteSettings || {};
+                metadata.siteSettings.layout = layoutKey;
+                renderLayoutSelector();
+                showToast(`Layout changed to ${layoutConfigs[layoutKey].name}. Run Build to apply!`, 'success');
+            } catch (error) {
+                console.error('Failed to save layout:', error);
                 showToast(error.message, 'error');
             }
         }

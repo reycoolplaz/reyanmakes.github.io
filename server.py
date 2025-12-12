@@ -193,6 +193,44 @@ def save_template():
         return jsonify({'error': str(e)}), 500
 
 
+@app.route('/api/layout', methods=['POST'])
+def save_layout():
+    """Save site layout selection to metadata"""
+    data = request.get_json()
+    password = request.headers.get('X-Admin-Password', '')
+
+    if password != ADMIN_PASSWORD:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    layout = data.get('layout')
+    if not layout:
+        return jsonify({'error': 'No layout provided'}), 400
+
+    # Validate layout name
+    valid_layouts = ['modern', 'minimal', 'magazine']
+    if layout not in valid_layouts:
+        return jsonify({'error': f'Invalid layout. Must be one of: {", ".join(valid_layouts)}'}), 400
+
+    try:
+        # Load existing metadata
+        with open(METADATA_FILE, 'r') as f:
+            metadata = json.load(f)
+
+        # Update siteSettings
+        if 'siteSettings' not in metadata:
+            metadata['siteSettings'] = {}
+        metadata['siteSettings']['layout'] = layout
+
+        # Save metadata
+        with open(METADATA_FILE, 'w') as f:
+            json.dump(metadata, f, indent=2)
+
+        return jsonify({'message': f'Layout changed to {layout}', 'layout': layout})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
 @app.route('/api/image-order', methods=['POST'])
 def save_image_order():
     """Save custom image order for a project"""

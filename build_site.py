@@ -255,7 +255,7 @@ def get_project_metadata(slug, metadata_db, defaults):
         "category": "makers"
     }
 
-def generate_project_page(slug, info, metadata, template='default'):
+def generate_project_page(slug, info, metadata, template='default', layout='modern'):
     """Generate HTML page for a project"""
 
     rel_path = info['rel_path']
@@ -274,8 +274,9 @@ def generate_project_page(slug, info, metadata, template='default'):
     <meta name="description" content="{metadata['description']}">
     <link rel="stylesheet" href="{asset_prefix}styles.css{version_suffix}">
     <link rel="stylesheet" href="{asset_prefix}themes/{template}.css{version_suffix}">
+    <link rel="stylesheet" href="{asset_prefix}layouts/{layout}.css{version_suffix}">
 </head>
-<body>
+<body class="layout-{layout}">
     <nav class="navbar">
         <div class="nav-container">
             <a href="{asset_prefix}index.html" class="logo">Reyan Makes</a>
@@ -393,12 +394,13 @@ def generate_all_project_pages(discovered_folders, metadata_config):
     projects_meta = metadata_config.get("projects", {})
     defaults = metadata_config.get("defaults", {})
     template = metadata_config.get("siteSettings", {}).get("template", "default")
+    layout = metadata_config.get("siteSettings", {}).get("layout", "modern")
 
     for slug, info in discovered_folders.items():
         metadata = get_project_metadata(slug, projects_meta, defaults)
 
         output_file = PROJECTS_BASE / f"{slug}.html"
-        html = generate_project_page(slug, info, metadata, template)
+        html = generate_project_page(slug, info, metadata, template, layout)
 
         with open(output_file, 'w') as f:
             f.write(html)
@@ -530,6 +532,66 @@ def update_index_theme(metadata_config):
     print(f"  ✓ Applied '{template}' theme to index.html\n")
 
 
+def update_index_layout(metadata_config):
+    """Update the layout CSS link and body class in index.html based on metadata"""
+    import re
+
+    index_file = BASE_DIR / 'index.html'
+    if not index_file.exists():
+        return
+
+    layout = metadata_config.get("siteSettings", {}).get("layout", "modern")
+    version_suffix = f'?v={ASSET_VERSION}'
+
+    with open(index_file, 'r') as f:
+        content = f.read()
+
+    # Update layout CSS link
+    layout_link = f'<link rel="stylesheet" href="layouts/{layout}.css{version_suffix}">'
+
+    if 'layouts/' in content:
+        # Update existing layout link
+        content = re.sub(
+            r'<link rel="stylesheet" href="layouts/[^"]+\.css[^"]*">',
+            layout_link,
+            content
+        )
+    else:
+        # Add layout link after theme link
+        if 'themes/' in content:
+            content = re.sub(
+                r'(<link rel="stylesheet" href="themes/[^"]+\.css[^"]*">)',
+                f'\\1\n    {layout_link}',
+                content
+            )
+        else:
+            # Add after styles.css
+            content = re.sub(
+                r'(<link rel="stylesheet" href="styles\.css[^"]*">)',
+                f'\\1\n    {layout_link}',
+                content
+            )
+
+    # Update body class
+    body_class = f'class="layout-{layout}"'
+
+    if 'class="layout-' in content:
+        # Update existing layout class
+        content = re.sub(
+            r'<body class="layout-[^"]*">',
+            f'<body {body_class}>',
+            content
+        )
+    elif '<body>' in content:
+        # Add class to body tag
+        content = content.replace('<body>', f'<body {body_class}>')
+
+    with open(index_file, 'w') as f:
+        f.write(content)
+
+    print(f"  ✓ Applied '{layout}' layout to index.html\n")
+
+
 def update_index_featured(discovered_folders, metadata_config):
     """Update the Featured Builds section in index.html based on metadata"""
     print("🏠 Updating Featured Builds in index.html...\n")
@@ -650,6 +712,9 @@ def main():
 
         # Step 7: Update theme in index.html
         update_index_theme(metadata_config)
+
+        # Step 8: Update layout in index.html
+        update_index_layout(metadata_config)
 
         print("=" * 70)
         print("✅ BUILD COMPLETE!")

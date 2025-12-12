@@ -2,8 +2,20 @@
   "$schema": "Project metadata for Reyan Makes portfolio site",
   "$comment": "Edit this file to update project titles, descriptions, tags, and years. The build script reads from here.",
   "siteSettings": {
-    "template": "default",
-    "availableTemplates": ["default", "dark", "ocean", "forest", "sunset"]
+    "template": "forest",
+    "availableTemplates": [
+      "default",
+      "dark",
+      "ocean",
+      "forest",
+      "sunset"
+    ],
+    "layout": "modern",
+    "availableLayouts": [
+      "modern",
+      "minimal",
+      "magazine"
+    ]
   },
   "featuredOrder": [
     "makers-stuff-go-cart",
