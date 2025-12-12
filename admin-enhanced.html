@@ -400,6 +400,78 @@
             font-weight: 600;
         }
 
+        /* Upload Drop Zone */
+        .upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            transition: all 0.2s;
+            cursor: pointer;
+            background: var(--bg);
+        }
+
+        .upload-zone:hover {
+            border-color: var(--primary);
+            background: #f0f4ff;
+        }
+
+        .upload-zone.drag-over {
+            border-color: var(--success);
+            background: #ecfdf5;
+            transform: scale(1.01);
+        }
+
+        .upload-zone.uploading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .upload-zone svg {
+            width: 48px;
+            height: 48px;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .upload-zone h4 {
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .upload-zone p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .upload-zone input[type="file"] {
+            display: none;
+        }
+
+        .upload-progress {
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .upload-progress.visible {
+            display: block;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--success);
+            transition: width 0.3s;
+        }
+
         /* Status Bar */
         .status-bar {
             position: fixed;
@@ -675,6 +747,23 @@
                         <span id="imageCount">0 images</span>
                     </div>
                     <div class="panel-body">
+                        <!-- Upload Drop Zone -->
+                        <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                                <polyline points="17 8 12 3 7 8"/>
+                                <line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                            <h4>Drop images here</h4>
+                            <p>or click to browse (JPG, PNG, GIF, WebP, HEIC)</p>
+                            <input type="file" id="fileInput" multiple accept="image/jpeg,image/png,image/gif,image/webp,image/heic,image/heif,.heic,.heif">
+                            <div class="upload-progress" id="uploadProgress">
+                                <div class="progress-bar">
+                                    <div class="progress-bar-fill" id="progressFill" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+
                         <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 1rem;">
                             Drag and drop to reorder images. Order will be saved when you click "Save All".
                         </p>
@@ -835,6 +924,9 @@
 
             // Load gallery images
             await loadGalleryImages(slug);
+
+            // Initialize upload zone
+            initUploadZone();
 
             // Update project list to show active
             renderProjectList();
@@ -1107,6 +1199,106 @@
             setTimeout(() => {
                 toast.remove();
             }, 3000);
+        }
+
+        // Upload functionality
+        function initUploadZone() {
+            const uploadZone = document.getElementById('uploadZone');
+            const fileInput = document.getElementById('fileInput');
+
+            // Drag and drop events
+            uploadZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadZone.classList.add('drag-over');
+            });
+
+            uploadZone.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                uploadZone.classList.remove('drag-over');
+            });
+
+            uploadZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadZone.classList.remove('drag-over');
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    uploadFiles(files);
+                }
+            });
+
+            // File input change
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    uploadFiles(e.target.files);
+                }
+            });
+        }
+
+        async function uploadFiles(files) {
+            if (!currentProject) {
+                showToast('Please select a project first', 'error');
+                return;
+            }
+
+            const project = siteIndex.projects[currentProject];
+            if (!project) {
+                showToast('Project not found', 'error');
+                return;
+            }
+
+            const uploadZone = document.getElementById('uploadZone');
+            const uploadProgress = document.getElementById('uploadProgress');
+            const progressFill = document.getElementById('progressFill');
+
+            uploadZone.classList.add('uploading');
+            uploadProgress.classList.add('visible');
+            progressFill.style.width = '0%';
+
+            const formData = new FormData();
+            formData.append('password', password);
+            formData.append('project_path', project.path);
+
+            for (const file of files) {
+                formData.append('images', file);
+            }
+
+            try {
+                progressFill.style.width = '50%';
+
+                const res = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                progressFill.style.width = '100%';
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    throw new Error(data.error || 'Upload failed');
+                }
+
+                if (data.uploaded.length > 0) {
+                    showToast(`Uploaded ${data.uploaded.length} image(s)!`, 'success');
+                    // Reload the gallery after a short delay
+                    setTimeout(() => loadGalleryImages(currentProject), 500);
+                }
+
+                if (data.errors.length > 0) {
+                    showToast(`${data.errors.length} file(s) failed: ${data.errors[0]}`, 'error');
+                }
+
+            } catch (error) {
+                showToast(error.message, 'error');
+            } finally {
+                uploadZone.classList.remove('uploading');
+                setTimeout(() => {
+                    uploadProgress.classList.remove('visible');
+                    progressFill.style.width = '0%';
+                }, 1000);
+                // Clear file input
+                document.getElementById('fileInput').value = '';
+            }
         }
     </script>
 </body>

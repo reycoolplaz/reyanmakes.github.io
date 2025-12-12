@@ -11,6 +11,11 @@ import json
 from pathlib import Path
 import threading
 import time
+from PIL import Image
+import pillow_heif
+
+# Register HEIF opener with Pillow
+pillow_heif.register_heif_opener()
 
 app = Flask(__name__)
 CORS(app)
@@ -200,6 +205,97 @@ def get_image_orders():
 def admin_enhanced():
     """Serve enhanced admin panel"""
     return send_from_directory('.', 'admin-enhanced.html')
+
+
+@app.route('/api/upload', methods=['POST'])
+def upload_images():
+    """Upload images to a project folder"""
+    password = request.form.get('password', '')
+
+    if password != ADMIN_PASSWORD:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    project_path = request.form.get('project_path')
+    if not project_path:
+        return jsonify({'error': 'No project path provided'}), 400
+
+    # Ensure the path is within images directory
+    target_dir = BASE_DIR / 'images' / project_path
+    if not str(target_dir.resolve()).startswith(str((BASE_DIR / 'images').resolve())):
+        return jsonify({'error': 'Invalid project path'}), 400
+
+    if not target_dir.exists():
+        return jsonify({'error': 'Project folder not found'}), 404
+
+    files = request.files.getlist('images')
+    if not files:
+        return jsonify({'error': 'No files provided'}), 400
+
+    uploaded = []
+    errors = []
+
+    for file in files:
+        if file.filename:
+            # Sanitize filename
+            filename = file.filename.replace('/', '_').replace('\\', '_')
+            # Check extension
+            ext = Path(filename).suffix.lower()
+            if ext not in {'.jpg', '.jpeg', '.png', '.gif', '.webp', '.heic', '.heif'}:
+                errors.append(f'{filename}: invalid file type')
+                continue
+
+            # For HEIC/HEIF, we'll convert to JPG
+            is_heic = ext in {'.heic', '.heif'}
+            if is_heic:
+                # Change extension to .jpg for the saved file
+                base_name = Path(filename).stem
+                filename = f"{base_name}.jpg"
+                ext = '.jpg'
+
+            filepath = target_dir / filename
+
+            # Don't overwrite existing files
+            if filepath.exists():
+                # Add number suffix
+                base = filepath.stem
+                counter = 1
+                while filepath.exists():
+                    filepath = target_dir / f"{base}_{counter}{ext}"
+                    counter += 1
+
+            try:
+                if is_heic:
+                    # Convert HEIC to JPG
+                    img = Image.open(file)
+                    if img.mode in ('RGBA', 'P'):
+                        img = img.convert('RGB')
+                    img.save(filepath, 'JPEG', quality=90)
+                else:
+                    file.save(filepath)
+
+                # Generate thumbnail immediately
+                try:
+                    thumb_dir = BASE_DIR / 'gen' / 'thumbnails' / project_path
+                    thumb_dir.mkdir(parents=True, exist_ok=True)
+                    thumb_path = thumb_dir / f"{filepath.stem}.jpg"
+
+                    with Image.open(filepath) as img:
+                        if img.mode == 'RGBA':
+                            img = img.convert('RGB')
+                        img.thumbnail((200, 200), Image.Resampling.LANCZOS)
+                        img.save(thumb_path, 'JPEG', quality=75, optimize=True)
+                except Exception as thumb_err:
+                    print(f"Thumbnail error for {filepath.name}: {thumb_err}")
+
+                uploaded.append(str(filepath.name))
+            except Exception as e:
+                errors.append(f'{filename}: {str(e)}')
+
+    return jsonify({
+        'uploaded': uploaded,
+        'errors': errors,
+        'message': f'Uploaded {len(uploaded)} files'
+    })
 
 
 if __name__ == '__main__':
