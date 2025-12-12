@@ -94,6 +94,22 @@
       "description": "Cave shed design prototype from NJIT's HCAD summer architecture program. Complete architectural drawings, blueprints, and perspectives.",
       "featured": false,
       "category": "education"
+    },
+    "test": {
+      "title": "test",
+      "year": "2025",
+      "tags": "Project \u2022 Build \u2022 Maker",
+      "description": "test project documentation.",
+      "featured": false,
+      "category": "art"
+    },
+    "test1": {
+      "title": "test1",
+      "year": "2025",
+      "tags": "Project \u2022 Build \u2022 Maker",
+      "description": "test1 project documentation.",
+      "featured": false,
+      "category": "makers"
     }
   },
   "categories": {

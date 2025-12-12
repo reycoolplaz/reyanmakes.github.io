@@ -278,6 +278,28 @@
             font-weight: 600;
         }
 
+        .empty-badge {
+            background: var(--text-muted);
+            color: white;
+            font-size: 0.65rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .empty-project {
+            opacity: 0.7;
+            border-left: 3px solid var(--text-muted);
+        }
+
+        .empty-gallery-message {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
         /* Featured Order Panel */
         .featured-order-panel {
             background: var(--card-bg);
@@ -1212,7 +1234,28 @@
 
         function renderProjectList() {
             const list = document.getElementById('projectList');
-            const projects = Object.entries(siteIndex.projects)
+
+            // Merge projects from siteIndex and metadata (metadata may have empty projects)
+            const allProjects = {};
+
+            // Add projects from siteIndex (have images)
+            for (const [slug, proj] of Object.entries(siteIndex.projects || {})) {
+                allProjects[slug] = proj;
+            }
+
+            // Add projects from metadata that aren't in siteIndex (empty/new projects)
+            for (const [slug, meta] of Object.entries(metadata.projects || {})) {
+                if (!allProjects[slug]) {
+                    allProjects[slug] = {
+                        title: meta.title,
+                        year: meta.year || '2024',
+                        images: 0,
+                        path: slug  // Simple path for new projects
+                    };
+                }
+            }
+
+            const projects = Object.entries(allProjects)
                 .sort((a, b) => {
                     // Featured first, then by name
                     const aFeatured = metadata.projects[a[0]]?.featured || false;
@@ -1226,16 +1269,18 @@
             list.innerHTML = projects.map(([slug, project]) => {
                 const meta = metadata.projects[slug] || {};
                 const thumbPath = `gen/thumbnails/${project.path}`;
+                const isEmpty = project.images === 0;
                 return `
-                    <div class="project-item ${currentProject === slug ? 'active' : ''}" onclick="selectProject('${slug}')">
+                    <div class="project-item ${currentProject === slug ? 'active' : ''} ${isEmpty ? 'empty-project' : ''}" onclick="selectProject('${slug}')">
                         <img class="project-thumb" src="${thumbPath}/.thumb.jpg"
                              onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2248%22%3E%3Crect fill=%22%23e2e8f0%22 width=%2248%22 height=%2248%22/%3E%3C/svg%3E'"
                              alt="${project.title}">
                         <div class="project-info">
                             <h4>${project.title}</h4>
-                            <span>${project.images} images • ${project.year}</span>
+                            <span>${isEmpty ? 'No images yet' : `${project.images} images`} • ${project.year}</span>
                         </div>
                         ${meta.featured ? '<span class="featured-badge">Featured</span>' : ''}
+                        ${isEmpty ? '<span class="empty-badge">Empty</span>' : ''}
                     </div>
                 `;
             }).join('');
@@ -1417,7 +1462,13 @@
             hasChanges = false;
             updateChangeIndicator();
 
-            const project = siteIndex.projects[slug];
+            // Get project from siteIndex or create stub for empty projects
+            const project = siteIndex.projects[slug] || {
+                title: metadata.projects[slug]?.title || slug,
+                year: metadata.projects[slug]?.year || '2024',
+                path: slug,
+                images: 0
+            };
             const meta = metadata.projects[slug] || metadata.defaults;
 
             // Update UI
@@ -1451,6 +1502,15 @@
 
         async function loadGalleryImages(slug) {
             const project = siteIndex.projects[slug];
+            const grid = document.getElementById('galleryGrid');
+
+            // Handle empty projects (not in siteIndex)
+            if (!project || !project.manifest) {
+                grid.innerHTML = '<p class="empty-gallery-message">No images yet. Upload images using the form above.</p>';
+                document.getElementById('imageCount').textContent = '0 images';
+                return;
+            }
+
             const manifestPath = project.manifest;
 
             try {
@@ -1471,7 +1531,6 @@
                     });
                 }
 
-                const grid = document.getElementById('galleryGrid');
                 const thumbPath = `gen/thumbnails/${project.path}`;
                 const imagePath = `images/${project.path}`;
 
@@ -1500,7 +1559,8 @@
 
             } catch (error) {
                 console.error('Failed to load gallery:', error);
-                document.getElementById('galleryGrid').innerHTML = '<p>Failed to load images</p>';
+                grid.innerHTML = '<p class="empty-gallery-message">No images yet. Upload images using the form above.</p>';
+                document.getElementById('imageCount').textContent = '0 images';
             }
         }
 
