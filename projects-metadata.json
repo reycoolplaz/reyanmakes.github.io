@@ -41,12 +41,12 @@
     },
     "timeline": {
       "title": "My Maker Journey",
-      "subtitle": "From lake house forts to welding labs\u2014every stop shapes the builder I am.",
+      "subtitle": "From lake house forts to welding labs\u2014every stop builds the builder I am.",
       "milestones": [
         {
           "year": "2025",
-          "title": "Senior Year & Community Impact",
-          "description": "Took welding, fabrication, and design to the next level while giving back through community builds and NJIT studio work.",
+          "title": "Senior - Experiments",
+          "description": "Took welding, fabrication, and design to the next level. Giving back to community via Eagle Scount and NJIT Summer Architecture keept my 2025 fulfilling",
           "focusAreas": [
             "MIG Welding",
             "Metal Fabrication",
@@ -73,8 +73,8 @@
         },
         {
           "year": "2024",
-          "title": "Junior Year Builds",
-          "description": "Focused on woodworking scale projects and clever transportation solutions for life outdoors.",
+          "title": "Junior - Builds",
+          "description": "Wood working became by defacto passion for 2024. From Custom Bed to Temple construction it was fun 2024",
           "focusAreas": [
             "Woodworking",
             "Product Design",
@@ -101,7 +101,7 @@
         },
         {
           "year": "2023",
-          "title": "Design Experiments",
+          "title": "Sophomore - Begining",
           "description": "Prototyped tools, art pieces, and layout studies to sharpen hands-on design instincts.",
           "focusAreas": [
             "Toolmaking",
@@ -124,9 +124,9 @@
           ]
         },
         {
-          "year": "Foundations",
-          "title": "Where It Started",
-          "description": "Lakehouse forts, school competitions, restorations, and sketchbooks that sparked the obsession.",
+          "year": "2022",
+          "title": "Freshmen - Foundation",
+          "description": "Outdoors, hiking, biking, boating, camping - these were are themes of 2022",
           "focusAreas": [
             "Resourcefulness",
             "Art & Sketching",
@@ -134,16 +134,12 @@
           ],
           "links": [
             {
-              "label": "Bed Build",
-              "project": "makers-stuff-furniture-bed"
-            },
-            {
-              "label": "Temple",
-              "project": "makers-stuff-furniture-temple"
-            },
-            {
               "label": "Sketches",
               "project": "sketching"
+            },
+            {
+              "label": "Clay Sculptures",
+              "project": "makers-stuff-clay"
             }
           ]
         }
