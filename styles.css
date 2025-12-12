@@ -480,18 +480,20 @@ section {
 }
 
 .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
 }
 
 .skill {
-    background: white;
-    padding: 1rem;
-    border-radius: 8px;
+    background: transparent;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
     text-align: center;
     font-weight: 500;
-    color: var(--text-color);
+    font-size: 0.9rem;
+    color: var(--text-light);
     border: 1px solid var(--border-color);
 }
 
