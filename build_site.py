@@ -630,23 +630,12 @@ def generate_index_html(discovered_folders, metadata_config):
     contact = site_content.get("contact", {})
     footer = site_content.get("footer", {})
 
-    # For Instagram/Pinterest layouts, show ALL projects; otherwise just featured
-    is_grid_layout = layout in ['instagram', 'pinterest']
-
+    # Show ALL projects for all layouts (enables layout switching without rebuild)
     featured_cards = []
-    if is_grid_layout:
-        # Show all projects for grid-based layouts
-        defaults = metadata_config.get("defaults", {})
-        for slug, info in discovered_folders.items():
-            meta = projects_meta.get(slug) or get_project_metadata(slug, projects_meta, defaults)
-            featured_cards.append(generate_featured_card(slug, info, meta, is_first=False))
-    else:
-        # Show only featured projects for other layouts
-        for i, slug in enumerate(featured_order):
-            if slug in projects_meta and slug in discovered_folders:
-                meta = projects_meta[slug]
-                info = discovered_folders[slug]
-                featured_cards.append(generate_featured_card(slug, info, meta, is_first=(i == 0)))
+    defaults = metadata_config.get("defaults", {})
+    for slug, info in discovered_folders.items():
+        meta = projects_meta.get(slug) or get_project_metadata(slug, projects_meta, defaults)
+        featured_cards.append(generate_featured_card(slug, info, meta, is_first=False))
 
     featured_cards_html = '\n\n'.join(featured_cards) if featured_cards else ''
 

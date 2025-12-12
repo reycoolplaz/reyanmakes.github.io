@@ -2192,11 +2192,10 @@
                 metadata.siteSettings = metadata.siteSettings || {};
                 metadata.siteSettings.layout = layoutKey;
                 renderLayoutSelector();
-                showToast(`Layout changed to ${layoutConfigs[layoutKey].name}. Building site (layout affects content)...`, 'success');
+                showToast(`Layout changed to ${layoutConfigs[layoutKey].name}. Refresh page to see changes.`, 'success');
 
-                // Layout changes require build because index.html content differs
-                // (instagram/pinterest show all projects, others show featured only)
-                await triggerBuild();
+                // No build needed - config-loader.js dynamically loads layout CSS
+                // All layouts now show all projects (same HTML content)
             } catch (error) {
                 console.error('Failed to save layout:', error);
                 showToast(error.message, 'error');
