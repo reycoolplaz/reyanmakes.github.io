@@ -1104,6 +1104,32 @@
                 </div>
             </div>
 
+            <!-- New Project / Bulk Upload Button -->
+            <div class="template-panel" style="margin-top: 1rem;">
+                <div class="template-header" style="background: linear-gradient(135deg, #f59e0b20, #f59e0b05);">
+                    <span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                            <polyline points="17 8 12 3 7 8"/>
+                            <line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                        New Project
+                    </span>
+                </div>
+                <div style="padding: 0.75rem;">
+                    <button class="btn" style="width: 100%; background: var(--warning); color: white;" onclick="showBulkUploadModal()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        Create New Project
+                    </button>
+                    <p style="font-size: 0.7rem; color: var(--text-light); margin-top: 0.5rem; text-align: center;">
+                        Bulk upload images/folders
+                    </p>
+                </div>
+            </div>
+
             <!-- Site Content Editor Button -->
             <div class="template-panel" style="margin-top: 1rem;">
                 <div class="template-header" style="background: linear-gradient(135deg, #10b98120, #10b98105);">
@@ -1287,6 +1313,120 @@
             <div class="modal-footer">
                 <button class="btn btn-outline" onclick="closeNewProjectModal()">Cancel</button>
                 <button class="btn btn-success" onclick="createNewProject()">Create Project</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bulk Upload Modal -->
+    <div class="modal-overlay" id="bulkUploadModal">
+        <div class="modal" style="max-width: 700px;">
+            <div class="modal-header">
+                <h3>Create New Project</h3>
+                <button class="modal-close" onclick="closeBulkUploadModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Project Details -->
+                <div class="form-group">
+                    <label for="bulkProjectTitle">Project Title *</label>
+                    <input type="text" id="bulkProjectTitle" placeholder="e.g., My New Project" oninput="autoGenerateSlug()">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label for="bulkProjectSlug">Folder Name (slug) *</label>
+                        <input type="text" id="bulkProjectSlug" placeholder="e.g., my-new-project">
+                        <small style="color: var(--text-light); font-size: 0.75rem;">Letters, numbers, hyphens only</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="bulkParentFolder">Parent Folder</label>
+                        <select id="bulkParentFolder">
+                            <option value="">None (root images/)</option>
+                            <!-- Will be populated dynamically -->
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label for="bulkProjectYear">Year</label>
+                        <input type="text" id="bulkProjectYear" placeholder="e.g., 2025">
+                    </div>
+                    <div class="form-group">
+                        <label for="bulkProjectCategory">Category</label>
+                        <select id="bulkProjectCategory">
+                            <option value="makers">Maker Projects</option>
+                            <option value="art">Art & Creative</option>
+                            <option value="education">School & Learning</option>
+                            <option value="community">Community & Service</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="bulkProjectTags">Tags</label>
+                    <input type="text" id="bulkProjectTags" placeholder="e.g., Woodworking - Furniture - Design">
+                </div>
+
+                <div class="form-group">
+                    <label for="bulkProjectDescription">Description</label>
+                    <textarea id="bulkProjectDescription" rows="2" placeholder="Brief description of the project..."></textarea>
+                </div>
+
+                <!-- File Upload Area -->
+                <div class="form-group">
+                    <label>Upload Images</label>
+                    <div id="bulkDropZone" class="drop-zone" onclick="document.getElementById('bulkFileInput').click()">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="1.5">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                            <polyline points="17 8 12 3 7 8"/>
+                            <line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                        <p style="margin: 1rem 0 0.5rem; font-weight: 600;">Drop images or folder here</p>
+                        <p style="color: var(--text-light); font-size: 0.85rem;">or click to browse</p>
+                        <p style="color: var(--text-light); font-size: 0.75rem; margin-top: 0.5rem;">Supports: JPG, PNG, GIF, WebP, HEIC</p>
+                    </div>
+                    <input type="file" id="bulkFileInput" multiple accept="image/*,.heic,.heif" style="display: none;" onchange="handleBulkFileSelect(event)" webkitdirectory>
+                    <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem;">
+                        <button type="button" class="btn" style="flex: 1; background: var(--border);" onclick="document.getElementById('bulkFileInputFiles').click()">
+                            Select Files
+                        </button>
+                        <button type="button" class="btn" style="flex: 1; background: var(--border);" onclick="document.getElementById('bulkFileInput').click()">
+                            Select Folder
+                        </button>
+                    </div>
+                    <input type="file" id="bulkFileInputFiles" multiple accept="image/*,.heic,.heif" style="display: none;" onchange="handleBulkFileSelect(event)">
+                </div>
+
+                <!-- Selected Files Preview -->
+                <div id="bulkFilesPreview" style="display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <label style="margin: 0;">Selected Files (<span id="bulkFileCount">0</span>)</label>
+                        <button type="button" class="btn" style="padding: 0.3rem 0.6rem; font-size: 0.75rem; background: var(--danger); color: white;" onclick="clearBulkFiles()">Clear All</button>
+                    </div>
+                    <div id="bulkFilesList" style="max-height: 150px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem;"></div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div id="bulkUploadProgress" style="display: none; margin-top: 1rem;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span id="bulkProgressText">Uploading...</span>
+                        <span id="bulkProgressPercent">0%</span>
+                    </div>
+                    <div style="background: var(--border); border-radius: 4px; height: 8px; overflow: hidden;">
+                        <div id="bulkProgressBar" style="background: var(--primary); height: 100%; width: 0%; transition: width 0.3s;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" onclick="closeBulkUploadModal()">Cancel</button>
+                <button class="btn btn-success" id="bulkUploadBtn" onclick="startBulkUpload()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                        <polyline points="17 8 12 3 7 8"/>
+                        <line x1="12" y1="3" x2="12" y2="15"/>
+                    </svg>
+                    Upload & Create Project
+                </button>
             </div>
         </div>
     </div>
@@ -1505,6 +1645,55 @@
 
     <style>
         /* Content Editor Tabs */
+        /* Drop Zone Styles */
+        .drop-zone {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--bg);
+        }
+
+        .drop-zone:hover,
+        .drop-zone.drag-over {
+            border-color: var(--primary);
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .drop-zone.drag-over {
+            transform: scale(1.01);
+        }
+
+        .bulk-file-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem;
+            background: var(--bg);
+            border-radius: 4px;
+            margin-bottom: 0.25rem;
+            font-size: 0.85rem;
+        }
+
+        .bulk-file-item svg {
+            flex-shrink: 0;
+            color: var(--success);
+        }
+
+        .bulk-file-item .file-name {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .bulk-file-item .file-size {
+            color: var(--text-light);
+            font-size: 0.75rem;
+        }
+
         .content-tabs {
             display: flex;
             border-bottom: 1px solid var(--border);
@@ -2697,6 +2886,342 @@
 
             } catch (error) {
                 showToast(error.message, 'error');
+            }
+        }
+
+        // ===============================
+        // Bulk Upload Functions
+        // ===============================
+
+        let bulkSelectedFiles = [];
+
+        async function showBulkUploadModal() {
+            // Reset form
+            document.getElementById('bulkProjectTitle').value = '';
+            document.getElementById('bulkProjectSlug').value = '';
+            document.getElementById('bulkProjectYear').value = new Date().getFullYear();
+            document.getElementById('bulkProjectTags').value = '';
+            document.getElementById('bulkProjectDescription').value = '';
+            document.getElementById('bulkProjectCategory').value = 'makers';
+            bulkSelectedFiles = [];
+            updateBulkFilesPreview();
+
+            // Hide progress
+            document.getElementById('bulkUploadProgress').style.display = 'none';
+
+            // Load parent folders
+            await loadParentFolders();
+
+            // Show modal
+            document.getElementById('bulkUploadModal').classList.add('visible');
+
+            // Setup drag and drop
+            setupBulkDragDrop();
+        }
+
+        function closeBulkUploadModal() {
+            document.getElementById('bulkUploadModal').classList.remove('visible');
+            bulkSelectedFiles = [];
+        }
+
+        async function loadParentFolders() {
+            try {
+                const response = await fetch('/api/parent-folders');
+                const data = await response.json();
+
+                const select = document.getElementById('bulkParentFolder');
+                select.innerHTML = '<option value="">None (root images/)</option>';
+
+                if (data.folders) {
+                    data.folders.forEach(folder => {
+                        const option = document.createElement('option');
+                        option.value = folder;
+                        option.textContent = folder;
+                        select.appendChild(option);
+                    });
+                }
+            } catch (err) {
+                console.error('Failed to load parent folders:', err);
+            }
+        }
+
+        function autoGenerateSlug() {
+            const title = document.getElementById('bulkProjectTitle').value;
+            const slug = title
+                .toLowerCase()
+                .replace(/[^a-z0-9\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-')
+                .trim();
+            document.getElementById('bulkProjectSlug').value = slug;
+        }
+
+        function setupBulkDragDrop() {
+            const dropZone = document.getElementById('bulkDropZone');
+
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, () => {
+                    dropZone.classList.add('drag-over');
+                }, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, () => {
+                    dropZone.classList.remove('drag-over');
+                }, false);
+            });
+
+            dropZone.addEventListener('drop', handleBulkDrop, false);
+        }
+
+        async function handleBulkDrop(e) {
+            const items = e.dataTransfer.items;
+            const files = [];
+
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i].webkitGetAsEntry();
+                if (item) {
+                    await traverseFileTree(item, files);
+                }
+            }
+
+            addBulkFiles(files);
+        }
+
+        async function traverseFileTree(item, files) {
+            return new Promise((resolve) => {
+                if (item.isFile) {
+                    item.file(file => {
+                        if (isValidImageFile(file)) {
+                            files.push(file);
+                        }
+                        resolve();
+                    });
+                } else if (item.isDirectory) {
+                    const dirReader = item.createReader();
+                    dirReader.readEntries(async entries => {
+                        for (const entry of entries) {
+                            await traverseFileTree(entry, files);
+                        }
+                        resolve();
+                    });
+                } else {
+                    resolve();
+                }
+            });
+        }
+
+        function isValidImageFile(file) {
+            const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/heic', 'image/heif'];
+            const validExts = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.heic', '.heif'];
+            const ext = '.' + file.name.split('.').pop().toLowerCase();
+            return validTypes.includes(file.type) || validExts.includes(ext);
+        }
+
+        function handleBulkFileSelect(event) {
+            const files = Array.from(event.target.files).filter(isValidImageFile);
+            addBulkFiles(files);
+            event.target.value = ''; // Reset input
+        }
+
+        function addBulkFiles(files) {
+            // Add new files, avoid duplicates by name
+            const existingNames = new Set(bulkSelectedFiles.map(f => f.name));
+            files.forEach(file => {
+                if (!existingNames.has(file.name)) {
+                    bulkSelectedFiles.push(file);
+                }
+            });
+            updateBulkFilesPreview();
+        }
+
+        function updateBulkFilesPreview() {
+            const preview = document.getElementById('bulkFilesPreview');
+            const list = document.getElementById('bulkFilesList');
+            const count = document.getElementById('bulkFileCount');
+
+            if (bulkSelectedFiles.length === 0) {
+                preview.style.display = 'none';
+                return;
+            }
+
+            preview.style.display = 'block';
+            count.textContent = bulkSelectedFiles.length;
+
+            list.innerHTML = bulkSelectedFiles.map((file, idx) => `
+                <div class="bulk-file-item">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <polyline points="21,15 16,10 5,21"/>
+                    </svg>
+                    <span class="file-name">${escapeHtml(file.name)}</span>
+                    <span class="file-size">${formatFileSize(file.size)}</span>
+                    <button type="button" onclick="removeBulkFile(${idx})" style="background: none; border: none; cursor: pointer; color: var(--danger); padding: 0;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function removeBulkFile(index) {
+            bulkSelectedFiles.splice(index, 1);
+            updateBulkFilesPreview();
+        }
+
+        function clearBulkFiles() {
+            bulkSelectedFiles = [];
+            updateBulkFilesPreview();
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
+
+        async function startBulkUpload() {
+            const title = document.getElementById('bulkProjectTitle').value.trim();
+            const slug = document.getElementById('bulkProjectSlug').value.trim();
+            const year = document.getElementById('bulkProjectYear').value.trim() || new Date().getFullYear().toString();
+            const tags = document.getElementById('bulkProjectTags').value.trim() || 'Project - Build - Maker';
+            const description = document.getElementById('bulkProjectDescription').value.trim();
+            const category = document.getElementById('bulkProjectCategory').value;
+            const parentFolder = document.getElementById('bulkParentFolder').value;
+
+            // Validation
+            if (!title) {
+                alert('Please enter a project title');
+                return;
+            }
+            if (!slug) {
+                alert('Please enter a folder name (slug)');
+                return;
+            }
+            if (!/^[a-zA-Z0-9-]+$/.test(slug)) {
+                alert('Folder name can only contain letters, numbers, and hyphens');
+                return;
+            }
+            if (bulkSelectedFiles.length === 0) {
+                alert('Please select at least one image to upload');
+                return;
+            }
+
+            // Disable button
+            const btn = document.getElementById('bulkUploadBtn');
+            btn.disabled = true;
+            btn.innerHTML = 'Uploading...';
+
+            // Show progress
+            const progressDiv = document.getElementById('bulkUploadProgress');
+            const progressBar = document.getElementById('bulkProgressBar');
+            const progressText = document.getElementById('bulkProgressText');
+            const progressPercent = document.getElementById('bulkProgressPercent');
+            progressDiv.style.display = 'block';
+
+            // Prepare form data
+            const formData = new FormData();
+            formData.append('password', adminPassword);
+            formData.append('title', title);
+            formData.append('slug', slug);
+            formData.append('year', year);
+            formData.append('tags', tags.replace(/-/g, ' - '));
+            formData.append('description', description);
+            formData.append('category', category);
+            formData.append('parent_folder', parentFolder);
+
+            bulkSelectedFiles.forEach(file => {
+                formData.append('images', file);
+            });
+
+            try {
+                progressText.textContent = `Uploading ${bulkSelectedFiles.length} files...`;
+
+                const response = await fetch('/api/bulk-upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || 'Upload failed');
+                }
+
+                progressBar.style.width = '100%';
+                progressPercent.textContent = '100%';
+                progressText.textContent = `Uploaded ${result.uploaded.length} files`;
+
+                if (result.errors && result.errors.length > 0) {
+                    console.warn('Upload errors:', result.errors);
+                }
+
+                // Auto-rebuild site
+                progressText.textContent = 'Building site...';
+                await triggerBuildFromBulk();
+
+                // Success
+                alert(`Project "${title}" created successfully with ${result.uploaded.length} images!`);
+                closeBulkUploadModal();
+
+                // Reload metadata to show new project
+                await loadMetadata();
+                renderProjectList();
+
+            } catch (err) {
+                alert('Upload failed: ' + err.message);
+                console.error('Bulk upload error:', err);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                        <polyline points="17 8 12 3 7 8"/>
+                        <line x1="12" y1="3" x2="12" y2="15"/>
+                    </svg>
+                    Upload & Create Project
+                `;
+            }
+        }
+
+        async function triggerBuildFromBulk() {
+            try {
+                const response = await fetch('/api/build', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password: adminPassword })
+                });
+
+                if (!response.ok) {
+                    console.warn('Build trigger failed');
+                    return;
+                }
+
+                // Wait for build to complete (poll status)
+                let attempts = 0;
+                while (attempts < 30) {
+                    await new Promise(r => setTimeout(r, 1000));
+                    const statusRes = await fetch('/api/build/status');
+                    const status = await statusRes.json();
+                    if (!status.running) {
+                        break;
+                    }
+                    attempts++;
+                }
+            } catch (err) {
+                console.error('Build error:', err);
             }
         }
 

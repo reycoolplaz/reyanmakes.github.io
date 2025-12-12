@@ -477,6 +477,182 @@ def create_project():
         return jsonify({'error': str(e)}), 500
 
 
+@app.route('/api/bulk-upload', methods=['POST'])
+def bulk_upload():
+    """Bulk upload images to create a new project or add to existing"""
+    password = request.form.get('password', '')
+
+    if password != ADMIN_PASSWORD:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    # Get project details
+    title = request.form.get('title', '').strip()
+    slug = request.form.get('slug', '').strip()
+    year = request.form.get('year', str(time.localtime().tm_year))
+    tags = request.form.get('tags', 'Project • Build • Maker')
+    description = request.form.get('description', '')
+    category = request.form.get('category', 'makers')
+    parent_folder = request.form.get('parent_folder', '')  # e.g., "Makers stuff" or empty
+
+    if not title or not slug:
+        return jsonify({'error': 'Title and slug are required'}), 400
+
+    # Validate slug format
+    import re
+    if not re.match(r'^[a-zA-Z0-9-]+$', slug):
+        return jsonify({'error': 'Slug can only contain letters, numbers, and hyphens'}), 400
+
+    # Build the project path
+    if parent_folder:
+        project_rel_path = f"{parent_folder}/{slug}"
+        project_dir = BASE_DIR / 'images' / parent_folder / slug
+    else:
+        project_rel_path = slug
+        project_dir = BASE_DIR / 'images' / slug
+
+    # Ensure path is safe
+    if not str(project_dir.resolve()).startswith(str((BASE_DIR / 'images').resolve())):
+        return jsonify({'error': 'Invalid project path'}), 400
+
+    files = request.files.getlist('images')
+    if not files or all(not f.filename for f in files):
+        return jsonify({'error': 'No files provided'}), 400
+
+    try:
+        # Create the project folder
+        project_dir.mkdir(parents=True, exist_ok=True)
+
+        uploaded = []
+        errors = []
+
+        for file in files:
+            if file.filename:
+                # Get original path info for folder uploads
+                original_path = file.filename
+                # Extract just filename (handles both folder/file.jpg and file.jpg)
+                filename = Path(original_path).name
+
+                # Sanitize filename
+                filename = filename.replace('/', '_').replace('\\', '_')
+
+                # Check extension
+                ext = Path(filename).suffix.lower()
+                if ext not in {'.jpg', '.jpeg', '.png', '.gif', '.webp', '.heic', '.heif'}:
+                    errors.append(f'{filename}: invalid file type')
+                    continue
+
+                # For HEIC/HEIF, convert to JPG
+                is_heic = ext in {'.heic', '.heif'}
+                if is_heic:
+                    base_name = Path(filename).stem
+                    filename = f"{base_name}.jpg"
+                    ext = '.jpg'
+
+                filepath = project_dir / filename
+
+                # Don't overwrite existing files
+                if filepath.exists():
+                    base = filepath.stem
+                    counter = 1
+                    while filepath.exists():
+                        filepath = project_dir / f"{base}_{counter}{ext}"
+                        counter += 1
+
+                try:
+                    if is_heic:
+                        # Convert HEIC to JPG
+                        img = Image.open(file)
+                        if img.mode in ('RGBA', 'P'):
+                            img = img.convert('RGB')
+                        img.save(filepath, 'JPEG', quality=90)
+                    else:
+                        file.save(filepath)
+
+                    # Generate thumbnail
+                    try:
+                        thumb_dir = BASE_DIR / 'gen' / 'thumbnails' / project_rel_path
+                        thumb_dir.mkdir(parents=True, exist_ok=True)
+                        thumb_path = thumb_dir / f"{filepath.stem}.jpg"
+
+                        with Image.open(filepath) as img:
+                            if img.mode == 'RGBA':
+                                img = img.convert('RGB')
+                            img.thumbnail((200, 200), Image.Resampling.LANCZOS)
+                            img.save(thumb_path, 'JPEG', quality=75, optimize=True)
+                    except Exception as thumb_err:
+                        print(f"Thumbnail error for {filepath.name}: {thumb_err}")
+
+                    uploaded.append(str(filepath.name))
+                except Exception as e:
+                    errors.append(f'{filename}: {str(e)}')
+
+        # Determine the correct slug for metadata (with parent folder prefix if needed)
+        if parent_folder:
+            # Convert path like "Makers stuff/Go-Cart" to "makers-stuff-go-cart"
+            metadata_slug = f"{parent_folder.lower().replace(' ', '-')}-{slug.lower()}"
+        else:
+            metadata_slug = slug.lower()
+
+        # Add/update metadata
+        with open(METADATA_FILE, 'r') as f:
+            metadata = json.load(f)
+
+        if metadata_slug not in metadata.get('projects', {}):
+            metadata['projects'][metadata_slug] = {
+                'title': title,
+                'year': year,
+                'tags': tags,
+                'description': description or f'{title} project documentation.',
+                'featured': False,
+                'category': category
+            }
+        else:
+            # Update existing project
+            metadata['projects'][metadata_slug].update({
+                'title': title,
+                'year': year,
+                'tags': tags,
+                'description': description or metadata['projects'][metadata_slug].get('description', ''),
+                'category': category
+            })
+
+        with open(METADATA_FILE, 'w') as f:
+            json.dump(metadata, f, indent=2)
+
+        return jsonify({
+            'message': f'Uploaded {len(uploaded)} files to {project_rel_path}',
+            'uploaded': uploaded,
+            'errors': errors,
+            'slug': metadata_slug,
+            'path': project_rel_path
+        })
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/parent-folders', methods=['GET'])
+def get_parent_folders():
+    """Get list of existing parent folders in images directory"""
+    try:
+        images_dir = BASE_DIR / 'images'
+        folders = []
+
+        for item in images_dir.iterdir():
+            if item.is_dir() and not item.name.startswith('.'):
+                # Check if this folder contains subfolders (parent folder pattern)
+                has_subfolders = any(
+                    subitem.is_dir() and not subitem.name.startswith('.')
+                    for subitem in item.iterdir()
+                )
+                if has_subfolders:
+                    folders.append(item.name)
+
+        return jsonify({'folders': sorted(folders)})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
 @app.route('/api/delete-project', methods=['POST'])
 def delete_project():
     """Delete a project and all its files"""
