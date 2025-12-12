@@ -291,10 +291,9 @@ def generate_project_page(slug, info, metadata, template='default', layout='defa
     <title>{metadata['title']} | Reyan Makes</title>
     <meta name="description" content="{metadata['description']}">
     <link rel="stylesheet" href="{asset_prefix}styles.css{version_suffix}">
-    <link rel="stylesheet" href="{asset_prefix}themes/{template}.css{version_suffix}">
-    <link rel="stylesheet" href="{asset_prefix}layouts/{layout}.css{version_suffix}">
+    <script src="{asset_prefix}config-loader.js"></script>
 </head>
-<body class="layout-{layout}">
+<body>
     <nav class="navbar">
         <div class="nav-container">
             <a href="{asset_prefix}index.html" class="logo">Reyan Makes</a>
@@ -723,10 +722,9 @@ def generate_index_html(discovered_folders, metadata_config):
     <title>{site_content.get("siteTitle", "Reyan Makes")}</title>
     <meta name="description" content="{site_content.get("siteDescription", "")}">
     <link rel="stylesheet" href="styles.css{version_suffix}">
-    <link rel="stylesheet" href="themes/{template}.css{version_suffix}">
-    <link rel="stylesheet" href="layouts/{layout}.css{version_suffix}">
+    <script src="config-loader.js"></script>
 </head>
-<body class="layout-{layout}">
+<body>
     <nav class="navbar">
         <div class="nav-container">
             <a href="index.html" class="logo">{site_content.get("siteName", "Reyan Makes")}</a>
@@ -897,6 +895,29 @@ def update_index_featured(discovered_folders, metadata_config):
 
 
 # ============================================================================
+# STEP 7: GENERATE SITE CONFIG
+# ============================================================================
+
+def generate_site_config(metadata_config):
+    """Generate site-config.json for dynamic CSS loading"""
+    print("⚙️  Generating site config...\n")
+
+    site_settings = metadata_config.get("siteSettings", {})
+
+    config = {
+        "layout": site_settings.get("layout", "default"),
+        "theme": site_settings.get("template", "default")
+    }
+
+    config_file = BASE_DIR / 'site-config.json'
+    with open(config_file, 'w') as f:
+        json.dump(config, f, indent=2)
+
+    print(f"  ✓ site-config.json: layout={config['layout']}, theme={config['theme']}\n")
+    return config
+
+
+# ============================================================================
 # MAIN ORCHESTRATION
 # ============================================================================
 
@@ -950,6 +971,9 @@ def main():
 
         # Step 6: Generate index.html from configuration
         generate_index_html(discovered, metadata_config)
+
+        # Step 7: Generate site config for dynamic CSS loading
+        generate_site_config(metadata_config)
 
         print("=" * 70)
         print("✅ BUILD COMPLETE!")

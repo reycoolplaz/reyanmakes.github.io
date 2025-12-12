@@ -25,6 +25,23 @@ BASE_DIR = Path(__file__).parent
 METADATA_FILE = BASE_DIR / 'projects-metadata.json'
 IMAGE_ORDER_FILE = BASE_DIR / 'image-orders.json'
 HIDDEN_IMAGES_FILE = BASE_DIR / 'hidden-images.json'
+SITE_CONFIG_FILE = BASE_DIR / 'site-config.json'
+
+
+def update_site_config(layout=None, theme=None):
+    """Update site-config.json with layout/theme settings"""
+    config = {}
+    if SITE_CONFIG_FILE.exists():
+        with open(SITE_CONFIG_FILE, 'r') as f:
+            config = json.load(f)
+
+    if layout is not None:
+        config['layout'] = layout
+    if theme is not None:
+        config['theme'] = theme
+
+    with open(SITE_CONFIG_FILE, 'w') as f:
+        json.dump(config, f, indent=2)
 
 # Simple password protection (change this!)
 ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'reyan2025')
@@ -188,6 +205,9 @@ def save_template():
         with open(METADATA_FILE, 'w') as f:
             json.dump(metadata, f, indent=2)
 
+        # Also update site-config.json for dynamic loading
+        update_site_config(theme=template)
+
         return jsonify({'message': f'Template changed to {template}', 'template': template})
 
     except Exception as e:
@@ -225,6 +245,9 @@ def save_layout():
         # Save metadata
         with open(METADATA_FILE, 'w') as f:
             json.dump(metadata, f, indent=2)
+
+        # Also update site-config.json for dynamic loading
+        update_site_config(layout=layout)
 
         return jsonify({'message': f'Layout changed to {layout}', 'layout': layout})
 
