@@ -2456,23 +2456,23 @@
         }
 
         async function saveChanges() {
-            if (!currentProject) return;
+            // Update current project metadata if one is selected
+            if (currentProject) {
+                if (!metadata.projects[currentProject]) {
+                    metadata.projects[currentProject] = {};
+                }
 
-            // Update metadata
-            if (!metadata.projects[currentProject]) {
-                metadata.projects[currentProject] = {};
+                const meta = metadata.projects[currentProject];
+                meta.title = document.getElementById('projectTitle').value;
+                meta.year = document.getElementById('projectYear').value;
+                meta.tags = document.getElementById('projectTags').value;
+                meta.category = document.getElementById('projectCategory').value;
+                meta.description = document.getElementById('projectDescription').value;
+                meta.featured = document.getElementById('projectFeatured').checked;
             }
 
-            const meta = metadata.projects[currentProject];
-            meta.title = document.getElementById('projectTitle').value;
-            meta.year = document.getElementById('projectYear').value;
-            meta.tags = document.getElementById('projectTags').value;
-            meta.category = document.getElementById('projectCategory').value;
-            meta.description = document.getElementById('projectDescription').value;
-            meta.featured = document.getElementById('projectFeatured').checked;
-
             try {
-                // Save metadata via API
+                // Save metadata via API (includes featuredOrder and all project data)
                 const res = await fetch('/api/metadata', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -2486,8 +2486,8 @@
                 // Save image order locally
                 localStorage.setItem('imageOrders', JSON.stringify(imageOrder));
 
-                // Also save image order via API if we have a custom order
-                if (imageOrder[currentProject]) {
+                // Also save image order via API if we have a custom order for the current project
+                if (currentProject && imageOrder[currentProject]) {
                     await fetch('/api/image-order', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -2636,11 +2636,13 @@
                 return;
             }
 
-            const project = siteIndex.projects[currentProject];
-            if (!project) {
-                showToast('Project not found', 'error');
-                return;
-            }
+            // Get project from siteIndex or create stub for empty projects (same logic as selectProject)
+            const project = siteIndex.projects[currentProject] || {
+                title: metadata.projects[currentProject]?.title || currentProject,
+                year: metadata.projects[currentProject]?.year || '2024',
+                path: currentProject,  // Use slug as path for new/empty projects
+                images: 0
+            };
 
             const uploadZone = document.getElementById('uploadZone');
             const uploadProgress = document.getElementById('uploadProgress');
@@ -2851,11 +2853,11 @@
                 return;
             }
 
-            const project = siteIndex.projects[currentProject];
-            if (!project) {
-                showToast('Project not found', 'error');
-                return;
-            }
+            // Get project from siteIndex or create stub for empty projects
+            const project = siteIndex.projects[currentProject] || {
+                path: currentProject,
+                images: 0
+            };
 
             try {
                 const res = await fetch('/api/delete-image', {
