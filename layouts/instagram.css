@@ -1,11 +1,11 @@
-/* Instagram Layout - Profile page style, square grid, minimal & clean */
+/* Instagram Layout - Profile page style with avatar, stats, and square grid */
 
 /* ============================================
    HERO SECTION - Instagram Profile Header
    ============================================ */
 body.layout-instagram .hero {
     min-height: auto;
-    padding: 5rem 2rem 1.5rem;
+    padding: 5rem 2rem 2rem;
     background: var(--bg-color);
     text-align: center;
     border-bottom: 1px solid var(--border-color, rgba(128,128,128,0.15));
@@ -16,14 +16,68 @@ body.layout-instagram .hero::before {
 }
 
 body.layout-instagram .hero-content {
-    max-width: 400px;
+    max-width: 450px;
 }
 
-/* Circular avatar placeholder using first letter */
-body.layout-instagram .hero-title {
-    font-size: 1.5rem;
+/* Instagram circular avatar */
+body.layout-instagram .profile-avatar {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    padding: 3px;
+    margin: 0 auto 1.25rem;
+}
+
+body.layout-instagram .profile-avatar::before {
+    content: 'R';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--bg-color);
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--text-color);
+}
+
+/* Profile stats bar */
+body.layout-instagram .profile-stats {
+    display: flex !important;
+    justify-content: center;
+    gap: 2.5rem;
+    margin: 1rem 0 1.25rem;
+    padding: 0.75rem 0;
+}
+
+body.layout-instagram .profile-stats .stat {
+    text-align: center;
+}
+
+body.layout-instagram .profile-stats .stat-value {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+body.layout-instagram .profile-stats .stat-label {
+    display: block;
+    font-size: 0.8rem;
     font-weight: 400;
-    margin-bottom: 0.75rem;
+    color: var(--text-light);
+    text-transform: lowercase;
+}
+
+body.layout-instagram .hero-title {
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin-bottom: 0.25rem;
     color: var(--text-color);
 }
 
@@ -36,8 +90,8 @@ body.layout-instagram .hero-subtitle {
 }
 
 body.layout-instagram .hero-description {
-    font-size: 0.875rem;
-    opacity: 0.85;
+    font-size: 0.85rem;
+    opacity: 0.8;
     line-height: 1.5;
     margin-bottom: 1rem;
 }
@@ -73,7 +127,7 @@ body.layout-instagram .cta-button:hover {
 }
 
 /* ============================================
-   FEATURED PROJECTS - Instagram Grid
+   FEATURED PROJECTS - Instagram Grid (3x3+)
    ============================================ */
 body.layout-instagram .featured-projects {
     padding: 0;
@@ -90,6 +144,7 @@ body.layout-instagram .featured-projects .section-subtitle {
     display: none;
 }
 
+/* Instagram 3-column square grid */
 body.layout-instagram .projects-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -127,18 +182,18 @@ body.layout-instagram .project-card:hover .project-image img {
     transform: none;
 }
 
-/* Hover overlay */
+/* Hover overlay with gradient */
 body.layout-instagram .project-card::before {
     content: '';
     position: absolute;
     inset: 0;
     background: rgba(0, 0, 0, 0);
-    transition: background 0.15s ease;
+    transition: background 0.2s ease;
     z-index: 1;
 }
 
 body.layout-instagram .project-card:hover::before {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.35);
 }
 
 body.layout-instagram .project-content {
@@ -151,7 +206,7 @@ body.layout-instagram .project-content {
     text-align: center;
     padding: 1rem;
     opacity: 0;
-    transition: opacity 0.15s ease;
+    transition: opacity 0.2s ease;
     z-index: 2;
     background: transparent;
 }
@@ -167,9 +222,9 @@ body.layout-instagram .year-badge {
 body.layout-instagram .project-content h3 {
     font-size: 0.85rem;
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
     color: white;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
 }
 
 body.layout-instagram .project-description {
@@ -183,7 +238,7 @@ body.layout-instagram .project-tags {
 body.layout-instagram .view-gallery-btn {
     display: inline-block;
     padding: 0.4rem 0.9rem;
-    border-radius: 4px;
+    border-radius: 6px;
     font-size: 0.75rem;
     background: white;
     color: #262626;
@@ -195,7 +250,7 @@ body.layout-instagram .view-gallery-btn:hover {
 }
 
 /* ============================================
-   TIMELINE - Instagram Card Grid Style
+   TIMELINE - Simplified Card Grid
    ============================================ */
 body.layout-instagram .timeline,
 body.layout-instagram .timeline--glow {
@@ -206,7 +261,7 @@ body.layout-instagram .timeline--glow {
 }
 
 body.layout-instagram .timeline--glow .section-title {
-    font-size: 0.75rem !important;
+    font-size: 0.8rem !important;
     font-weight: 600 !important;
     text-transform: uppercase !important;
     letter-spacing: 0.1em !important;
@@ -236,10 +291,6 @@ body.layout-instagram .journey-track {
 
 body.layout-instagram .journey-track::before {
     display: none !important;
-    content: none !important;
-    background: none !important;
-    width: 0 !important;
-    height: 0 !important;
 }
 
 body.layout-instagram .milestone {
@@ -253,10 +304,7 @@ body.layout-instagram .milestone {
     display: block !important;
 }
 
-body.layout-instagram .milestone-year {
-    display: none !important;
-}
-
+body.layout-instagram .milestone-year,
 body.layout-instagram .milestone-dot {
     display: none !important;
 }
@@ -268,7 +316,6 @@ body.layout-instagram .milestone-card {
     padding: 1rem !important;
     box-shadow: none !important;
     backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
     color: var(--text-color) !important;
     max-width: none !important;
     height: 100% !important;
@@ -285,28 +332,18 @@ body.layout-instagram .milestone-card h3 {
     font-weight: 600 !important;
     color: var(--text-color) !important;
     margin: 0 0 0.5rem 0 !important;
-    padding: 0 !important;
     line-height: 1.3 !important;
 }
 
-/* Hide description paragraphs but not labels */
-body.layout-instagram .milestone-card > p:not(.milestone-label) {
-    display: none !important;
-}
-
-body.layout-instagram .milestone-label {
-    display: none !important;
-}
-
-body.layout-instagram .milestone-pill-group {
-    display: none !important;
-}
-
+/* Hide description and labels */
+body.layout-instagram .milestone-card > p:not(.milestone-label),
+body.layout-instagram .milestone-label,
+body.layout-instagram .milestone-pill-group,
 body.layout-instagram .milestone-pill {
     display: none !important;
 }
 
-/* SHOW milestone links - these are clickable */
+/* Show milestone links */
 body.layout-instagram .milestone-links {
     display: flex !important;
     flex-wrap: wrap !important;
@@ -328,12 +365,10 @@ body.layout-instagram .milestone-link {
 
 body.layout-instagram .milestone-link:hover {
     background: #1877f2 !important;
-    transform: none !important;
-    box-shadow: none !important;
 }
 
 /* ============================================
-   ABOUT SECTION - Bio style
+   ABOUT SECTION
    ============================================ */
 body.layout-instagram .about {
     padding: 2.5rem 2rem;
@@ -348,7 +383,7 @@ body.layout-instagram .about-content {
 }
 
 body.layout-instagram .about .section-title {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -380,7 +415,6 @@ body.layout-instagram .skills-grid {
     flex-wrap: wrap;
     justify-content: center;
     gap: 0.4rem;
-    margin-top: 0.5rem;
 }
 
 body.layout-instagram .skill {
@@ -402,7 +436,7 @@ body.layout-instagram .contact {
 }
 
 body.layout-instagram .contact .section-title {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -453,11 +487,28 @@ body.layout-instagram .footer p {
    ============================================ */
 @media (max-width: 768px) {
     body.layout-instagram .hero {
-        padding: 4.5rem 1.5rem 1.25rem;
+        padding: 4.5rem 1.5rem 1.5rem;
+    }
+
+    body.layout-instagram .profile-avatar {
+        width: 90px;
+        height: 90px;
+    }
+
+    body.layout-instagram .profile-avatar::before {
+        font-size: 2.25rem;
+    }
+
+    body.layout-instagram .profile-stats {
+        gap: 2rem;
+    }
+
+    body.layout-instagram .profile-stats .stat-value {
+        font-size: 1.1rem;
     }
 
     body.layout-instagram .hero-title {
-        font-size: 1.25rem;
+        font-size: 1.2rem;
     }
 
     body.layout-instagram .projects-grid {
@@ -477,22 +528,36 @@ body.layout-instagram .footer p {
         grid-template-columns: 1fr !important;
         gap: 0.75rem !important;
     }
-
-    body.layout-instagram .milestone-card {
-        padding: 0.85rem !important;
-    }
-
-    body.layout-instagram .milestone-card h3 {
-        font-size: 0.85rem !important;
-    }
-
-    body.layout-instagram .milestone-link {
-        font-size: 0.65rem !important;
-        padding: 0.3rem 0.5rem !important;
-    }
 }
 
 @media (max-width: 480px) {
+    body.layout-instagram .hero {
+        padding: 4rem 1rem 1.25rem;
+    }
+
+    body.layout-instagram .profile-avatar {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 1rem;
+    }
+
+    body.layout-instagram .profile-avatar::before {
+        font-size: 2rem;
+    }
+
+    body.layout-instagram .profile-stats {
+        gap: 1.5rem;
+        margin: 0.75rem 0 1rem;
+    }
+
+    body.layout-instagram .profile-stats .stat-value {
+        font-size: 1rem;
+    }
+
+    body.layout-instagram .profile-stats .stat-label {
+        font-size: 0.7rem;
+    }
+
     body.layout-instagram .hero-description {
         font-size: 0.8rem;
     }
@@ -510,19 +575,6 @@ body.layout-instagram .footer p {
 
     body.layout-instagram .projects-grid {
         gap: 1px;
-    }
-
-    body.layout-instagram .journey-track {
-        gap: 0.5rem !important;
-        padding: 0 0.5rem !important;
-    }
-
-    body.layout-instagram .milestone-card {
-        padding: 0.75rem !important;
-    }
-
-    body.layout-instagram .milestone-card h3 {
-        font-size: 0.8rem !important;
     }
 
     body.layout-instagram .about,

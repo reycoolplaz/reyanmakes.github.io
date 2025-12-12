@@ -7,6 +7,12 @@ body.layout-default .hero {
     text-align: center;
 }
 
+/* Hide profile elements in default layout */
+body.layout-default .profile-avatar,
+body.layout-default .profile-stats {
+    display: none !important;
+}
+
 body.layout-default .hero-content {
     max-width: 800px;
 }

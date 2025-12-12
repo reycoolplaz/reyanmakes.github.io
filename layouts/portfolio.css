@@ -16,6 +16,12 @@ body.layout-portfolio .hero::before {
     display: none;
 }
 
+/* Hide profile elements in portfolio layout */
+body.layout-portfolio .profile-avatar,
+body.layout-portfolio .profile-stats {
+    display: none !important;
+}
+
 body.layout-portfolio .hero-content {
     max-width: 900px;
 }

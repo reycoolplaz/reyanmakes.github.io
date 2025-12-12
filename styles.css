@@ -92,6 +92,12 @@ body {
     max-width: 800px;
 }
 
+/* Profile elements - hidden by default, shown in specific layouts */
+.profile-avatar,
+.profile-stats {
+    display: none;
+}
+
 .hero-title {
     font-size: 4rem;
     font-weight: bold;

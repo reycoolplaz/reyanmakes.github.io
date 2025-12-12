@@ -613,15 +613,29 @@ def generate_index_html(discovered_folders, metadata_config):
     contact = site_content.get("contact", {})
     footer = site_content.get("footer", {})
 
-    # Generate featured project cards
+    # For Instagram/Pinterest layouts, show ALL projects; otherwise just featured
+    is_grid_layout = layout in ['instagram', 'pinterest']
+
     featured_cards = []
-    for i, slug in enumerate(featured_order):
-        if slug in projects_meta and slug in discovered_folders:
-            meta = projects_meta[slug]
-            info = discovered_folders[slug]
-            featured_cards.append(generate_featured_card(slug, info, meta, is_first=(i == 0)))
+    if is_grid_layout:
+        # Show all projects for grid-based layouts
+        defaults = metadata_config.get("defaults", {})
+        for slug, info in discovered_folders.items():
+            meta = projects_meta.get(slug) or get_project_metadata(slug, projects_meta, defaults)
+            featured_cards.append(generate_featured_card(slug, info, meta, is_first=False))
+    else:
+        # Show only featured projects for other layouts
+        for i, slug in enumerate(featured_order):
+            if slug in projects_meta and slug in discovered_folders:
+                meta = projects_meta[slug]
+                info = discovered_folders[slug]
+                featured_cards.append(generate_featured_card(slug, info, meta, is_first=(i == 0)))
 
     featured_cards_html = '\n\n'.join(featured_cards) if featured_cards else ''
+
+    # Calculate stats for Instagram profile header
+    total_projects = len(discovered_folders)
+    total_images = sum(info['image_count'] for info in discovered_folders.values())
 
     # Generate timeline milestones
     milestones_html = []
@@ -710,8 +724,13 @@ def generate_index_html(discovered_folders, metadata_config):
 
     <section id="home" class="hero">
         <div class="hero-content">
+            <div class="profile-avatar">R</div>
             <h1 class="hero-title">{hero.get("title", "")}</h1>
             <p class="hero-subtitle">{hero.get("subtitle", "")}</p>
+            <div class="profile-stats">
+                <div class="stat"><span class="stat-value">{total_projects}</span><span class="stat-label">projects</span></div>
+                <div class="stat"><span class="stat-value">{total_images}</span><span class="stat-label">images</span></div>
+            </div>
             <p class="hero-description">{hero.get("description", "")}</p>
             <div class="hero-actions">
                 {youtube_html}
