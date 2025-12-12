@@ -189,7 +189,7 @@ body.layout-pinterest .view-gallery-btn:hover {
 }
 
 /* ============================================
-   TIMELINE - Idea board style
+   TIMELINE - Idea board style cards
    ============================================ */
 body.layout-pinterest .timeline,
 body.layout-pinterest .timeline--glow {
@@ -200,6 +200,7 @@ body.layout-pinterest .timeline--glow {
 body.layout-pinterest .timeline .container,
 body.layout-pinterest .timeline--glow .container {
     max-width: 1000px;
+    margin: 0 auto;
 }
 
 body.layout-pinterest .timeline--glow .section-title {
@@ -219,27 +220,36 @@ body.layout-pinterest .timeline--glow .section-subtitle {
 }
 
 body.layout-pinterest .journey-track {
-    display: grid;
+    display: grid !important;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 1rem;
-    max-width: 100%;
-    margin: 0;
-    padding: 0;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    position: relative;
 }
 
 body.layout-pinterest .journey-track::before {
-    display: none;
+    display: none !important;
+    content: none !important;
 }
 
 body.layout-pinterest .milestone {
-    padding: 0;
-    opacity: 1;
-    animation: none;
+    position: relative;
+    width: 100%;
+    padding: 0 !important;
+    opacity: 1 !important;
+    animation: none !important;
 }
 
-body.layout-pinterest .milestone-year,
+body.layout-pinterest .milestone-year {
+    display: none !important;
+    position: static;
+}
+
 body.layout-pinterest .milestone-dot {
-    display: none;
+    display: none !important;
+    position: static;
 }
 
 body.layout-pinterest .milestone-card {
@@ -249,8 +259,10 @@ body.layout-pinterest .milestone-card {
     padding: 1.25rem;
     box-shadow: none;
     backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     color: var(--text-color);
     height: 100%;
+    max-width: none;
 }
 
 body.layout-pinterest .milestone-card:hover {
@@ -269,7 +281,7 @@ body.layout-pinterest .milestone-card p {
     font-size: 0.85rem;
     line-height: 1.5;
     color: var(--text-light);
-    opacity: 0.8;
+    margin-bottom: 0.75rem;
 }
 
 body.layout-pinterest .milestone-label {
@@ -278,22 +290,24 @@ body.layout-pinterest .milestone-label {
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--text-light);
-    opacity: 0.5;
+    opacity: 0.6;
     margin-top: 1rem;
+    margin-bottom: 0.4rem;
 }
 
 body.layout-pinterest .milestone-pill-group {
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;
-    margin-top: 0.5rem;
+    margin-bottom: 0.75rem;
 }
 
 body.layout-pinterest .milestone-pill {
-    font-size: 0.75rem;
-    padding: 0.25rem 0.6rem;
-    background: var(--bg-secondary);
-    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0;
+    background: transparent;
+    border-radius: 0;
     color: var(--text-color);
 }
 
@@ -301,7 +315,6 @@ body.layout-pinterest .milestone-links {
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;
-    margin-top: 0.75rem;
 }
 
 body.layout-pinterest .milestone-link {
@@ -316,6 +329,8 @@ body.layout-pinterest .milestone-link {
 
 body.layout-pinterest .milestone-link:hover {
     background: #ad081b;
+    transform: none;
+    box-shadow: none;
 }
 
 /* ============================================

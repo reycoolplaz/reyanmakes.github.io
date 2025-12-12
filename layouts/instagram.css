@@ -209,34 +209,43 @@ body.layout-instagram .timeline--glow .section-title,
 body.layout-instagram .timeline--glow .section-subtitle,
 body.layout-instagram .timeline .container h2,
 body.layout-instagram .timeline .container p {
-    display: none;
+    display: none !important;
 }
 
 body.layout-instagram .journey-track {
-    display: flex;
+    display: flex !important;
     justify-content: center;
     gap: 3rem;
-    max-width: 500px;
+    max-width: 600px;
     margin: 0 auto;
-    padding: 0;
+    padding: 0 1rem;
     flex-wrap: wrap;
+    position: relative;
 }
 
 body.layout-instagram .journey-track::before {
-    display: none;
+    display: none !important;
+    content: none !important;
 }
 
 body.layout-instagram .milestone {
     text-align: center;
-    padding: 0;
-    opacity: 1;
-    animation: none;
+    padding: 0 !important;
+    opacity: 1 !important;
+    animation: none !important;
     flex: 0 0 auto;
+    width: auto;
+    position: relative;
 }
 
-body.layout-instagram .milestone-year,
+body.layout-instagram .milestone-year {
+    display: none !important;
+    position: static;
+}
+
 body.layout-instagram .milestone-dot {
-    display: none;
+    display: none !important;
+    position: static;
 }
 
 body.layout-instagram .milestone-card {
@@ -246,7 +255,9 @@ body.layout-instagram .milestone-card {
     padding: 0.5rem;
     box-shadow: none;
     backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     color: var(--text-color);
+    max-width: none;
 }
 
 body.layout-instagram .milestone-card:hover {
@@ -264,18 +275,31 @@ body.layout-instagram .milestone-card h3 {
 body.layout-instagram .milestone-card p {
     font-size: 0.8rem;
     color: var(--text-light);
-    opacity: 0.7;
+    margin-bottom: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100px;
 }
 
-body.layout-instagram .milestone-label,
-body.layout-instagram .milestone-pill-group,
-body.layout-instagram .milestone-pill,
+body.layout-instagram .milestone-label {
+    display: none !important;
+}
+
+body.layout-instagram .milestone-pill-group {
+    display: none !important;
+}
+
+body.layout-instagram .milestone-pill {
+    display: none !important;
+}
+
 body.layout-instagram .milestone-links {
-    display: none;
+    display: none !important;
+}
+
+body.layout-instagram .milestone-link {
+    display: none !important;
 }
 
 /* ============================================
@@ -420,7 +444,11 @@ body.layout-instagram .footer p {
     }
 
     body.layout-instagram .journey-track {
-        gap: 2rem;
+        gap: 2rem !important;
+    }
+
+    body.layout-instagram .milestone {
+        padding: 0 !important;
     }
 
     body.layout-instagram .milestone-card h3 {
@@ -454,7 +482,11 @@ body.layout-instagram .footer p {
     }
 
     body.layout-instagram .journey-track {
-        gap: 1.5rem;
+        gap: 1.5rem !important;
+    }
+
+    body.layout-instagram .milestone {
+        padding: 0 !important;
     }
 
     body.layout-instagram .milestone-card p {
