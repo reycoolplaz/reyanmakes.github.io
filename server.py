@@ -155,6 +155,44 @@ def save_metadata():
         return jsonify({'error': str(e)}), 500
 
 
+@app.route('/api/template', methods=['POST'])
+def save_template():
+    """Save site template selection to metadata"""
+    data = request.get_json()
+    password = request.headers.get('X-Admin-Password', '')
+
+    if password != ADMIN_PASSWORD:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    template = data.get('template')
+    if not template:
+        return jsonify({'error': 'No template provided'}), 400
+
+    # Validate template name
+    valid_templates = ['default', 'dark', 'ocean', 'forest', 'sunset']
+    if template not in valid_templates:
+        return jsonify({'error': f'Invalid template. Must be one of: {", ".join(valid_templates)}'}), 400
+
+    try:
+        # Load existing metadata
+        with open(METADATA_FILE, 'r') as f:
+            metadata = json.load(f)
+
+        # Update siteSettings
+        if 'siteSettings' not in metadata:
+            metadata['siteSettings'] = {}
+        metadata['siteSettings']['template'] = template
+
+        # Save metadata
+        with open(METADATA_FILE, 'w') as f:
+            json.dump(metadata, f, indent=2)
+
+        return jsonify({'message': f'Template changed to {template}', 'template': template})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
 @app.route('/api/image-order', methods=['POST'])
 def save_image_order():
     """Save custom image order for a project"""

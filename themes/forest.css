@@ -1,0 +1,14 @@
+/* Forest Theme - Green/Lime */
+:root {
+    --primary-color: #22c55e;
+    --secondary-color: #84cc16;
+    --gradient-start: #166534;
+    --gradient-end: #365314;
+    --text-color: #1a2e1a;
+    --text-light: #4b5563;
+    --bg-color: #f7fdf7;
+    --bg-secondary: #ecfccb;
+    --border-color: #bbf7d0;
+    --card-bg: #ffffff;
+    --nav-bg: rgba(247, 253, 247, 0.95);
+}

@@ -255,7 +255,7 @@ def get_project_metadata(slug, metadata_db, defaults):
         "category": "makers"
     }
 
-def generate_project_page(slug, info, metadata):
+def generate_project_page(slug, info, metadata, template='default'):
     """Generate HTML page for a project"""
 
     rel_path = info['rel_path']
@@ -273,6 +273,7 @@ def generate_project_page(slug, info, metadata):
     <title>{metadata['title']} | Reyan Makes</title>
     <meta name="description" content="{metadata['description']}">
     <link rel="stylesheet" href="{asset_prefix}styles.css{version_suffix}">
+    <link rel="stylesheet" href="{asset_prefix}themes/{template}.css{version_suffix}">
 </head>
 <body>
     <nav class="navbar">
@@ -391,12 +392,13 @@ def generate_all_project_pages(discovered_folders, metadata_config):
 
     projects_meta = metadata_config.get("projects", {})
     defaults = metadata_config.get("defaults", {})
+    template = metadata_config.get("siteSettings", {}).get("template", "default")
 
     for slug, info in discovered_folders.items():
         metadata = get_project_metadata(slug, projects_meta, defaults)
 
         output_file = PROJECTS_BASE / f"{slug}.html"
-        html = generate_project_page(slug, info, metadata)
+        html = generate_project_page(slug, info, metadata, template)
 
         with open(output_file, 'w') as f:
             f.write(html)
@@ -488,6 +490,44 @@ def generate_featured_card(slug, project_info, metadata, is_first=False):
                         <a href="projects/{slug}.html" class="view-gallery-btn">View Gallery ({images} images)</a>
                     </div>
                 </div>'''
+
+
+def update_index_theme(metadata_config):
+    """Update the theme CSS link in index.html based on metadata"""
+    import re
+
+    index_file = BASE_DIR / 'index.html'
+    if not index_file.exists():
+        return
+
+    template = metadata_config.get("siteSettings", {}).get("template", "default")
+    version_suffix = f'?v={ASSET_VERSION}'
+
+    with open(index_file, 'r') as f:
+        content = f.read()
+
+    # Check if theme link already exists
+    theme_link = f'<link rel="stylesheet" href="themes/{template}.css{version_suffix}">'
+
+    if 'themes/' in content:
+        # Update existing theme link
+        content = re.sub(
+            r'<link rel="stylesheet" href="themes/[^"]+\.css[^"]*">',
+            theme_link,
+            content
+        )
+    else:
+        # Add theme link after styles.css
+        content = re.sub(
+            r'(<link rel="stylesheet" href="styles\.css[^"]*">)',
+            f'\\1\n    {theme_link}',
+            content
+        )
+
+    with open(index_file, 'w') as f:
+        f.write(content)
+
+    print(f"  ✓ Applied '{template}' theme to index.html\n")
 
 
 def update_index_featured(discovered_folders, metadata_config):
@@ -607,6 +647,9 @@ def main():
 
         # Step 6: Update Featured Builds in index.html
         update_index_featured(discovered, metadata_config)
+
+        # Step 7: Update theme in index.html
+        update_index_theme(metadata_config)
 
         print("=" * 70)
         print("✅ BUILD COMPLETE!")

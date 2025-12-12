@@ -1,0 +1,14 @@
+/* Sunset Theme - Orange/Red */
+:root {
+    --primary-color: #f97316;
+    --secondary-color: #ef4444;
+    --gradient-start: #ea580c;
+    --gradient-end: #dc2626;
+    --text-color: #292524;
+    --text-light: #78716c;
+    --bg-color: #fffbf5;
+    --bg-secondary: #fef3e2;
+    --border-color: #fed7aa;
+    --card-bg: #ffffff;
+    --nav-bg: rgba(255, 251, 245, 0.95);
+}

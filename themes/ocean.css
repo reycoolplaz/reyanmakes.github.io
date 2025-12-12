@@ -1,0 +1,14 @@
+/* Ocean Theme - Teal/Cyan */
+:root {
+    --primary-color: #14b8a6;
+    --secondary-color: #06b6d4;
+    --gradient-start: #0d9488;
+    --gradient-end: #0891b2;
+    --text-color: #1e3a5f;
+    --text-light: #64748b;
+    --bg-color: #f0fdfa;
+    --bg-secondary: #e0f7fa;
+    --border-color: #99f6e4;
+    --card-bg: #ffffff;
+    --nav-bg: rgba(240, 253, 250, 0.95);
+}

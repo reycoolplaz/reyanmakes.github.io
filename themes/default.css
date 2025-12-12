@@ -1,0 +1,14 @@
+/* Default Theme - Indigo/Purple */
+:root {
+    --primary-color: #6366f1;
+    --secondary-color: #8b5cf6;
+    --gradient-start: #667eea;
+    --gradient-end: #764ba2;
+    --text-color: #1f2937;
+    --text-light: #6b7280;
+    --bg-color: #ffffff;
+    --bg-secondary: #f9fafb;
+    --border-color: #e5e7eb;
+    --card-bg: #ffffff;
+    --nav-bg: rgba(255, 255, 255, 0.95);
+}

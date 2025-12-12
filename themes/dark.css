@@ -1,0 +1,61 @@
+/* Dark Theme - Purple/Pink on Dark */
+:root {
+    --primary-color: #a78bfa;
+    --secondary-color: #f472b6;
+    --gradient-start: #4c1d95;
+    --gradient-end: #831843;
+    --text-color: #f3f4f6;
+    --text-light: #9ca3af;
+    --bg-color: #1a1a2e;
+    --bg-secondary: #16213e;
+    --border-color: #374151;
+    --card-bg: #1f2937;
+    --nav-bg: rgba(26, 26, 46, 0.95);
+}
+
+/* Dark theme specific overrides */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.navbar {
+    background: var(--nav-bg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.project-card {
+    background: var(--card-bg);
+}
+
+.footer {
+    background: var(--bg-secondary);
+}
+
+.contact {
+    background: var(--bg-secondary);
+}
+
+.about {
+    background: var(--bg-color);
+}
+
+.skills-grid .skill {
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+    color: var(--text-color);
+}
+
+.tag {
+    background: var(--bg-secondary);
+    color: var(--text-light);
+}
+
+.milestone-card {
+    background: var(--card-bg);
+}
+
+.milestone-pill {
+    background: var(--bg-secondary);
+    color: var(--text-light);
+}
