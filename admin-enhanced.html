@@ -2143,10 +2143,9 @@
                 metadata.siteSettings = metadata.siteSettings || {};
                 metadata.siteSettings.template = templateKey;
                 renderTemplateSelector();
-                showToast(`Theme changed to ${templateConfigs[templateKey].name}. Building site...`, 'success');
+                showToast(`Theme changed to ${templateConfigs[templateKey].name}. Refresh page to see changes.`, 'success');
 
-                // Auto-trigger build to apply changes
-                await triggerBuild();
+                // No build needed - config-loader.js dynamically loads theme CSS
             } catch (error) {
                 console.error('Failed to save template:', error);
                 showToast(error.message, 'error');
@@ -2193,9 +2192,10 @@
                 metadata.siteSettings = metadata.siteSettings || {};
                 metadata.siteSettings.layout = layoutKey;
                 renderLayoutSelector();
-                showToast(`Layout changed to ${layoutConfigs[layoutKey].name}. Building site...`, 'success');
+                showToast(`Layout changed to ${layoutConfigs[layoutKey].name}. Building site (layout affects content)...`, 'success');
 
-                // Auto-trigger build to apply changes
+                // Layout changes require build because index.html content differs
+                // (instagram/pinterest show all projects, others show featured only)
                 await triggerBuild();
             } catch (error) {
                 console.error('Failed to save layout:', error);
