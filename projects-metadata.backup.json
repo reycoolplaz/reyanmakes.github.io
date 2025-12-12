@@ -182,7 +182,8 @@
   "featuredOrder": [
     "makers-stuff-go-cart",
     "makers-stuff-furniture-bed",
-    "photograph"
+    "photograph",
+    "test"
   ],
   "projects": {
     "makers-stuff-go-cart": {
@@ -274,12 +275,20 @@
       "category": "education"
     },
     "test": {
-      "title": "test",
+      "title": "Boys Scout - Eagle Project",
       "year": "2025",
       "tags": "Project \u2022 Build \u2022 Maker",
-      "description": "test project documentation.",
+      "description": "Boys Scout of America - Troop 193 - New Jersey, Plainsboro",
+      "featured": true,
+      "category": "community"
+    },
+    "boys-scout-high-adventure-2024": {
+      "title": "Boys Scout - High Adventure 2024",
+      "year": "2024",
+      "tags": "Project \u2022 Build \u2022 Maker",
+      "description": "Boys Scout - High Adventure 2024 project documentation.",
       "featured": false,
-      "category": "makers"
+      "category": "community"
     }
   },
   "categories": {
