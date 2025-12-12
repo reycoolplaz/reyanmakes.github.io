@@ -20,12 +20,12 @@
   },
   "siteContent": {
     "siteName": "Reyan Makes",
-    "siteTitle": "Reyan Makes — Builder, Designer, Maker",
+    "siteTitle": "Reyan Makes \u2014 Builder, Designer, Maker",
     "siteDescription": "Reyan Bhattacharjee is a high school maker from Plainsboro, NJ who designs and builds things from go-karts to furniture.",
     "hero": {
       "title": "Hi, I'm Reyan",
-      "subtitle": "High School Maker • Builder • Creator",
-      "description": "I design and build things with my hands. From welded go-karts to custom furniture to structures made from reclaimed materials — I've been making since middle school.",
+      "subtitle": "High School Maker \u2022 Builder \u2022 Creator",
+      "description": "I design and build things with my hands. From welded go-karts to custom furniture to structures made from reclaimed materials \u2014 I've been making since middle school.",
       "ctaText": "Explore My Work",
       "ctaLink": "#featured",
       "social": {
@@ -41,52 +41,110 @@
     },
     "timeline": {
       "title": "My Maker Journey",
-      "subtitle": "From lake house forts to welding labs—every stop shapes the builder I am.",
+      "subtitle": "From lake house forts to welding labs\u2014every stop shapes the builder I am.",
       "milestones": [
         {
           "year": "2025",
           "title": "Senior Year & Community Impact",
           "description": "Took welding, fabrication, and design to the next level while giving back through community builds and NJIT studio work.",
-          "focusAreas": ["MIG Welding", "Metal Fabrication", "Community Projects"],
+          "focusAreas": [
+            "MIG Welding",
+            "Metal Fabrication",
+            "Community Projects"
+          ],
           "links": [
-            {"label": "Go-Kart Build", "project": "makers-stuff-go-cart"},
-            {"label": "Metal Work", "project": "makers-stuff-metal-work"},
-            {"label": "NJIT Studio", "project": "njit-hcad-program-prototype"},
-            {"label": "Photography", "project": "photograph"}
+            {
+              "label": "Go-Kart Build",
+              "project": "makers-stuff-go-cart"
+            },
+            {
+              "label": "Metal Work",
+              "project": "makers-stuff-metal-work"
+            },
+            {
+              "label": "NJIT Studio",
+              "project": "njit-hcad-program-prototype"
+            },
+            {
+              "label": "Photography",
+              "project": "photograph"
+            }
           ]
         },
         {
           "year": "2024",
           "title": "Junior Year Builds",
           "description": "Focused on woodworking scale projects and clever transportation solutions for life outdoors.",
-          "focusAreas": ["Woodworking", "Product Design", "Problem Solving"],
+          "focusAreas": [
+            "Woodworking",
+            "Product Design",
+            "Problem Solving"
+          ],
           "links": [
-            {"label": "Custom Bed", "project": "makers-stuff-furniture-bed"},
-            {"label": "Storage Shelf", "project": "makers-stuff-furniture-shelf"},
-            {"label": "Temple Construction", "project": "makers-stuff-furniture-temple"},
-            {"label": "Woodworking", "project": "makers-stuff-wood-work"}
+            {
+              "label": "Custom Bed",
+              "project": "makers-stuff-furniture-bed"
+            },
+            {
+              "label": "Storage Shelf",
+              "project": "makers-stuff-furniture-shelf"
+            },
+            {
+              "label": "Temple Construction",
+              "project": "makers-stuff-furniture-temple"
+            },
+            {
+              "label": "Woodworking",
+              "project": "makers-stuff-wood-work"
+            }
           ]
         },
         {
           "year": "2023",
           "title": "Design Experiments",
           "description": "Prototyped tools, art pieces, and layout studies to sharpen hands-on design instincts.",
-          "focusAreas": ["Toolmaking", "Sketching", "Sculpture"],
+          "focusAreas": [
+            "Toolmaking",
+            "Sketching",
+            "Sculpture"
+          ],
           "links": [
-            {"label": "Clay Sculptures", "project": "makers-stuff-clay"},
-            {"label": "Sketches", "project": "sketching"},
-            {"label": "School Projects", "project": "school"}
+            {
+              "label": "Clay Sculptures",
+              "project": "makers-stuff-clay"
+            },
+            {
+              "label": "Sketches",
+              "project": "sketching"
+            },
+            {
+              "label": "School Projects",
+              "project": "school"
+            }
           ]
         },
         {
           "year": "Foundations",
           "title": "Where It Started",
           "description": "Lakehouse forts, school competitions, restorations, and sketchbooks that sparked the obsession.",
-          "focusAreas": ["Resourcefulness", "Art & Sketching", "Engineering Roots"],
+          "focusAreas": [
+            "Resourcefulness",
+            "Art & Sketching",
+            "Engineering Roots"
+          ],
           "links": [
-            {"label": "Bed Build", "project": "makers-stuff-furniture-bed"},
-            {"label": "Temple", "project": "makers-stuff-furniture-temple"},
-            {"label": "Sketches", "project": "sketching"}
+            {
+              "label": "Bed Build",
+              "project": "makers-stuff-furniture-bed"
+            },
+            {
+              "label": "Temple",
+              "project": "makers-stuff-furniture-temple"
+            },
+            {
+              "label": "Sketches",
+              "project": "sketching"
+            }
           ]
         }
       ]
@@ -94,7 +152,7 @@
     "about": {
       "title": "About Me",
       "paragraphs": [
-        "\"I can always cut something off, but I can't add it back on\" — that's the cornerstone of both engineering and my life.",
+        "\"I can always cut something off, but I can't add it back on\" \u2014 that's the cornerstone of both engineering and my life.",
         "I am Reyan Bhattacharjee. I'm a senior at West Windsor-Plainsboro High School South, planning to study Industrial Design or Engineering. I've completed NJIT's Summer Architecture and Portfolio Program and work as a lifeguard and swim instructor. I'm also an Eagle Scout and a maker who believes learning happens best when you build."
       ],
       "skillsTitle": "Skills & Experience",
@@ -111,12 +169,18 @@
       "title": "Let's Connect",
       "description": "Want to collaborate on a project or just chat about making things?",
       "links": [
-        {"label": "GitHub", "url": "https://github.com/reycoolplaz/reyanmakes.github.io"},
-        {"label": "Email", "url": "mailto:reycoolplaz@gmail.com"}
+        {
+          "label": "GitHub",
+          "url": "https://github.com/reycoolplaz/reyanmakes.github.io"
+        },
+        {
+          "label": "Email",
+          "url": "mailto:reycoolplaz@gmail.com"
+        }
       ]
     },
     "footer": {
-      "copyright": "© 2025 Reyan Bhattacharjee | Built with passion"
+      "copyright": "\u00a9 2025 Reyan Bhattacharjee | Built with passion"
     }
   },
   "featuredOrder": [
