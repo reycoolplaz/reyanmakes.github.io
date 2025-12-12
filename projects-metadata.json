@@ -272,6 +272,14 @@
       "description": "Cave shed design prototype from NJIT's HCAD summer architecture program. Complete architectural drawings, blueprints, and perspectives.",
       "featured": false,
       "category": "education"
+    },
+    "test": {
+      "title": "Boys Scout",
+      "year": "2025",
+      "tags": "Project \u2022 Build \u2022 Maker",
+      "description": "Boys Scout of America - Troop 193 - New Jersey, Plainsboro",
+      "featured": false,
+      "category": "community"
     }
   },
   "categories": {
