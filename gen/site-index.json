@@ -1,5 +1,5 @@
 {
-  "generated": "2025-11-16T22:20:55.539742",
+  "generated": "2025-12-11T23:07:46.079391",
   "total_projects": 11,
   "total_images": 77,
   "projects": {
@@ -98,7 +98,7 @@
       "year": "2024",
       "tags": "Photography \u2022 Visual Art \u2022 Nature",
       "category": "art",
-      "featured": false,
+      "featured": true,
       "page": "projects/photograph.html",
       "manifest": "gen/manifests/photograph.json"
     },

@@ -482,13 +482,7 @@ section {
     text-align: center;
     font-weight: 500;
     color: var(--text-color);
-    border: 2px solid var(--border-color);
-    transition: border-color 0.3s ease, transform 0.3s ease;
-}
-
-.skill:hover {
-    border-color: var(--primary-color);
-    transform: translateY(-2px);
+    border: 1px solid var(--border-color);
 }
 
 .contact {
@@ -1135,15 +1129,13 @@ section {
 /* Additional Touch Optimizations for All Devices */
 @media (hover: none) and (pointer: coarse) {
     .project-card,
-    .skill,
     .contact-button,
     .cta-button,
     .view-gallery-btn {
         transition: transform 0.15s ease, opacity 0.15s ease;
     }
 
-    .project-card:active,
-    .skill:active {
+    .project-card:active {
         transform: scale(0.98);
         opacity: 0.9;
     }

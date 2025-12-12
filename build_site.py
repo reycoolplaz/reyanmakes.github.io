@@ -33,6 +33,7 @@ THUMBNAILS_BASE = GEN_BASE / 'thumbnails'
 MANIFESTS_BASE = GEN_BASE / 'manifests'
 PROJECTS_BASE = BASE_DIR / 'projects'
 METADATA_FILE = BASE_DIR / 'projects-metadata.json'
+IMAGE_ORDER_FILE = BASE_DIR / 'image-orders.json'
 
 THUMBNAIL_SIZE = (200, 200)
 THUMBNAIL_QUALITY = 75
@@ -56,6 +57,15 @@ def load_metadata():
         return {"projects": {}, "defaults": {}}
 
     with open(METADATA_FILE, 'r') as f:
+        return json.load(f)
+
+
+def load_image_orders():
+    """Load custom image orders from JSON file"""
+    if not IMAGE_ORDER_FILE.exists():
+        return {}
+
+    with open(IMAGE_ORDER_FILE, 'r') as f:
         return json.load(f)
 
 # ============================================================================
@@ -181,13 +191,25 @@ def generate_all_thumbnails(discovered_folders):
 # STEP 3: GENERATE MANIFESTS
 # ============================================================================
 
-def generate_manifest(slug, info):
+def generate_manifest(slug, info, image_orders=None):
     """Generate JSON manifest for a project"""
+    images = info['images']
+
+    # Apply custom order if exists
+    if image_orders and slug in image_orders:
+        custom_order = image_orders[slug]
+        # Sort images based on custom order, keeping new images at the end
+        def sort_key(img):
+            if img in custom_order:
+                return custom_order.index(img)
+            return len(custom_order) + images.index(img)
+        images = sorted(images, key=sort_key)
+
     manifest = {
         "project": str(info['rel_path']),
         "slug": slug,
         "count": info['image_count'],
-        "images": info['images'],
+        "images": images,
         "generated": datetime.now().isoformat()
     }
 
@@ -200,14 +222,16 @@ def generate_manifest(slug, info):
 
     return manifest_file
 
-def generate_all_manifests(discovered_folders):
+def generate_all_manifests(discovered_folders, image_orders=None):
     """Generate manifest files for all projects"""
     print("📋 Generating manifests in /gen/manifests/...\n")
 
     for slug, info in discovered_folders.items():
-        manifest_file = generate_manifest(slug, info)
+        manifest_file = generate_manifest(slug, info, image_orders)
         rel_manifest = manifest_file.relative_to(BASE_DIR)
-        print(f"  ✓ {slug} → {rel_manifest}")
+        has_custom_order = image_orders and slug in image_orders
+        order_indicator = " (custom order)" if has_custom_order else ""
+        print(f"  ✓ {slug} → {rel_manifest}{order_indicator}")
 
     print(f"\n  📊 Generated {len(discovered_folders)} manifests\n")
 
@@ -424,6 +448,110 @@ def generate_site_index(discovered_folders, metadata_config):
     return index
 
 # ============================================================================
+# STEP 6: UPDATE INDEX.HTML FEATURED SECTION
+# ============================================================================
+
+def generate_featured_card(slug, project_info, metadata, is_first=False):
+    """Generate HTML for a single featured project card"""
+    rel_path = str(project_info['rel_path'])  # Use rel_path, not path
+    images = project_info['image_count']
+
+    # Get first image for the card
+    manifest_file = MANIFESTS_BASE / f"{slug}.json"
+    first_image = ""
+    if manifest_file.exists():
+        with open(manifest_file, 'r') as f:
+            manifest = json.load(f)
+            if manifest.get('images'):
+                first_image = manifest['images'][0]
+
+    image_path = f"images/{rel_path}/{first_image}" if first_image else ""
+
+    # Parse tags into individual spans
+    tags = metadata.get('tags', '').split(' • ')
+    tags_html = '\n                            '.join(f'<span class="tag">{tag.strip()}</span>' for tag in tags if tag.strip())
+
+    featured_class = ' featured' if is_first else ''
+
+    return f'''                <div class="project-card{featured_class}">
+                    <div class="project-image">
+                        <img src="{image_path}" alt="{metadata.get('title', slug)}" loading="lazy"
+                             onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23667eea%22 width=%22400%22 height=%22300%22/%3E%3Ctext fill=%22white%22 font-size=%2236%22 x=%22100%22 y=%22160%22%3E{metadata.get('title', slug)}%3C/text%3E%3C/svg%3E'">
+                    </div>
+                    <div class="project-content">
+                        <span class="year-badge">{metadata.get('year', '2024')}</span>
+                        <h3>{metadata.get('title', slug)}</h3>
+                        <p class="project-description">{metadata.get('description', '')}</p>
+                        <div class="project-tags">
+                            {tags_html}
+                        </div>
+                        <a href="projects/{slug}.html" class="view-gallery-btn">View Gallery ({images} images)</a>
+                    </div>
+                </div>'''
+
+
+def update_index_featured(discovered_folders, metadata_config):
+    """Update the Featured Builds section in index.html based on metadata"""
+    print("🏠 Updating Featured Builds in index.html...\n")
+
+    index_file = BASE_DIR / 'index.html'
+    if not index_file.exists():
+        print("  ⚠️  index.html not found, skipping featured update")
+        return
+
+    # Get featured projects from metadata
+    projects_meta = metadata_config.get("projects", {})
+    featured_projects = []
+
+    for slug, meta in projects_meta.items():
+        if meta.get('featured', False) and slug in discovered_folders:
+            featured_projects.append((slug, discovered_folders[slug], meta))
+
+    if not featured_projects:
+        print("  ⚠️  No featured projects found in metadata")
+        return
+
+    # Sort by year (newest first)
+    featured_projects.sort(key=lambda x: x[2].get('year', '0'), reverse=True)
+
+    print(f"  Found {len(featured_projects)} featured projects:")
+    for slug, _, meta in featured_projects:
+        print(f"    • {meta.get('title', slug)} ({meta.get('year', 'N/A')})")
+
+    # Generate the cards HTML
+    cards_html = []
+    for i, (slug, info, meta) in enumerate(featured_projects):
+        cards_html.append(generate_featured_card(slug, info, meta, is_first=(i == 0)))
+
+    featured_section = '''            <div class="projects-grid">
+''' + '\n\n'.join(cards_html) + '''
+
+            </div>'''
+
+    # Read current index.html
+    with open(index_file, 'r') as f:
+        content = f.read()
+
+    # Find and replace the projects-grid section
+    import re
+    pattern = r'<div class="projects-grid">.*?</div>\s*</div>\s*</section>\s*<section id="timeline"'
+    replacement = featured_section + '''
+        </div>
+    </section>
+
+    <section id="timeline"'''
+
+    new_content = re.sub(pattern, replacement, content, flags=re.DOTALL)
+
+    if new_content != content:
+        with open(index_file, 'w') as f:
+            f.write(new_content)
+        print(f"\n  ✓ Updated index.html with {len(featured_projects)} featured projects\n")
+    else:
+        print("\n  ℹ️  No changes needed to index.html\n")
+
+
+# ============================================================================
 # MAIN ORCHESTRATION
 # ============================================================================
 
@@ -445,6 +573,11 @@ def main():
         metadata_config = load_metadata()
         print(f"  ✓ Loaded {len(metadata_config.get('projects', {}))} project metadata entries\n")
 
+        # Load custom image orders
+        image_orders = load_image_orders()
+        if image_orders:
+            print(f"  ✓ Loaded custom image orders for {len(image_orders)} projects\n")
+
         # Step 1: Discover all image folders
         discovered = discover_image_folders(IMAGES_BASE)
 
@@ -455,14 +588,17 @@ def main():
         # Step 2: Generate thumbnails
         generate_all_thumbnails(discovered)
 
-        # Step 3: Generate manifests
-        generate_all_manifests(discovered)
+        # Step 3: Generate manifests (with custom image orders)
+        generate_all_manifests(discovered, image_orders)
 
         # Step 4: Generate project pages
         generate_all_project_pages(discovered, metadata_config)
 
         # Step 5: Generate site index
         site_index = generate_site_index(discovered, metadata_config)
+
+        # Step 6: Update Featured Builds in index.html
+        update_index_featured(discovered, metadata_config)
 
         print("=" * 70)
         print("✅ BUILD COMPLETE!")

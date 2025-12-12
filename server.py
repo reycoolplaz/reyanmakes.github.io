@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """
 Development server with API endpoint for build script execution
+Includes endpoints for portfolio management
 """
 from flask import Flask, send_from_directory, jsonify, request
 from flask_cors import CORS
 import subprocess
 import os
+import json
 from pathlib import Path
 import threading
 import time
@@ -14,6 +16,8 @@ app = Flask(__name__)
 CORS(app)
 
 BASE_DIR = Path(__file__).parent
+METADATA_FILE = BASE_DIR / 'projects-metadata.json'
+IMAGE_ORDER_FILE = BASE_DIR / 'image-orders.json'
 
 # Simple password protection (change this!)
 ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'reyan2025')
@@ -112,10 +116,97 @@ def build_status_endpoint():
     """Get current build status"""
     return jsonify(build_status)
 
+
+@app.route('/api/metadata', methods=['POST'])
+def save_metadata():
+    """Save project metadata to JSON file"""
+    data = request.get_json()
+    password = data.get('password', '')
+
+    if password != ADMIN_PASSWORD:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    new_metadata = data.get('metadata')
+    if not new_metadata:
+        return jsonify({'error': 'No metadata provided'}), 400
+
+    try:
+        # Backup existing file
+        if METADATA_FILE.exists():
+            backup_file = BASE_DIR / 'projects-metadata.backup.json'
+            with open(METADATA_FILE, 'r') as f:
+                backup_data = f.read()
+            with open(backup_file, 'w') as f:
+                f.write(backup_data)
+
+        # Write new metadata
+        with open(METADATA_FILE, 'w') as f:
+            json.dump(new_metadata, f, indent=2)
+
+        return jsonify({'message': 'Metadata saved successfully'})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/image-order', methods=['POST'])
+def save_image_order():
+    """Save custom image order for a project"""
+    data = request.get_json()
+    password = data.get('password', '')
+
+    if password != ADMIN_PASSWORD:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    project = data.get('project')
+    order = data.get('order')
+
+    if not project or not order:
+        return jsonify({'error': 'Missing project or order'}), 400
+
+    try:
+        # Load existing orders
+        orders = {}
+        if IMAGE_ORDER_FILE.exists():
+            with open(IMAGE_ORDER_FILE, 'r') as f:
+                orders = json.load(f)
+
+        # Update order for this project
+        orders[project] = order
+
+        # Save
+        with open(IMAGE_ORDER_FILE, 'w') as f:
+            json.dump(orders, f, indent=2)
+
+        return jsonify({'message': 'Image order saved'})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/image-order', methods=['GET'])
+def get_image_orders():
+    """Get all saved image orders"""
+    try:
+        if IMAGE_ORDER_FILE.exists():
+            with open(IMAGE_ORDER_FILE, 'r') as f:
+                return jsonify(json.load(f))
+        return jsonify({})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/admin-enhanced')
+def admin_enhanced():
+    """Serve enhanced admin panel"""
+    return send_from_directory('.', 'admin-enhanced.html')
+
+
 if __name__ == '__main__':
     print("🚀 Starting development server...")
     print("📝 Main site: http://localhost:5000")
     print("🔧 Admin panel: http://localhost:5000/admin")
+    print("✨ Enhanced admin: http://localhost:5000/admin-enhanced")
     print(f"🔑 Admin password: {ADMIN_PASSWORD}")
     print("\nPress Ctrl+C to stop the server\n")
 
