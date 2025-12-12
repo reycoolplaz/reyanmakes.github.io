@@ -592,6 +592,204 @@ def update_index_layout(metadata_config):
     print(f"  ✓ Applied '{layout}' layout to index.html\n")
 
 
+def generate_index_html(discovered_folders, metadata_config):
+    """Generate complete index.html from siteContent configuration"""
+    print("🏠 Generating index.html from configuration...\n")
+
+    site_content = metadata_config.get("siteContent", {})
+    site_settings = metadata_config.get("siteSettings", {})
+    projects_meta = metadata_config.get("projects", {})
+    featured_order = metadata_config.get("featuredOrder", [])
+
+    template = site_settings.get("template", "default")
+    layout = site_settings.get("layout", "default")
+    version_suffix = f'?v={ASSET_VERSION}'
+
+    # Extract content sections
+    hero = site_content.get("hero", {})
+    featured_section = site_content.get("featuredSection", {})
+    timeline = site_content.get("timeline", {})
+    about = site_content.get("about", {})
+    contact = site_content.get("contact", {})
+    footer = site_content.get("footer", {})
+
+    # Generate featured project cards
+    featured_cards = []
+    for i, slug in enumerate(featured_order):
+        if slug in projects_meta and slug in discovered_folders:
+            meta = projects_meta[slug]
+            info = discovered_folders[slug]
+            featured_cards.append(generate_featured_card(slug, info, meta, is_first=(i == 0)))
+
+    featured_cards_html = '\n\n'.join(featured_cards) if featured_cards else ''
+
+    # Generate timeline milestones
+    milestones_html = []
+    for milestone in timeline.get("milestones", []):
+        focus_pills = '\n                        '.join(
+            f'<span class="milestone-pill">{area}</span>'
+            for area in milestone.get("focusAreas", [])
+        )
+
+        links_html = '\n                        '.join(
+            f'<a href="projects/{link["project"]}.html" class="milestone-link">{link["label"]}</a>'
+            for link in milestone.get("links", [])
+        )
+
+        milestones_html.append(f'''            <article class="milestone">
+                <span class="milestone-dot" aria-hidden="true"></span>
+                <span class="milestone-year">{milestone.get("year", "")}</span>
+                <div class="milestone-card">
+                    <h3>{milestone.get("title", "")}</h3>
+                    <p>{milestone.get("description", "")}</p>
+                    <p class="milestone-label">Focus Areas</p>
+                    <div class="milestone-pill-group">
+                        {focus_pills}
+                    </div>
+                    <p class="milestone-label">Project Galleries</p>
+                    <div class="milestone-links">
+                        {links_html}
+                    </div>
+                </div>
+            </article>''')
+
+    timeline_html = '\n\n'.join(milestones_html)
+
+    # Generate about paragraphs
+    about_paragraphs = '\n                    '.join(
+        f'<p>{p}</p>' for p in about.get("paragraphs", [])
+    )
+
+    # Generate skills
+    skills_html = '\n                        '.join(
+        f'<div class="skill">{skill}</div>' for skill in about.get("skills", [])
+    )
+
+    # Generate contact links
+    contact_links = '\n                '.join(
+        f'<a href="{link["url"]}" class="contact-button" {"target=\"_blank\"" if not link["url"].startswith("mailto:") else ""}>{link["label"]}</a>'
+        for link in contact.get("links", [])
+    )
+
+    # Generate YouTube social pill
+    youtube = hero.get("social", {}).get("youtube", {})
+    youtube_html = ""
+    if youtube.get("url"):
+        youtube_html = f'''<a href="{youtube["url"]}" target="_blank" rel="noreferrer" class="social-pill youtube" aria-label="Watch on YouTube">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.4 3.6 12 3.6 12 3.6s-7.4 0-9.4.5A3 3 0 0 0 .5 6.2 31.7 31.7 0 0 0 0 12a31.7 31.7 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c2 .5 9.4.5 9.4.5s7.4 0 9.4-.5a3 3 0 0 0 2.1-2.1 31.7 31.7 0 0 0 .5-5.8 31.7 31.7 0 0 0-.5-5.8Z" fill="#ff0000"/>
+                        <path d="m9.75 8.7 6.2 3.3-6.2 3.3Z" fill="#fff"/>
+                    </svg>
+                    <span>{youtube.get("label", "@reyanmakes")}</span>
+                </a>'''
+
+    html = f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{site_content.get("siteTitle", "Reyan Makes")}</title>
+    <meta name="description" content="{site_content.get("siteDescription", "")}">
+    <link rel="stylesheet" href="styles.css{version_suffix}">
+    <link rel="stylesheet" href="themes/{template}.css{version_suffix}">
+    <link rel="stylesheet" href="layouts/{layout}.css{version_suffix}">
+</head>
+<body class="layout-{layout}">
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">{site_content.get("siteName", "Reyan Makes")}</a>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#featured" class="nav-link">Featured</a></li>
+                <li><a href="#timeline" class="nav-link">Journey</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">{hero.get("title", "")}</h1>
+            <p class="hero-subtitle">{hero.get("subtitle", "")}</p>
+            <p class="hero-description">{hero.get("description", "")}</p>
+            <div class="hero-actions">
+                {youtube_html}
+                <a href="{hero.get("ctaLink", "#featured")}" class="cta-button">{hero.get("ctaText", "Explore My Work")}</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="featured" class="featured-projects">
+        <div class="container">
+            <h2 class="section-title">{featured_section.get("title", "Featured Builds")}</h2>
+            <p class="section-subtitle">{featured_section.get("subtitle", "")}</p>
+
+            <div class="projects-grid">
+{featured_cards_html}
+
+            </div>
+        </div>
+    </section>
+
+    <section id="timeline" class="timeline timeline--glow">
+        <div class="container">
+            <h2 class="section-title">{timeline.get("title", "My Maker Journey")}</h2>
+            <p class="section-subtitle">{timeline.get("subtitle", "")}</p>
+        </div>
+
+        <div class="journey-track">
+{timeline_html}
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">{about.get("title", "About Me")}</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    {about_paragraphs}
+
+                    <h3>{about.get("skillsTitle", "Skills & Experience")}</h3>
+                    <div class="skills-grid">
+                        {skills_html}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">{contact.get("title", "Let's Connect")}</h2>
+            <p class="contact-description">{contact.get("description", "")}</p>
+            <div class="contact-links">
+                {contact_links}
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>{footer.get("copyright", "&copy; 2025 Reyan Bhattacharjee | Built with passion")}</p>
+        </div>
+    </footer>
+
+    <script src="script.js{version_suffix}"></script>
+</body>
+</html>
+'''
+
+    # Write the generated index.html
+    index_file = BASE_DIR / 'index.html'
+    with open(index_file, 'w') as f:
+        f.write(html)
+
+    print(f"  ✓ Generated index.html with {len(featured_cards)} featured projects")
+    print(f"  ✓ Theme: {template}, Layout: {layout}")
+    print(f"  ✓ Timeline: {len(timeline.get('milestones', []))} milestones\n")
+
+
 def update_index_featured(discovered_folders, metadata_config):
     """Update the Featured Builds section in index.html based on metadata"""
     print("🏠 Updating Featured Builds in index.html...\n")
@@ -707,14 +905,8 @@ def main():
         # Step 5: Generate site index
         site_index = generate_site_index(discovered, metadata_config)
 
-        # Step 6: Update Featured Builds in index.html
-        update_index_featured(discovered, metadata_config)
-
-        # Step 7: Update theme in index.html
-        update_index_theme(metadata_config)
-
-        # Step 8: Update layout in index.html
-        update_index_layout(metadata_config)
+        # Step 6: Generate index.html from configuration
+        generate_index_html(discovered, metadata_config)
 
         print("=" * 70)
         print("✅ BUILD COMPLETE!")
