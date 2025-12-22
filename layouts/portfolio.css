@@ -619,11 +619,12 @@ body.layout-portfolio .footer p {
 body.layout-portfolio .project-hero {
     padding: 8rem 5% 4rem;
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f1a 100%);
-    text-align: left;
+    text-align: center;
 }
 
 body.layout-portfolio .project-hero-content {
     max-width: 800px;
+    margin: 0 auto;
 }
 
 body.layout-portfolio .project-hero h1 {
@@ -647,6 +648,7 @@ body.layout-portfolio .project-hero-description {
     font-size: 1.1rem;
     line-height: 1.7;
     max-width: 600px;
+    margin: 0 auto;
     opacity: 0.85;
 }
 
