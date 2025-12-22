@@ -1112,23 +1112,13 @@
                     </svg>
                     Preview
                 </button>
-                <button class="btn btn-primary" id="saveBtn" onclick="saveChanges()" disabled>
+                <button class="btn btn-success" id="saveBuildBtn" onclick="saveAndBuild()" disabled>
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
                         <polyline points="17,21 17,13 7,13 7,21"/>
                         <polyline points="7,3 7,8 15,8"/>
                     </svg>
-                    Save All
-                </button>
-                <button class="btn btn-success" id="buildBtn" onclick="triggerBuild()">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="16,3 21,3 21,8"/>
-                        <line x1="4" y1="20" x2="21" y2="3"/>
-                        <polyline points="21,16 21,21 16,21"/>
-                        <line x1="15" y1="15" x2="21" y2="21"/>
-                        <line x1="4" y1="4" x2="9" y2="9"/>
-                    </svg>
-                    Build Site
+                    Save & Build
                 </button>
                 <button class="btn btn-publish" id="publishBtn" onclick="publishSite()">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -2586,7 +2576,7 @@
 
         function updateChangeIndicator() {
             document.getElementById('changeIndicator').style.display = hasChanges ? 'inline-flex' : 'none';
-            document.getElementById('saveBtn').disabled = !hasChanges;
+            document.getElementById('saveBuildBtn').disabled = !hasChanges;
         }
 
         async function saveChanges() {
@@ -2644,12 +2634,18 @@
             }
         }
 
-        async function triggerBuild() {
-            const btn = document.getElementById('buildBtn');
+        async function saveAndBuild() {
+            const btn = document.getElementById('saveBuildBtn');
             btn.disabled = true;
-            btn.innerHTML = '<span class="spinner"></span> Building...';
+            btn.innerHTML = '<span class="spinner"></span> Saving...';
 
             try {
+                // First save changes
+                await saveChanges();
+
+                // Then trigger build
+                btn.innerHTML = '<span class="spinner"></span> Building...';
+
                 const res = await fetch('/api/build', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -2662,12 +2658,12 @@
                     throw new Error(data.error || 'Build failed');
                 }
 
-                showToast('Build started!', 'success');
+                showToast('Saved & build started!', 'success');
 
             } catch (error) {
                 showToast(error.message, 'error');
                 btn.disabled = false;
-                btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16,3 21,3 21,8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21,16 21,21 16,21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg> Build Site';
+                btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg> Save & Build';
             }
         }
 
@@ -2706,20 +2702,20 @@
                     const res = await fetch('/api/build/status');
                     const status = await res.json();
 
-                    const buildBtn = document.getElementById('buildBtn');
+                    const saveBuildBtn = document.getElementById('saveBuildBtn');
                     const statusEl = document.getElementById('buildStatus');
                     const outputEl = document.getElementById('buildOutput');
                     const lastTimeEl = document.getElementById('lastBuildTime');
                     const lastResultEl = document.getElementById('lastBuildResult');
 
                     if (status.running) {
-                        buildBtn.disabled = true;
-                        buildBtn.innerHTML = '<span class="spinner"></span> Building...';
+                        saveBuildBtn.disabled = true;
+                        saveBuildBtn.innerHTML = '<span class="spinner"></span> Building...';
                         statusEl.textContent = 'Building...';
                         statusEl.style.color = 'var(--warning)';
                     } else {
-                        buildBtn.disabled = false;
-                        buildBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16,3 21,3 21,8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21,16 21,21 16,21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg> Build Site';
+                        saveBuildBtn.disabled = !hasChanges;
+                        saveBuildBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17,21 17,13 7,13 7,21"/><polyline points="7,3 7,8 15,8"/></svg> Save & Build';
                         statusEl.textContent = 'Ready';
                         statusEl.style.color = 'var(--success)';
                     }
