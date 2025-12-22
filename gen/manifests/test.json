@@ -1,36 +1,29 @@
 {
   "project": "test",
   "slug": "test",
-  "count": 27,
+  "count": 20,
   "total_count": 49,
   "images": [
     "IMG_6147.jpg",
     "IMG_6151.jpg",
-    "IMG_6149.jpg",
     "IMG_6070.jpg",
+    "IMG_6117.jpg",
     "IMG_6115.jpg",
-    "PXL_20250830_175143521.jpg",
     "IMG_6078.jpg",
     "IMG_6082.jpg",
     "IMG_6084.jpg",
     "IMG_6120.jpg",
-    "PXL_20250830_174158479.MP.jpg",
     "PXL_20250830_175148704.MP.jpg",
-    "IMG_6121.jpg",
     "IMG_6128.jpg",
     "IMG_6130.jpg",
-    "IMG_6131.jpg",
     "IMG_6133.jpg",
-    "IMG_6138.jpg",
     "PXL_20250830_192933599.jpg",
     "PXL_20250830_193041853.jpg",
-    "PXL_20250830_194139468.MP.jpg",
     "PXL_20250830_194801847.MP.jpg",
-    "IMG_6145.jpg",
+    "IMG_6138.jpg",
     "IMG_6142.jpg",
-    "IMG_6150.jpg",
-    "PXL_20250830_201959349.jpg",
-    "PXL_20250830_201957239.jpg"
+    "IMG_6145.jpg",
+    "IMG_6150.jpg"
   ],
-  "generated": "2025-12-21T22:00:24.327197"
+  "generated": "2025-12-21T22:08:00.747882"
 }
