@@ -194,11 +194,13 @@
   "featuredOrder": [
     "makers-stuff-go-cart",
     "njit-hcad-program-prototype",
-    "makers-stuff-furniture-bed",
-    "photograph",
     "test",
+    "makers-stuff-furniture-bed",
+    "makers-stuff-metal-work",
+    "makers-stuff-furniture-shelf",
+    "makers-stuff-furniture-temple",
     "boys-scout-high-adventure-2024",
-    "makers-stuff-metal-work"
+    "photograph"
   ],
   "projects": {
     "makers-stuff-go-cart": {
@@ -222,7 +224,7 @@
       "year": "2024",
       "tags": "Woodworking \u2022 Storage \u2022 Design",
       "description": "Custom storage solution built to fit perfectly under the bed frame. Maximizing space efficiency.",
-      "featured": false,
+      "featured": true,
       "category": "makers"
     },
     "makers-stuff-furniture-temple": {
@@ -230,7 +232,7 @@
       "year": "2024",
       "tags": "Carpentry \u2022 Community \u2022 Woodworking",
       "description": "Traditional temple construction project showcasing woodworking and carpentry skills. Learning from master craftsmen.",
-      "featured": false,
+      "featured": true,
       "category": "makers"
     },
     "makers-stuff-metal-work": {
@@ -283,7 +285,7 @@
     },
     "njit-hcad-program-prototype": {
       "title": "NJIT Cave Shed Prototype",
-      "year": "2025",
+      "year": "Summer 2025",
       "tags": "Architecture \u2022 Design \u2022 NJIT Program",
       "description": "Cave shed design prototype from NJIT's HCAD summer architecture program. Complete architectural drawings, blueprints, and perspectives.",
       "featured": true,
@@ -291,7 +293,7 @@
     },
     "test": {
       "title": "Boys Scout - Eagle Project",
-      "year": "2025",
+      "year": "Fall 2025",
       "tags": "Project \u2022 Build \u2022 Maker",
       "description": "Boys Scout of America - Troop 193 - New Jersey, Plainsboro",
       "featured": true,

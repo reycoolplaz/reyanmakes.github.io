@@ -1,5 +1,5 @@
 {
-  "generated": "2025-12-21T21:10:56.243988",
+  "generated": "2025-12-21T21:14:31.747123",
   "total_projects": 15,
   "total_images": 242,
   "projects": {
@@ -32,7 +32,7 @@
       "year": "2024",
       "tags": "Woodworking \u2022 Storage \u2022 Design",
       "category": "makers",
-      "featured": false,
+      "featured": true,
       "page": "projects/makers-stuff-furniture-shelf.html",
       "manifest": "gen/manifests/makers-stuff-furniture-shelf.json"
     },
@@ -43,7 +43,7 @@
       "year": "2024",
       "tags": "Carpentry \u2022 Community \u2022 Woodworking",
       "category": "makers",
-      "featured": false,
+      "featured": true,
       "page": "projects/makers-stuff-furniture-temple.html",
       "manifest": "gen/manifests/makers-stuff-furniture-temple.json"
     },
@@ -84,7 +84,7 @@
       "path": "NJIT-HCAD program prototype",
       "images": 12,
       "title": "NJIT Cave Shed Prototype",
-      "year": "2025",
+      "year": "Summer 2025",
       "tags": "Architecture \u2022 Design \u2022 NJIT Program",
       "category": "education",
       "featured": true,
@@ -161,7 +161,7 @@
       "path": "test",
       "images": 49,
       "title": "Boys Scout - Eagle Project",
-      "year": "2025",
+      "year": "Fall 2025",
       "tags": "Project \u2022 Build \u2022 Maker",
       "category": "community",
       "featured": true,
