@@ -657,12 +657,13 @@
 
         .gallery-item-hide {
             position: absolute;
-            top: 0.5rem;
-            right: 2rem;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             background: var(--warning);
             color: white;
-            width: 24px;
-            height: 24px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -679,7 +680,7 @@
         }
 
         .gallery-item-hide:hover {
-            transform: scale(1.1);
+            transform: translate(-50%, -50%) scale(1.1);
             background: #d97706;
         }
 
@@ -690,14 +691,14 @@
         .gallery-item.hidden-image::after {
             content: 'HIDDEN';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            top: 0.25rem;
+            left: 0.25rem;
+            transform: none;
             background: rgba(0,0,0,0.7);
             color: white;
-            padding: 0.25rem 0.5rem;
+            padding: 0.15rem 0.35rem;
             border-radius: 4px;
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             font-weight: 600;
             z-index: 5;
         }
@@ -705,6 +706,14 @@
         .gallery-item.hidden-image .gallery-item-hide {
             opacity: 1;
             background: var(--success);
+            /* Move to center for hidden images - easier to click "show" */
+            top: 50%;
+            left: 50%;
+            right: auto;
+            transform: translate(-50%, -50%);
+            width: 36px;
+            height: 36px;
+            z-index: 15;
         }
 
         /* Upload Drop Zone */
