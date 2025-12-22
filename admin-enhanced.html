@@ -2041,7 +2041,7 @@
                 metadata.projects[slug].featured = true;
             }
 
-            markChanges();
+            markChanged();
             renderProjectList();
         }
 
@@ -2102,7 +2102,7 @@
                     }
 
                     if (changed) {
-                        markChanges();
+                        markChanged();
                         renderProjectList();
                     }
                 });
@@ -2121,7 +2121,6 @@
 
                     // Always check for order changes on dragend
                     const newOrder = [...featuredSection.querySelectorAll('.project-item')].map(el => el.dataset.slug);
-                    console.log('dragend - newOrder:', newOrder, 'old:', metadata.featuredOrder);
                     const wasInFeatured = metadata.featuredOrder.includes(draggedSlug);
                     const isNowInFeatured = newOrder.includes(draggedSlug);
 
@@ -2146,7 +2145,7 @@
                     }
 
                     if (changed) {
-                        markChanges();
+                        markChanged();
                         renderProjectList();
                     }
 
@@ -2192,12 +2191,12 @@
                             }
                         }
                         metadata.featuredOrder = newOrder;
-                        markChanges();
+                        markChanged();
                         renderProjectList();
                     } else if (isNowInFeatured && JSON.stringify(newOrder) !== JSON.stringify(metadata.featuredOrder)) {
                         // Reordered within featured section
                         metadata.featuredOrder = newOrder;
-                        markChanges();
+                        markChanged();
                         renderProjectList();
                     }
                 });
