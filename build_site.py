@@ -298,7 +298,6 @@ def generate_project_page(slug, info, metadata, template='default', layout='defa
         <div class="nav-container">
             <a href="{asset_prefix}index.html" class="logo">Reyan Makes</a>
             <ul class="nav-menu">
-                <li><a href="{asset_prefix}index.html" class="nav-link">Home</a></li>
                 <li><a href="{asset_prefix}index.html#featured" class="nav-link">Featured</a></li>
                 <li><a href="{asset_prefix}index.html#timeline" class="nav-link">Journey</a></li>
                 <li><a href="{asset_prefix}index.html#contact" class="nav-link">Contact</a></li>
@@ -745,7 +744,6 @@ def generate_index_html(discovered_folders, metadata_config):
         <div class="nav-container">
             <a href="index.html" class="logo">{site_content.get("siteName", "Reyan Makes")}</a>
             <ul class="nav-menu">
-                <li><a href="#home" class="nav-link active">Home</a></li>
                 <li><a href="#featured" class="nav-link">Featured</a></li>
                 <li><a href="#timeline" class="nav-link">Journey</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
