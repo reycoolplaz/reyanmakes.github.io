@@ -1985,13 +1985,8 @@
                 const isEmpty = project.images === 0;
                 return `
                     <div class="project-item ${currentProject === slug ? 'active' : ''} ${isEmpty ? 'empty-project' : ''} ${isFeatured ? 'featured-item' : ''}"
-                         data-slug="${slug}" ${isFeatured ? 'draggable="true"' : ''}>
-                        ${isFeatured ? '<span class="drag-handle" title="Drag to reorder">⋮⋮</span>' : ''}
-                        <button class="star-toggle ${isFeatured ? 'active' : ''}" onclick="event.stopPropagation(); toggleFeatured('${slug}')" title="${isFeatured ? 'Remove from featured' : 'Add to featured'}">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="${isFeatured ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
-                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                            </svg>
-                        </button>
+                         data-slug="${slug}" draggable="true">
+                        <span class="drag-handle" title="Drag to reorder">⋮⋮</span>
                         <img class="project-thumb" src="${thumbPath}/.thumb.jpg" onclick="selectProject('${slug}')"
                              onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2248%22%3E%3Crect fill=%22%23e2e8f0%22 width=%2248%22 height=%2248%22/%3E%3C/svg%3E'"
                              alt="${project.title}">
@@ -2015,7 +2010,7 @@
             </div>`;
             html += `<div id="featuredSection">`;
             if (featuredProjects.length === 0) {
-                html += '<div style="padding: 1rem; text-align: center; color: var(--text-light); font-size: 0.8rem;">Click ☆ to feature projects</div>';
+                html += '<div class="drop-zone" style="padding: 1rem; text-align: center; color: var(--text-light); font-size: 0.8rem;">Drag projects here to feature</div>';
             } else {
                 html += featuredProjects.map((p, i) => renderItem(p, true, i)).join('');
             }
@@ -2023,10 +2018,12 @@
 
             // Other projects section
             html += `<div class="section-divider">Other Projects (${otherProjects.length})</div>`;
+            html += `<div id="otherSection">`;
             html += otherProjects.map(p => renderItem(p, false)).join('');
+            html += '</div>';
 
             list.innerHTML = html;
-            initFeaturedDragDrop();
+            initProjectDragDrop();
         }
 
         function toggleFeatured(slug) {
@@ -2048,37 +2045,85 @@
             renderProjectList();
         }
 
-        function initFeaturedDragDrop() {
-            const section = document.getElementById('featuredSection');
-            if (!section) return;
+        function initProjectDragDrop() {
+            const featuredSection = document.getElementById('featuredSection');
+            const otherSection = document.getElementById('otherSection');
+            const projectList = document.getElementById('projectList');
 
-            const items = section.querySelectorAll('.project-item[draggable="true"]');
+            if (!featuredSection || !otherSection) return;
 
-            items.forEach(item => {
+            let draggedSlug = null;
+
+            // Make sections droppable
+            [featuredSection, otherSection].forEach(section => {
+                section.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    section.style.background = 'rgba(102, 126, 234, 0.1)';
+                });
+
+                section.addEventListener('dragleave', () => {
+                    section.style.background = '';
+                });
+
+                section.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    section.style.background = '';
+
+                    if (!draggedSlug) return;
+
+                    const isFeaturedSection = section.id === 'featuredSection';
+
+                    if (isFeaturedSection) {
+                        // Add to featured if not already
+                        if (!metadata.featuredOrder.includes(draggedSlug)) {
+                            metadata.featuredOrder.push(draggedSlug);
+                            if (!metadata.projects[draggedSlug]) metadata.projects[draggedSlug] = {};
+                            metadata.projects[draggedSlug].featured = true;
+                        }
+                    } else {
+                        // Remove from featured
+                        const idx = metadata.featuredOrder.indexOf(draggedSlug);
+                        if (idx > -1) {
+                            metadata.featuredOrder.splice(idx, 1);
+                            if (metadata.projects[draggedSlug]) {
+                                metadata.projects[draggedSlug].featured = false;
+                            }
+                        }
+                    }
+
+                    markChanges();
+                    renderProjectList();
+                });
+            });
+
+            // Make items draggable
+            projectList.querySelectorAll('.project-item[draggable="true"]').forEach(item => {
                 item.addEventListener('dragstart', (e) => {
+                    draggedSlug = item.dataset.slug;
                     item.classList.add('dragging');
-                    e.dataTransfer.setData('text/plain', item.dataset.slug);
+                    e.dataTransfer.setData('text/plain', draggedSlug);
                 });
 
                 item.addEventListener('dragend', () => {
                     item.classList.remove('dragging');
-                    // Update featured order based on DOM order
-                    const newOrder = [...section.querySelectorAll('.project-item')].map(el => el.dataset.slug);
-                    metadata.featuredOrder = newOrder;
-                    markChanges();
-                    renderProjectList();
+                    draggedSlug = null;
                 });
 
                 item.addEventListener('dragover', (e) => {
                     e.preventDefault();
-                    const dragging = section.querySelector('.dragging');
-                    if (dragging && dragging !== item) {
+                    const dragging = projectList.querySelector('.dragging');
+                    if (dragging && dragging !== item && item.parentElement === dragging.parentElement) {
                         const rect = item.getBoundingClientRect();
                         const midY = rect.top + rect.height / 2;
                         if (e.clientY < midY) {
-                            section.insertBefore(dragging, item);
+                            item.parentElement.insertBefore(dragging, item);
                         } else {
-                            section.insertBefore(dragging, item.nextSibling);
+                            item.parentElement.insertBefore(dragging, item.nextSibling);
+                        }
+                        // Update order if in featured section
+                        if (item.parentElement.id === 'featuredSection') {
+                            metadata.featuredOrder = [...item.parentElement.querySelectorAll('.project-item')].map(el => el.dataset.slug);
+                            markChanges();
                         }
                     }
                 });
