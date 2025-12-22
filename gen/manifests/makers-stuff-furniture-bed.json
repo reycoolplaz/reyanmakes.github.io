@@ -1,23 +1,21 @@
 {
   "project": "Makers stuff/Furniture/Bed",
   "slug": "makers-stuff-furniture-bed",
-  "count": 14,
-  "total_count": 14,
+  "count": 12,
+  "total_count": 17,
   "images": [
     "Bed_Full_Picture_JPG - Edited.jpg",
-    "IMG_6982.jpg",
-    "Bed_Blueprint_JPG.jpg",
-    "Bed_Process1.jpg",
-    "Bed_Process1 - Edited.jpg",
     "Bed_Bottom_JPG - Edited.jpg",
-    "Bed_Bottom_JPG.jpg",
-    "Bed_Full_Picture_JPG.jpg",
-    "Bed_Perspective_JPG - Edited.jpg",
+    "Bed_Blueprint_JPG.jpg",
+    "IMG_6982.jpg",
+    "IMG_7006.jpg",
+    "IMG_7009.jpg",
+    "Bed_Process1.jpg",
     "Bed_Process2 - Edited.jpg",
-    "Bed_Process2.jpg",
     "Bed_Process3.jpg",
     "Bed_Process4.jpg",
-    "Bed_perspective.jpg"
+    "Bed_perspective.jpg",
+    "IMG_7084.jpg"
   ],
-  "generated": "2025-12-22T02:23:42.849912"
+  "generated": "2025-12-22T14:43:58.212680"
 }
