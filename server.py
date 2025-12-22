@@ -589,10 +589,14 @@ def upload_images():
     if uploaded:
         # Convert project_path to slug (e.g., "Makers stuff/Furniture/Temple" -> "makers-stuff-furniture-temple")
         slug = project_path.lower().replace(' ', '-').replace('/', '-').replace('--', '-').strip('-')
+        print(f"[UPLOAD] Regenerating manifest for {project_path} -> {slug}")
         try:
-            regenerate_manifest(project_path, slug)
+            manifest = regenerate_manifest(project_path, slug)
+            print(f"[UPLOAD] Manifest regenerated: {manifest.get('count')} images")
         except Exception as e:
+            import traceback
             print(f"Warning: Failed to regenerate manifest: {e}")
+            traceback.print_exc()
 
     return jsonify({
         'uploaded': uploaded,
