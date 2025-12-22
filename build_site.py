@@ -301,7 +301,6 @@ def generate_project_page(slug, info, metadata, template='default', layout='defa
                 <li><a href="{asset_prefix}index.html" class="nav-link">Home</a></li>
                 <li><a href="{asset_prefix}index.html#featured" class="nav-link">Featured</a></li>
                 <li><a href="{asset_prefix}index.html#timeline" class="nav-link">Journey</a></li>
-                <li><a href="{asset_prefix}index.html#about" class="nav-link">About</a></li>
                 <li><a href="{asset_prefix}index.html#contact" class="nav-link">Contact</a></li>
             </ul>
         </div>
