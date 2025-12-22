@@ -1,7 +1,7 @@
 {
-  "generated": "2025-12-21T23:29:19.173031",
+  "generated": "2025-12-22T00:33:55.729435",
   "total_projects": 15,
-  "total_images": 249,
+  "total_images": 186,
   "projects": {
     "makers-stuff-clay": {
       "path": "Makers stuff/Clay",
@@ -115,7 +115,7 @@
     },
     "boys-scout-high-adventure-2024": {
       "path": "boys-scout-high-adventure-2024",
-      "images": 95,
+      "images": 32,
       "title": "Boys Scout - High Adventure 2021",
       "year": "2021",
       "tags": "Project \u2022 Build \u2022 Maker",
