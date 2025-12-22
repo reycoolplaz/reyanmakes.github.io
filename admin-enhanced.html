@@ -1417,7 +1417,6 @@
                 <button class="content-tab" data-tab="featured" onclick="switchContentTab('featured')">Featured</button>
                 <button class="content-tab" data-tab="timeline" onclick="switchContentTab('timeline')">Timeline</button>
                 <button class="content-tab" data-tab="contact" onclick="switchContentTab('contact')">Contact</button>
-                <button class="content-tab" data-tab="projects" onclick="switchContentTab('projects')">Projects</button>
             </div>
 
             <div class="modal-body" style="flex: 1; overflow-y: auto;">
@@ -1545,56 +1544,6 @@
                     <button class="btn btn-sm btn-outline" onclick="addContactLink()" style="margin-top: 0.5rem;">+ Add Link</button>
                 </div>
 
-                <!-- Projects Tab -->
-                <div class="content-tab-panel" id="tab-projects">
-                    <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 1rem;">
-                        Edit project metadata (title, description, tags, year, category). Select a project to edit:
-                    </p>
-                    <div class="form-group">
-                        <label for="projectEditSelect">Select Project</label>
-                        <select id="projectEditSelect" onchange="loadProjectForEditing()">
-                            <option value="">Choose a project...</option>
-                        </select>
-                    </div>
-
-                    <div id="projectEditForm" style="display: none;">
-                        <hr style="margin: 1.5rem 0; border-color: var(--border);">
-                        <div class="form-group">
-                            <label for="editProjectTitle">Title</label>
-                            <input type="text" id="editProjectTitle">
-                        </div>
-                        <div class="metadata-grid">
-                            <div class="form-group">
-                                <label for="editProjectYear">Year</label>
-                                <input type="text" id="editProjectYear">
-                            </div>
-                            <div class="form-group">
-                                <label for="editProjectCategory">Category</label>
-                                <select id="editProjectCategory">
-                                    <option value="makers">Maker Projects</option>
-                                    <option value="art">Art & Creative</option>
-                                    <option value="education">School & Learning</option>
-                                    <option value="community">Community & Service</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="editProjectTags">Tags</label>
-                            <input type="text" id="editProjectTags" placeholder="Tag1 • Tag2 • Tag3">
-                        </div>
-                        <div class="form-group">
-                            <label for="editProjectDescription">Description</label>
-                            <textarea id="editProjectDescription" rows="3"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>
-                                <input type="checkbox" id="editProjectFeatured" style="width: auto; margin-right: 0.5rem;">
-                                Featured Project
-                            </label>
-                        </div>
-                        <button class="btn btn-primary" onclick="saveProjectEdit()" style="margin-top: 1rem;">Update Project</button>
-                    </div>
-                </div>
             </div>
 
             <div class="modal-footer">
