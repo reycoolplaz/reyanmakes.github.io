@@ -495,14 +495,16 @@ def generate_featured_card(slug, project_info, metadata, is_first=False):
     featured_class = ' featured' if is_first else ''
 
     return f'''                <div class="project-card{featured_class}">
+                    <div class="project-header">
+                        <span class="year-badge">{metadata.get('year', '2024')}</span>
+                        <h3>{metadata.get('title', slug)}</h3>
+                        <a href="projects/{slug}.html" class="view-gallery-btn">View Gallery ({images} images)</a>
+                    </div>
                     <div class="project-image">
                         <img src="{image_path}" alt="{metadata.get('title', slug)}" loading="lazy"
                              onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23667eea%22 width=%22400%22 height=%22300%22/%3E%3Ctext fill=%22white%22 font-size=%2236%22 x=%22100%22 y=%22160%22%3E{metadata.get('title', slug)}%3C/text%3E%3C/svg%3E'">
                     </div>
-                    <div class="project-content">
-                        <span class="year-badge">{metadata.get('year', '2024')}</span>
-                        <h3>{metadata.get('title', slug)}</h3>
-                        <a href="projects/{slug}.html" class="view-gallery-btn">View Gallery ({images} images)</a>
+                    <div class="project-details">
                         <p class="project-description">{metadata.get('description', '')}</p>
                         <div class="project-tags">
                             {tags_html}

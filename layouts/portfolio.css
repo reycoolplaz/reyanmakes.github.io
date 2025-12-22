@@ -180,6 +180,10 @@ body.layout-portfolio .projects-grid {
 body.layout-portfolio .project-card {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+        "image header"
+        "image details";
     min-height: 70vh;
     border-radius: 0;
     overflow: hidden;
@@ -188,11 +192,9 @@ body.layout-portfolio .project-card {
 }
 
 body.layout-portfolio .project-card:nth-child(even) {
-    direction: rtl;
-}
-
-body.layout-portfolio .project-card:nth-child(even) > * {
-    direction: ltr;
+    grid-template-areas:
+        "header image"
+        "details image";
 }
 
 body.layout-portfolio .project-card:hover {
@@ -200,7 +202,24 @@ body.layout-portfolio .project-card:hover {
     box-shadow: none;
 }
 
+body.layout-portfolio .project-header {
+    grid-area: header;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 4rem 5% 1rem;
+    background: var(--bg-secondary);
+}
+
+body.layout-portfolio .project-header h3 {
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 0;
+}
+
 body.layout-portfolio .project-image {
+    grid-area: image;
     position: relative;
     height: 100%;
     min-height: 400px;
@@ -217,11 +236,12 @@ body.layout-portfolio .project-card:hover .project-image img {
     transform: scale(1.03);
 }
 
-body.layout-portfolio .project-content {
+body.layout-portfolio .project-details {
+    grid-area: details;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding: 4rem 5%;
+    justify-content: flex-start;
+    padding: 1rem 5% 4rem;
     background: var(--bg-secondary);
 }
 
@@ -574,23 +594,32 @@ body.layout-portfolio .footer p {
     }
 
     body.layout-portfolio .project-card {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
         min-height: auto;
     }
 
     body.layout-portfolio .project-card:nth-child(even) {
-        direction: ltr;
+        flex-direction: column;
+    }
+
+    /* Mobile order: Header (1) → Image (2) → Details (3) */
+    body.layout-portfolio .project-header {
+        order: 1;
+        padding: 2rem 5% 1rem;
     }
 
     body.layout-portfolio .project-image {
-        min-height: 300px;
+        order: 2;
+        min-height: 250px;
     }
 
-    body.layout-portfolio .project-content {
-        padding: 3rem 5%;
+    body.layout-portfolio .project-details {
+        order: 3;
+        padding: 1.5rem 5% 3rem;
     }
 
-    body.layout-portfolio .project-content h3 {
+    body.layout-portfolio .project-header h3 {
         font-size: 1.75rem;
     }
 }
