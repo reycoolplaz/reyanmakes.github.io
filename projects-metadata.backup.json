@@ -197,10 +197,12 @@
     "makers-stuff-furniture-shelf",
     "makers-stuff-furniture-temple",
     "test",
+    "boys-scout",
     "makers-stuff-metal-work",
     "makers-stuff-wood-work",
     "njit-hcad-program-prototype",
-    "boys-scout-high-adventure-2024",
+    "makers-stuff-clay",
+    "sketching",
     "photograph"
   ],
   "projects": {
@@ -257,7 +259,7 @@
       "year": "2025",
       "tags": "Sculpture \u2022 Art \u2022 3D Form",
       "description": "Exploring sculptural forms and artistic expression through clay work.",
-      "featured": false,
+      "featured": true,
       "category": "art"
     },
     "photograph": {
@@ -273,7 +275,7 @@
       "year": "2024-2025",
       "tags": "Sketching \u2022 Design \u2022 Visualization",
       "description": "Design sketches, still life, and imaginative drawings. Building visualization skills.",
-      "featured": false,
+      "featured": true,
       "category": "art"
     },
     "school": {
@@ -305,7 +307,7 @@
       "year": "2021",
       "tags": "Project \u2022 Build \u2022 Maker",
       "description": "Boys Scout - High Adventure 2024 project documentation.",
-      "featured": true,
+      "featured": false,
       "category": "community"
     },
     "boy-scouts": {
@@ -321,7 +323,7 @@
       "year": "2024",
       "tags": "Project \u2022 Build \u2022 Maker",
       "description": "Community service hours for helping out on a Eagle Project",
-      "featured": false,
+      "featured": true,
       "category": "community"
     }
   },

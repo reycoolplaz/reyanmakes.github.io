@@ -197,16 +197,14 @@
     "makers-stuff-furniture-shelf",
     "makers-stuff-furniture-temple",
     "test",
+    "boys-scout",
     "makers-stuff-metal-work",
     "makers-stuff-wood-work",
     "njit-hcad-program-prototype",
-    "boys-scout-high-adventure-2024",
-    "photograph",
     "makers-stuff-clay",
-    "boy-scouts",
-    "boys-scout",
     "school",
-    "sketching"
+    "sketching",
+    "photograph"
   ],
   "projects": {
     "makers-stuff-go-cart": {
@@ -310,7 +308,7 @@
       "year": "2021",
       "tags": "Project \u2022 Build \u2022 Maker",
       "description": "Boys Scout - High Adventure 2024 project documentation.",
-      "featured": true,
+      "featured": false,
       "category": "community"
     },
     "boy-scouts": {
@@ -318,7 +316,7 @@
       "year": "2024",
       "tags": "Project \u2022 Build \u2022 Maker",
       "description": "Boy Scouts project documentation.",
-      "featured": true,
+      "featured": false,
       "category": "community"
     },
     "boys-scout": {
