@@ -50,6 +50,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: nowrap;
+    gap: 1rem;
 }
 
 .logo {
@@ -57,12 +59,16 @@ body {
     font-weight: bold;
     color: var(--primary-color);
     text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .nav-menu {
     display: flex;
     list-style: none;
     gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
 }
 
 .nav-link {
@@ -841,12 +847,14 @@ section {
     }
 
     .logo {
-        font-size: 1.25rem;
+        display: none;
     }
 
     .nav-menu {
         gap: 0.5rem;
-        font-size: 0.8rem;
+        font-size: 0.85rem;
+        width: 100%;
+        justify-content: center;
     }
 
     .nav-link {

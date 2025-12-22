@@ -157,14 +157,14 @@ function initializeGallery() {
         if (img.dataset.lightboxInitialized) {
             return;
         }
-        
+
         img.dataset.lightboxInitialized = 'true';
         img.style.cursor = 'pointer';
-        
+
         const clickHandler = (e) => {
             e.preventDefault();
             e.stopPropagation();
-            
+
             const allImages = Array.from(document.querySelectorAll('.gallery-image')).map(imgEl => ({
                 src: imgEl.dataset.fullImage || imgEl.src,
                 alt: imgEl.alt
@@ -174,17 +174,40 @@ function initializeGallery() {
                 lightbox.open(allImages, index);
             }
         };
-        
+
         img.addEventListener('click', clickHandler);
-        img.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            clickHandler(e);
-        });
-        
-        img.addEventListener('touchstart', function() {
+
+        // Track touch position to distinguish tap from scroll
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchMoved = false;
+
+        img.addEventListener('touchstart', function(e) {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            touchMoved = false;
             this.style.opacity = '0.8';
         });
-        
+
+        img.addEventListener('touchmove', function(e) {
+            const deltaX = Math.abs(e.touches[0].clientX - touchStartX);
+            const deltaY = Math.abs(e.touches[0].clientY - touchStartY);
+            // If finger moved more than 10px, it's a scroll not a tap
+            if (deltaX > 10 || deltaY > 10) {
+                touchMoved = true;
+                this.style.opacity = '1';
+            }
+        });
+
+        img.addEventListener('touchend', function(e) {
+            this.style.opacity = '1';
+            // Only open lightbox if it was a tap (not a scroll)
+            if (!touchMoved) {
+                e.preventDefault();
+                clickHandler(e);
+            }
+        });
+
         img.addEventListener('touchcancel', function() {
             this.style.opacity = '1';
         });
