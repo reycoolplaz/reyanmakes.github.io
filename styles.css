@@ -267,7 +267,7 @@ section {
 
 .project-content h3 {
     font-size: 1.5rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
     color: var(--text-color);
 }
 
@@ -777,7 +777,8 @@ section {
     text-decoration: none;
     border-radius: 8px;
     font-weight: 600;
-    margin-top: 1rem;
+    margin-top: 0;
+    margin-bottom: 0.75rem;
     transition: background 0.3s ease, transform 0.3s ease;
 }
 

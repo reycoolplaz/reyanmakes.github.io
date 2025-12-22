@@ -502,8 +502,8 @@ def generate_featured_card(slug, project_info, metadata, is_first=False):
                     <div class="project-content">
                         <span class="year-badge">{metadata.get('year', '2024')}</span>
                         <h3>{metadata.get('title', slug)}</h3>
-                        <p class="project-description">{metadata.get('description', '')}</p>
                         <a href="projects/{slug}.html" class="view-gallery-btn">View Gallery ({images} images)</a>
+                        <p class="project-description">{metadata.get('description', '')}</p>
                         <div class="project-tags">
                             {tags_html}
                         </div>
