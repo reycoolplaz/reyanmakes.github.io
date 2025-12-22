@@ -269,6 +269,7 @@ section {
 .project-description {
     color: var(--text-light);
     margin-bottom: 1rem;
+    white-space: pre-line;
 }
 
 .project-tags {
@@ -716,6 +717,7 @@ section {
     margin-top: 1.5rem;
     opacity: 0.95;
     line-height: 1.8;
+    white-space: pre-line;
 }
 
 /* Breadcrumb Navigation */

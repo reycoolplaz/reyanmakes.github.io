@@ -324,9 +324,9 @@ def generate_project_page(slug, info, metadata, template='default', layout='defa
                 <span>•</span>
                 <span>{metadata['tags']}</span>
             </div>
-            <div class="project-hero-description">
-                {metadata['description'].replace(chr(10)+chr(10), '</p><p>').replace(chr(10), '<br>')}
-            </div>
+            <p class="project-hero-description">
+                {metadata['description']}
+            </p>
         </div>
     </section>
 
@@ -502,7 +502,7 @@ def generate_featured_card(slug, project_info, metadata, is_first=False):
                     <div class="project-content">
                         <span class="year-badge">{metadata.get('year', '2024')}</span>
                         <h3>{metadata.get('title', slug)}</h3>
-                        <p class="project-description">{metadata.get('description', '').replace(chr(10)+chr(10), '</p><p>').replace(chr(10), '<br>')}</p>
+                        <p class="project-description">{metadata.get('description', '')}</p>
                         <div class="project-tags">
                             {tags_html}
                         </div>
