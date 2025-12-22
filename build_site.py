@@ -36,7 +36,7 @@ METADATA_FILE = BASE_DIR / 'projects-metadata.json'
 IMAGE_ORDER_FILE = BASE_DIR / 'image-orders.json'
 HIDDEN_IMAGES_FILE = BASE_DIR / 'hidden-images.json'
 
-THUMBNAIL_SIZE = (200, 200)
+THUMBNAIL_SIZE = (800, 800)
 THUMBNAIL_QUALITY = 75
 
 ASSET_VERSION = datetime.now().strftime("%Y%m%d")

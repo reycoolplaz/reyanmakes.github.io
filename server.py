@@ -576,8 +576,8 @@ def upload_images():
                     with Image.open(filepath) as img:
                         if img.mode == 'RGBA':
                             img = img.convert('RGB')
-                        img.thumbnail((200, 200), Image.Resampling.LANCZOS)
-                        img.save(thumb_path, 'JPEG', quality=75, optimize=True)
+                        img.thumbnail((800, 800), Image.Resampling.LANCZOS)
+                        img.save(thumb_path, 'JPEG', quality=80, optimize=True)
                 except Exception as thumb_err:
                     print(f"Thumbnail error for {filepath.name}: {thumb_err}")
 
@@ -814,8 +814,8 @@ def bulk_upload():
                         with Image.open(filepath) as img:
                             if img.mode == 'RGBA':
                                 img = img.convert('RGB')
-                            img.thumbnail((200, 200), Image.Resampling.LANCZOS)
-                            img.save(thumb_path, 'JPEG', quality=75, optimize=True)
+                            img.thumbnail((800, 800), Image.Resampling.LANCZOS)
+                            img.save(thumb_path, 'JPEG', quality=80, optimize=True)
                     except Exception as thumb_err:
                         print(f"Thumbnail error for {filepath.name}: {thumb_err}")
 
