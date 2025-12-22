@@ -202,6 +202,47 @@
         .sidebar {
             width: 280px;
             flex-shrink: 0;
+            position: relative;
+            min-width: 60px;
+            max-width: 500px;
+        }
+
+        .sidebar-resizer {
+            position: absolute;
+            top: 0;
+            right: -4px;
+            width: 8px;
+            height: 100%;
+            cursor: ew-resize;
+            background: transparent;
+            z-index: 10;
+        }
+
+        .sidebar-resizer:hover,
+        .sidebar-resizer.dragging {
+            background: var(--primary);
+            opacity: 0.5;
+            border-radius: 4px;
+        }
+
+        .sidebar.collapsed .project-info,
+        .sidebar.collapsed .project-list-actions,
+        .sidebar.collapsed .featured-order-panel {
+            display: none;
+        }
+
+        .sidebar.collapsed .project-list-header span {
+            display: none;
+        }
+
+        .sidebar.collapsed .project-item {
+            justify-content: center;
+            padding: 0.5rem;
+        }
+
+        .sidebar.collapsed .project-thumb {
+            width: 40px;
+            height: 40px;
         }
 
         .project-list {
@@ -1088,7 +1129,8 @@
     <!-- Main Content -->
     <div class="main-content">
         <!-- Sidebar -->
-        <aside class="sidebar">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-resizer" id="sidebarResizer"></div>
             <div class="project-list">
                 <div class="project-list-header">
                     <span>Projects</span>
@@ -2799,6 +2841,52 @@
                         .replace(/^-|-$/g, '');
                 });
             }
+
+            // Sidebar resizer
+            const sidebar = document.getElementById('sidebar');
+            const resizer = document.getElementById('sidebarResizer');
+            let isResizing = false;
+
+            // Restore saved width
+            const savedWidth = localStorage.getItem('sidebarWidth');
+            if (savedWidth) {
+                sidebar.style.width = savedWidth + 'px';
+                updateCollapsedState(parseInt(savedWidth));
+            }
+
+            function updateCollapsedState(width) {
+                if (width < 120) {
+                    sidebar.classList.add('collapsed');
+                } else {
+                    sidebar.classList.remove('collapsed');
+                }
+            }
+
+            resizer.addEventListener('mousedown', (e) => {
+                isResizing = true;
+                resizer.classList.add('dragging');
+                document.body.style.cursor = 'ew-resize';
+                document.body.style.userSelect = 'none';
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isResizing) return;
+                const sidebarRect = sidebar.getBoundingClientRect();
+                let newWidth = e.clientX - sidebarRect.left;
+                newWidth = Math.max(60, Math.min(500, newWidth));
+                sidebar.style.width = newWidth + 'px';
+                updateCollapsedState(newWidth);
+            });
+
+            document.addEventListener('mouseup', () => {
+                if (isResizing) {
+                    isResizing = false;
+                    resizer.classList.remove('dragging');
+                    document.body.style.cursor = '';
+                    document.body.style.userSelect = '';
+                    localStorage.setItem('sidebarWidth', parseInt(sidebar.style.width));
+                }
+            });
         });
 
         async function createNewProject() {
