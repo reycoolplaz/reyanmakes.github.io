@@ -231,6 +231,51 @@ def build_status_endpoint():
     return jsonify(build_status)
 
 
+@app.route('/api/publish', methods=['POST'])
+def publish_site():
+    """Commit and push changes to git"""
+    data = request.get_json()
+    password = data.get('password', '')
+
+    if password != ADMIN_PASSWORD:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    try:
+        import subprocess
+
+        # Stage all changes
+        subprocess.run(['git', 'add', '-A'], cwd=BASE_DIR, check=True)
+
+        # Check if there are changes to commit
+        result = subprocess.run(
+            ['git', 'status', '--porcelain'],
+            cwd=BASE_DIR,
+            capture_output=True,
+            text=True
+        )
+
+        if not result.stdout.strip():
+            return jsonify({'message': 'No changes to publish'})
+
+        # Commit with a standard message
+        commit_msg = 'chore: update site content via admin panel'
+        subprocess.run(
+            ['git', 'commit', '-m', commit_msg],
+            cwd=BASE_DIR,
+            check=True
+        )
+
+        # Push to remote
+        subprocess.run(['git', 'push'], cwd=BASE_DIR, check=True)
+
+        return jsonify({'success': True, 'message': 'Published successfully'})
+
+    except subprocess.CalledProcessError as e:
+        return jsonify({'error': f'Git operation failed: {str(e)}'}), 500
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
 @app.route('/api/metadata', methods=['POST'])
 def save_metadata():
     """Save project metadata to JSON file"""

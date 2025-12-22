@@ -114,6 +114,15 @@
             background: rgba(255,255,255,0.1);
         }
 
+        .btn-publish {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .btn-publish:hover:not(:disabled) {
+            background: #7c3aed;
+        }
+
         /* Auth Section */
         .auth-overlay {
             position: fixed;
@@ -1120,6 +1129,14 @@
                         <line x1="4" y1="4" x2="9" y2="9"/>
                     </svg>
                     Build Site
+                </button>
+                <button class="btn btn-publish" id="publishBtn" onclick="publishSite()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/>
+                        <polyline points="16,6 12,2 8,6"/>
+                        <line x1="12" y1="2" x2="12" y2="15"/>
+                    </svg>
+                    Publish
                 </button>
                 <button class="btn btn-outline" onclick="logout()">Logout</button>
             </div>
@@ -2651,6 +2668,35 @@
                 showToast(error.message, 'error');
                 btn.disabled = false;
                 btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16,3 21,3 21,8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21,16 21,21 16,21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg> Build Site';
+            }
+        }
+
+        async function publishSite() {
+            const btn = document.getElementById('publishBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Publishing...';
+
+            try {
+                const res = await fetch('/api/publish', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password })
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    throw new Error(data.error || 'Publish failed');
+                }
+
+                showToast('Published successfully!', 'success');
+                btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16,6 12,2 8,6"/><line x1="12" y1="2" x2="12" y2="15"/></svg> Publish';
+                btn.disabled = false;
+
+            } catch (error) {
+                showToast(error.message, 'error');
+                btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16,6 12,2 8,6"/><line x1="12" y1="2" x2="12" y2="15"/></svg> Publish';
+                btn.disabled = false;
             }
         }
 
