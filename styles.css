@@ -847,14 +847,13 @@ section {
     }
 
     .logo {
-        display: none;
+        font-size: 0.95rem;
+        white-space: nowrap;
     }
 
     .nav-menu {
-        gap: 0.5rem;
-        font-size: 0.85rem;
-        width: 100%;
-        justify-content: center;
+        gap: 0.4rem;
+        font-size: 0.65rem;
     }
 
     .nav-link {
