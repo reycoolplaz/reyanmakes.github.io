@@ -3390,15 +3390,18 @@
             document.getElementById('siteDescription').value = content.siteDescription || '';
             document.getElementById('footerCopyright').value = content.footer?.copyright || '';
 
-            // Hero
+            // Hero & About (combined)
             const hero = content.hero || {};
+            const about = content.about || {};
             document.getElementById('heroTitle').value = hero.title || '';
             document.getElementById('heroSubtitle').value = hero.subtitle || '';
-            document.getElementById('heroDescription').value = hero.description || '';
             document.getElementById('heroCtaText').value = hero.ctaText || '';
             document.getElementById('heroCtaLink').value = hero.ctaLink || '';
             document.getElementById('youtubeUrl').value = hero.social?.youtube?.url || '';
             document.getElementById('youtubeLabel').value = hero.social?.youtube?.label || '';
+            document.getElementById('skillsTitle').value = about.skillsTitle || '';
+            document.getElementById('skillsList').value = (about.skills || []).join('\n');
+            renderAboutParagraphs(about.paragraphs || []);
 
             // Featured
             const featured = content.featuredSection || {};
@@ -3411,21 +3414,11 @@
             document.getElementById('timelineSubtitle').value = timeline.subtitle || '';
             renderMilestones(timeline.milestones || []);
 
-            // About
-            const about = content.about || {};
-            document.getElementById('aboutTitle').value = about.title || '';
-            document.getElementById('skillsTitle').value = about.skillsTitle || '';
-            document.getElementById('skillsList').value = (about.skills || []).join('\n');
-            renderAboutParagraphs(about.paragraphs || []);
-
             // Contact
             const contact = content.contact || {};
             document.getElementById('contactTitle').value = contact.title || '';
             document.getElementById('contactDescription').value = contact.description || '';
             renderContactLinks(contact.links || []);
-
-            // Projects dropdown
-            populateProjectEditDropdown();
         }
 
         function renderMilestones(milestones) {
@@ -3630,7 +3623,6 @@
             if (!editingContent.hero) editingContent.hero = {};
             editingContent.hero.title = document.getElementById('heroTitle').value;
             editingContent.hero.subtitle = document.getElementById('heroSubtitle').value;
-            editingContent.hero.description = document.getElementById('heroDescription').value;
             editingContent.hero.ctaText = document.getElementById('heroCtaText').value;
             editingContent.hero.ctaLink = document.getElementById('heroCtaLink').value;
 
@@ -3639,6 +3631,11 @@
             if (!editingContent.hero.social.youtube) editingContent.hero.social.youtube = {};
             editingContent.hero.social.youtube.url = document.getElementById('youtubeUrl').value;
             editingContent.hero.social.youtube.label = document.getElementById('youtubeLabel').value;
+
+            // About (in Hero section)
+            if (!editingContent.about) editingContent.about = {};
+            editingContent.about.skillsTitle = document.getElementById('skillsTitle').value;
+            editingContent.about.skills = document.getElementById('skillsList').value.split('\n').map(s => s.trim()).filter(s => s);
 
             // Featured
             if (!editingContent.featuredSection) editingContent.featuredSection = {};
@@ -3649,12 +3646,6 @@
             if (!editingContent.timeline) editingContent.timeline = { milestones: [] };
             editingContent.timeline.title = document.getElementById('timelineTitle').value;
             editingContent.timeline.subtitle = document.getElementById('timelineSubtitle').value;
-
-            // About
-            if (!editingContent.about) editingContent.about = {};
-            editingContent.about.title = document.getElementById('aboutTitle').value;
-            editingContent.about.skillsTitle = document.getElementById('skillsTitle').value;
-            editingContent.about.skills = document.getElementById('skillsList').value.split('\n').map(s => s.trim()).filter(s => s);
 
             // Contact
             if (!editingContent.contact) editingContent.contact = {};
@@ -3689,90 +3680,6 @@
         // ===============================
         // Project Editor Functions
         // ===============================
-
-        let editingProjectSlug = null;
-
-        function populateProjectEditDropdown() {
-            const select = document.getElementById('projectEditSelect');
-            select.innerHTML = '<option value="">Choose a project...</option>';
-
-            const projects = metadata.projects || {};
-            Object.entries(projects).sort((a, b) => (a[1].title || a[0]).localeCompare(b[1].title || b[0])).forEach(([slug, proj]) => {
-                const option = document.createElement('option');
-                option.value = slug;
-                option.textContent = proj.title || slug;
-                select.appendChild(option);
-            });
-
-            // Reset form
-            editingProjectSlug = null;
-            document.getElementById('projectEditForm').style.display = 'none';
-        }
-
-        function loadProjectForEditing() {
-            const select = document.getElementById('projectEditSelect');
-            const slug = select.value;
-
-            if (!slug) {
-                document.getElementById('projectEditForm').style.display = 'none';
-                editingProjectSlug = null;
-                return;
-            }
-
-            const project = metadata.projects[slug];
-            if (!project) return;
-
-            editingProjectSlug = slug;
-
-            // Populate form
-            document.getElementById('editProjectTitle').value = project.title || '';
-            document.getElementById('editProjectYear').value = project.year || '';
-            document.getElementById('editProjectCategory').value = project.category || 'makers';
-            document.getElementById('editProjectTags').value = project.tags || '';
-            document.getElementById('editProjectDescription').value = project.description || '';
-            document.getElementById('editProjectFeatured').checked = project.featured || false;
-
-            // Show form
-            document.getElementById('projectEditForm').style.display = 'block';
-        }
-
-        async function saveProjectEdit() {
-            if (!editingProjectSlug) return;
-
-            // Update metadata
-            metadata.projects[editingProjectSlug] = {
-                ...metadata.projects[editingProjectSlug],
-                title: document.getElementById('editProjectTitle').value,
-                year: document.getElementById('editProjectYear').value,
-                category: document.getElementById('editProjectCategory').value,
-                tags: document.getElementById('editProjectTags').value,
-                description: document.getElementById('editProjectDescription').value,
-                featured: document.getElementById('editProjectFeatured').checked
-            };
-
-            try {
-                // Save via API
-                const res = await fetch('/api/metadata', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ password, metadata })
-                });
-
-                if (!res.ok) {
-                    const error = await res.json();
-                    throw new Error(error.error || 'Failed to save project');
-                }
-
-                showToast(`Project "${metadata.projects[editingProjectSlug].title}" updated!`, 'success');
-
-                // Refresh dropdown labels
-                populateProjectEditDropdown();
-
-            } catch (error) {
-                console.error('Failed to save project:', error);
-                showToast(error.message, 'error');
-            }
-        }
     </script>
 </body>
 </html>
