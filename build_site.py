@@ -631,12 +631,25 @@ def generate_index_html(discovered_folders, metadata_config):
     footer = site_content.get("footer", {})
 
     # Show ALL projects for all layouts (enables layout switching without rebuild)
-    # Featured projects appear first, then non-featured projects
+    # Featured projects appear first (in featuredOrder), then non-featured projects
     featured_cards = []
     non_featured_cards = []
     defaults = metadata_config.get("defaults", {})
+    processed_slugs = set()
 
+    # First, add featured projects in the order specified by featuredOrder
+    for slug in featured_order:
+        if slug in discovered_folders:
+            info = discovered_folders[slug]
+            meta = projects_meta.get(slug) or get_project_metadata(slug, projects_meta, defaults)
+            card = generate_featured_card(slug, info, meta, is_first=(len(featured_cards) == 0))
+            featured_cards.append(card)
+            processed_slugs.add(slug)
+
+    # Then add remaining projects (featured ones not in order, then non-featured)
     for slug, info in discovered_folders.items():
+        if slug in processed_slugs:
+            continue
         meta = projects_meta.get(slug) or get_project_metadata(slug, projects_meta, defaults)
         project_meta = projects_meta.get(slug, {})
         is_featured = project_meta.get('featured', False)

@@ -1,5 +1,5 @@
 {
-  "generated": "2025-12-12T15:03:05.863207",
+  "generated": "2025-12-21T21:10:56.243988",
   "total_projects": 15,
   "total_images": 242,
   "projects": {
@@ -87,7 +87,7 @@
       "year": "2025",
       "tags": "Architecture \u2022 Design \u2022 NJIT Program",
       "category": "education",
-      "featured": false,
+      "featured": true,
       "page": "projects/njit-hcad-program-prototype.html",
       "manifest": "gen/manifests/njit-hcad-program-prototype.json"
     },
