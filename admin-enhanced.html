@@ -1413,10 +1413,9 @@
             <!-- Tabs -->
             <div class="content-tabs">
                 <button class="content-tab active" data-tab="site" onclick="switchContentTab('site')">Site Info</button>
-                <button class="content-tab" data-tab="hero" onclick="switchContentTab('hero')">Hero</button>
+                <button class="content-tab" data-tab="hero" onclick="switchContentTab('hero')">Hero & About</button>
                 <button class="content-tab" data-tab="featured" onclick="switchContentTab('featured')">Featured</button>
                 <button class="content-tab" data-tab="timeline" onclick="switchContentTab('timeline')">Timeline</button>
-                <button class="content-tab" data-tab="about" onclick="switchContentTab('about')">About</button>
                 <button class="content-tab" data-tab="contact" onclick="switchContentTab('contact')">Contact</button>
                 <button class="content-tab" data-tab="projects" onclick="switchContentTab('projects')">Projects</button>
             </div>
@@ -1442,7 +1441,7 @@
                     </div>
                 </div>
 
-                <!-- Hero Tab -->
+                <!-- Hero & About Tab -->
                 <div class="content-tab-panel" id="tab-hero">
                     <div class="form-group">
                         <label for="heroTitle">Title</label>
@@ -1452,9 +1451,34 @@
                         <label for="heroSubtitle">Subtitle</label>
                         <input type="text" id="heroSubtitle" placeholder="High School Maker • Builder • Creator">
                     </div>
+
+                    <h4 style="margin-top: 1.5rem; margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-light);">About Section</h4>
                     <div class="form-group">
-                        <label for="heroDescription">Description</label>
-                        <textarea id="heroDescription" rows="3" placeholder="A brief intro about yourself..."></textarea>
+                        <label>About Paragraphs</label>
+                        <div id="aboutParagraphsContainer">
+                            <!-- Paragraphs will be rendered here -->
+                        </div>
+                        <button class="btn btn-sm btn-outline" onclick="addAboutParagraph()" style="margin-top: 0.5rem;">+ Add Paragraph</button>
+                    </div>
+                    <div class="form-group">
+                        <label for="skillsTitle">Skills Title</label>
+                        <input type="text" id="skillsTitle" placeholder="Skills & Experience">
+                    </div>
+                    <div class="form-group">
+                        <label for="skillsList">Skills (one per line)</label>
+                        <textarea id="skillsList" rows="4" placeholder="Woodworking&#10;Welding&#10;Design..."></textarea>
+                    </div>
+
+                    <h4 style="margin-top: 1.5rem; margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-light);">Social & CTA</h4>
+                    <div class="metadata-grid">
+                        <div class="form-group">
+                            <label for="youtubeUrl">YouTube URL</label>
+                            <input type="text" id="youtubeUrl" placeholder="https://youtube.com/@channel">
+                        </div>
+                        <div class="form-group">
+                            <label for="youtubeLabel">YouTube Label</label>
+                            <input type="text" id="youtubeLabel" placeholder="@reyanmakes">
+                        </div>
                     </div>
                     <div class="metadata-grid">
                         <div class="form-group">
@@ -1464,17 +1488,6 @@
                         <div class="form-group">
                             <label for="heroCtaLink">CTA Button Link</label>
                             <input type="text" id="heroCtaLink" placeholder="#featured">
-                        </div>
-                    </div>
-                    <h4 style="margin-top: 1.5rem; margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-light);">Social Links</h4>
-                    <div class="metadata-grid">
-                        <div class="form-group">
-                            <label for="youtubeUrl">YouTube URL</label>
-                            <input type="text" id="youtubeUrl" placeholder="https://youtube.com/@channel">
-                        </div>
-                        <div class="form-group">
-                            <label for="youtubeLabel">YouTube Label</label>
-                            <input type="text" id="youtubeLabel" placeholder="@reyanmakes">
                         </div>
                     </div>
                 </div>
@@ -1511,29 +1524,6 @@
                     </h4>
                     <div id="milestonesContainer">
                         <!-- Milestones will be rendered here -->
-                    </div>
-                </div>
-
-                <!-- About Tab -->
-                <div class="content-tab-panel" id="tab-about">
-                    <div class="form-group">
-                        <label for="aboutTitle">Section Title</label>
-                        <input type="text" id="aboutTitle" placeholder="About Me">
-                    </div>
-                    <div class="form-group">
-                        <label>About Paragraphs</label>
-                        <div id="aboutParagraphsContainer">
-                            <!-- Paragraphs will be rendered here -->
-                        </div>
-                        <button class="btn btn-sm btn-outline" onclick="addAboutParagraph()" style="margin-top: 0.5rem;">+ Add Paragraph</button>
-                    </div>
-                    <div class="form-group">
-                        <label for="skillsTitle">Skills Title</label>
-                        <input type="text" id="skillsTitle" placeholder="Skills & Experience">
-                    </div>
-                    <div class="form-group">
-                        <label for="skillsList">Skills (one per line)</label>
-                        <textarea id="skillsList" rows="6" placeholder="Woodworking&#10;Welding&#10;Design..."></textarea>
                     </div>
                 </div>
 
