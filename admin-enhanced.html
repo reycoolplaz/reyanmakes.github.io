@@ -1073,6 +1073,14 @@
                     </button>
                 </div>
                 <div id="projectList"></div>
+                <div style="padding: 0.75rem; border-top: 1px solid var(--border); margin-top: 0.5rem;">
+                    <button class="btn btn-sm" style="width: 100%; background: var(--bg); border: 1px solid var(--border);" onclick="showSiteSettings()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 0.25rem;">
+                            <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+                        </svg>
+                        Site Settings
+                    </button>
+                </div>
             </div>
 
         </aside>
@@ -2228,6 +2236,26 @@
             renderFeaturedOrder();
             renderProjectList();
             showToast('Removed from featured', 'info');
+        }
+
+        function showSiteSettings() {
+            if (hasChanges) {
+                if (!confirm('You have unsaved changes. Discard them?')) {
+                    return;
+                }
+            }
+
+            currentProject = null;
+            hasChanges = false;
+            updateChangeIndicator();
+
+            // Update UI
+            document.getElementById('emptyState').style.display = 'block';
+            document.getElementById('projectEditor').style.display = 'none';
+            document.getElementById('deleteProjectBtn').disabled = true;
+
+            // Re-render project list to remove selection
+            renderProjectList();
         }
 
         async function selectProject(slug) {
