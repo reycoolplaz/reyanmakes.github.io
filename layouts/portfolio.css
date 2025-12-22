@@ -645,11 +645,7 @@ body.layout-portfolio .project-hero-meta {
 }
 
 body.layout-portfolio .project-hero-description {
-    font-size: 1.1rem;
-    line-height: 1.7;
-    max-width: 600px;
-    margin: 0 auto;
-    opacity: 0.85;
+    display: none;
 }
 
 body.layout-portfolio .gallery-grid {
