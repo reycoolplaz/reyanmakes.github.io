@@ -691,10 +691,14 @@ def delete_image():
 
         # Regenerate manifest after deletion
         slug = project_path.lower().replace(' ', '-').replace('/', '-').replace('--', '-').strip('-')
+        print(f"Regenerating manifest for {project_path} (slug: {slug}) after delete")
         try:
             regenerate_manifest(project_path, slug)
+            print(f"Successfully regenerated manifest for {slug}")
         except Exception as e:
-            print(f"Warning: Failed to regenerate manifest after delete: {e}")
+            import traceback
+            print(f"ERROR: Failed to regenerate manifest after delete: {e}")
+            traceback.print_exc()
 
         return jsonify({'message': 'Image deleted successfully'})
 

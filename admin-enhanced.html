@@ -2710,6 +2710,8 @@
 
                 if (data.uploaded.length > 0) {
                     showToast(`Uploaded ${data.uploaded.length} image(s)!`, 'success');
+                    // Mark as changed to enable Save & Build
+                    markChanged();
                     // Reload the gallery after a short delay
                     setTimeout(() => loadGalleryImages(currentProject), 500);
                 }
@@ -2955,6 +2957,9 @@
                 }
 
                 showToast('Image deleted!', 'success');
+
+                // Mark as changed to enable Save & Build
+                markChanged();
 
                 // Remove from image order if present
                 if (imageOrder[currentProject]) {

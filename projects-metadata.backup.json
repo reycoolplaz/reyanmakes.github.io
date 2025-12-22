@@ -204,7 +204,9 @@
     "makers-stuff-clay",
     "school",
     "sketching",
-    "photograph"
+    "photograph",
+    "boys-scout-high-adventure-2024",
+    "boy-scouts"
   ],
   "projects": {
     "makers-stuff-go-cart": {
@@ -308,7 +310,7 @@
       "year": "2021",
       "tags": "Project \u2022 Build \u2022 Maker",
       "description": "Boys Scout - High Adventure 2024 project documentation.",
-      "featured": false,
+      "featured": true,
       "category": "community"
     },
     "boy-scouts": {
@@ -316,7 +318,7 @@
       "year": "2024",
       "tags": "Project \u2022 Build \u2022 Maker",
       "description": "Boy Scouts project documentation.",
-      "featured": false,
+      "featured": true,
       "category": "community"
     },
     "boys-scout": {
