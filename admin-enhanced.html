@@ -1182,12 +1182,6 @@
                                 <label for="projectDescription">Description</label>
                                 <textarea id="projectDescription" rows="3" placeholder="Project description..."></textarea>
                             </div>
-                            <div class="form-group">
-                                <div class="checkbox-group">
-                                    <input type="checkbox" id="projectFeatured">
-                                    <label for="projectFeatured">Featured on homepage</label>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -2277,7 +2271,6 @@
             document.getElementById('projectTags').value = meta.tags || '';
             document.getElementById('projectCategory').value = meta.category || 'makers';
             document.getElementById('projectDescription').value = meta.description || '';
-            document.getElementById('projectFeatured').checked = meta.featured || false;
 
             // Load gallery images
             await loadGalleryImages(slug);
@@ -2289,7 +2282,7 @@
             renderProjectList();
 
             // Add change listeners
-            ['projectTitle', 'projectYear', 'projectTags', 'projectCategory', 'projectDescription', 'projectFeatured'].forEach(id => {
+            ['projectTitle', 'projectYear', 'projectTags', 'projectCategory', 'projectDescription'].forEach(id => {
                 const el = document.getElementById(id);
                 el.onchange = el.oninput = markChanged;
             });
@@ -2467,7 +2460,6 @@
                 meta.tags = document.getElementById('projectTags').value;
                 meta.category = document.getElementById('projectCategory').value;
                 meta.description = document.getElementById('projectDescription').value;
-                meta.featured = document.getElementById('projectFeatured').checked;
             }
 
             try {
