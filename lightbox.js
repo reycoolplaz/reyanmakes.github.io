@@ -62,8 +62,18 @@ class Lightbox {
             e.stopPropagation();
             this.prev();
         });
-        
+        this.prevBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            this.prev();
+        });
+
         this.nextBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.next();
+        });
+        this.nextBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
             e.stopPropagation();
             this.next();
         });
