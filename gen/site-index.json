@@ -1,7 +1,7 @@
 {
-  "generated": "2025-12-21T21:54:48.103504",
+  "generated": "2025-12-21T22:00:24.330906",
   "total_projects": 15,
-  "total_images": 242,
+  "total_images": 245,
   "projects": {
     "makers-stuff-clay": {
       "path": "Makers stuff/Clay",
@@ -49,7 +49,7 @@
     },
     "makers-stuff-go-cart": {
       "path": "Makers stuff/Go-Cart",
-      "images": 16,
+      "images": 19,
       "title": "Go-Kart",
       "year": "Spring 2025",
       "tags": "Welding \u2022 Metal Fabrication \u2022 Mechanical",
