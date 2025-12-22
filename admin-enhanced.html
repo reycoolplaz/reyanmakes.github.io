@@ -2106,6 +2106,19 @@
 
                 item.addEventListener('dragend', () => {
                     item.classList.remove('dragging');
+                    // Update featured order based on current DOM order
+                    const newOrder = [...featuredSection.querySelectorAll('.project-item')].map(el => el.dataset.slug);
+                    if (JSON.stringify(newOrder) !== JSON.stringify(metadata.featuredOrder)) {
+                        metadata.featuredOrder = newOrder;
+                        // Update featured flags
+                        Object.keys(metadata.projects || {}).forEach(slug => {
+                            if (metadata.projects[slug]) {
+                                metadata.projects[slug].featured = newOrder.includes(slug);
+                            }
+                        });
+                        markChanges();
+                        renderProjectList();
+                    }
                     draggedSlug = null;
                 });
 
@@ -2119,11 +2132,6 @@
                             item.parentElement.insertBefore(dragging, item);
                         } else {
                             item.parentElement.insertBefore(dragging, item.nextSibling);
-                        }
-                        // Update order if in featured section
-                        if (item.parentElement.id === 'featuredSection') {
-                            metadata.featuredOrder = [...item.parentElement.querySelectorAll('.project-item')].map(el => el.dataset.slug);
-                            markChanges();
                         }
                     }
                 });
