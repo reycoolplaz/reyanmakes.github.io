@@ -1962,26 +1962,32 @@
                 }
             }
 
-            // Get featured order
+            // Get project order - all projects are featured, use featuredOrder for ordering
             const featuredOrder = metadata.featuredOrder || [];
-            const featuredProjects = featuredOrder
-                .filter(slug => allProjects[slug])
-                .map(slug => [slug, allProjects[slug]]);
 
-            const otherProjects = Object.entries(allProjects)
+            // Start with projects in featuredOrder, then add any missing ones
+            const orderedProjects = [];
+            featuredOrder.forEach(slug => {
+                if (allProjects[slug]) {
+                    orderedProjects.push([slug, allProjects[slug]]);
+                }
+            });
+            // Add any projects not in featuredOrder (sorted alphabetically)
+            Object.entries(allProjects)
                 .filter(([slug]) => !featuredOrder.includes(slug))
-                .sort((a, b) => a[1].title.localeCompare(b[1].title));
+                .sort((a, b) => a[1].title.localeCompare(b[1].title))
+                .forEach(p => orderedProjects.push(p));
 
-            document.getElementById('projectCount').textContent = Object.keys(allProjects).length;
+            document.getElementById('projectCount').textContent = orderedProjects.length;
 
-            const renderItem = ([slug, project], isFeatured, index) => {
+            const renderItem = ([slug, project], index) => {
                 const isEmpty = project.images === 0;
                 return `
-                    <div class="project-item ${currentProject === slug ? 'active' : ''} ${isEmpty ? 'empty-project' : ''} ${isFeatured ? 'featured-item' : ''}"
+                    <div class="project-item ${currentProject === slug ? 'active' : ''} ${isEmpty ? 'empty-project' : ''}"
                          data-slug="${slug}" draggable="true" onclick="selectProject('${slug}')">
                         <span class="drag-handle" title="Drag to reorder">⋮⋮</span>
                         <div class="project-info">
-                            <h4>${isFeatured ? `${index + 1}. ` : ''}${project.title}</h4>
+                            <h4>${index + 1}. ${project.title}</h4>
                             <span>${isEmpty ? 'No images' : `${project.images} imgs`} • ${project.year}</span>
                         </div>
                         ${isEmpty ? '<span class="empty-badge">Empty</span>' : ''}
@@ -1989,21 +1995,8 @@
                 `;
             };
 
-            let html = '';
-
-            // Featured section
-            html += `<div class="section-divider featured">Featured (${featuredProjects.length})</div>`;
-            html += `<div id="featuredSection">`;
-            if (featuredProjects.length === 0) {
-                html += '<div class="drop-zone" style="padding: 1rem; text-align: center; color: var(--text-light); font-size: 0.8rem;">Drag projects here to feature</div>';
-            } else {
-                html += featuredProjects.map((p, i) => renderItem(p, true, i)).join('');
-            }
-            html += '</div>';
-
-            // Other projects section
-            html += `<div id="otherSection">`;
-            html += otherProjects.map(p => renderItem(p, false)).join('');
+            let html = `<div id="featuredSection">`;
+            html += orderedProjects.map((p, i) => renderItem(p, i)).join('');
             html += '</div>';
 
             list.innerHTML = html;
@@ -2030,67 +2023,12 @@
         }
 
         function initProjectDragDrop() {
-            const featuredSection = document.getElementById('featuredSection');
-            const otherSection = document.getElementById('otherSection');
+            const projectSection = document.getElementById('featuredSection');
             const projectList = document.getElementById('projectList');
 
-            if (!featuredSection || !otherSection) return;
+            if (!projectSection) return;
 
             let draggedSlug = null;
-
-            // Make sections droppable
-            [featuredSection, otherSection].forEach(section => {
-                section.addEventListener('dragover', (e) => {
-                    e.preventDefault();
-                    section.style.background = 'rgba(102, 126, 234, 0.1)';
-                });
-
-                section.addEventListener('dragleave', () => {
-                    section.style.background = '';
-                });
-
-                section.addEventListener('drop', (e) => {
-                    e.preventDefault();
-                    section.style.background = '';
-
-                    if (!draggedSlug) return;
-
-                    const isFeaturedSection = section.id === 'featuredSection';
-                    let changed = false;
-
-                    if (isFeaturedSection) {
-                        // Get current DOM order (reflects drag position)
-                        const newOrder = [...featuredSection.querySelectorAll('.project-item')].map(el => el.dataset.slug);
-
-                        if (!metadata.featuredOrder.includes(draggedSlug)) {
-                            // Adding new item to featured
-                            metadata.featuredOrder = newOrder;
-                            if (!metadata.projects[draggedSlug]) metadata.projects[draggedSlug] = {};
-                            metadata.projects[draggedSlug].featured = true;
-                            changed = true;
-                        } else if (JSON.stringify(newOrder) !== JSON.stringify(metadata.featuredOrder)) {
-                            // Reordering within featured
-                            metadata.featuredOrder = newOrder;
-                            changed = true;
-                        }
-                    } else {
-                        // Remove from featured
-                        const idx = metadata.featuredOrder.indexOf(draggedSlug);
-                        if (idx > -1) {
-                            metadata.featuredOrder.splice(idx, 1);
-                            if (metadata.projects[draggedSlug]) {
-                                metadata.projects[draggedSlug].featured = false;
-                            }
-                            changed = true;
-                        }
-                    }
-
-                    if (changed) {
-                        markChanged();
-                        renderProjectList();
-                    }
-                });
-            });
 
             // Make items draggable
             projectList.querySelectorAll('.project-item[draggable="true"]').forEach(item => {
@@ -2103,32 +2041,16 @@
                 item.addEventListener('dragend', () => {
                     item.classList.remove('dragging');
 
-                    // Always check for order changes on dragend
-                    const newOrder = [...featuredSection.querySelectorAll('.project-item')].map(el => el.dataset.slug);
-                    const wasInFeatured = metadata.featuredOrder.includes(draggedSlug);
-                    const isNowInFeatured = newOrder.includes(draggedSlug);
+                    // Check for order changes
+                    const newOrder = [...projectSection.querySelectorAll('.project-item')].map(el => el.dataset.slug);
 
-                    let changed = false;
-
-                    if (wasInFeatured !== isNowInFeatured) {
-                        // Moved between sections
-                        if (isNowInFeatured) {
-                            if (!metadata.projects[draggedSlug]) metadata.projects[draggedSlug] = {};
-                            metadata.projects[draggedSlug].featured = true;
-                        } else {
-                            if (metadata.projects[draggedSlug]) {
-                                metadata.projects[draggedSlug].featured = false;
-                            }
-                        }
+                    if (JSON.stringify(newOrder) !== JSON.stringify(metadata.featuredOrder)) {
                         metadata.featuredOrder = newOrder;
-                        changed = true;
-                    } else if (JSON.stringify(newOrder) !== JSON.stringify(metadata.featuredOrder)) {
-                        // Reordered within featured section
-                        metadata.featuredOrder = newOrder;
-                        changed = true;
-                    }
-
-                    if (changed) {
+                        // Mark all as featured
+                        newOrder.forEach(slug => {
+                            if (!metadata.projects[slug]) metadata.projects[slug] = {};
+                            metadata.projects[slug].featured = true;
+                        });
                         markChanged();
                         renderProjectList();
                     }
@@ -2142,47 +2064,11 @@
                     if (dragging && dragging !== item) {
                         const rect = item.getBoundingClientRect();
                         const midY = rect.top + rect.height / 2;
-                        // Move to same section as target item
                         if (e.clientY < midY) {
                             item.parentElement.insertBefore(dragging, item);
                         } else {
                             item.parentElement.insertBefore(dragging, item.nextSibling);
                         }
-                    }
-                });
-
-                // Handle drop on items (for reordering within section)
-                item.addEventListener('drop', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    if (!draggedSlug) return;
-
-                    // Get current DOM order of featured items
-                    const newOrder = [...featuredSection.querySelectorAll('.project-item')].map(el => el.dataset.slug);
-
-                    // Check if item moved between sections
-                    const wasInFeatured = metadata.featuredOrder.includes(draggedSlug);
-                    const isNowInFeatured = newOrder.includes(draggedSlug);
-
-                    if (wasInFeatured !== isNowInFeatured) {
-                        // Moved between sections
-                        if (isNowInFeatured) {
-                            if (!metadata.projects[draggedSlug]) metadata.projects[draggedSlug] = {};
-                            metadata.projects[draggedSlug].featured = true;
-                        } else {
-                            if (metadata.projects[draggedSlug]) {
-                                metadata.projects[draggedSlug].featured = false;
-                            }
-                        }
-                        metadata.featuredOrder = newOrder;
-                        markChanged();
-                        renderProjectList();
-                    } else if (isNowInFeatured && JSON.stringify(newOrder) !== JSON.stringify(metadata.featuredOrder)) {
-                        // Reordered within featured section
-                        metadata.featuredOrder = newOrder;
-                        markChanged();
-                        renderProjectList();
                     }
                 });
             });
