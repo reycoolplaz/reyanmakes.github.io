@@ -2134,6 +2134,41 @@
                         }
                     }
                 });
+
+                // Handle drop on items (for reordering within section)
+                item.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    if (!draggedSlug) return;
+
+                    // Get current DOM order of featured items
+                    const newOrder = [...featuredSection.querySelectorAll('.project-item')].map(el => el.dataset.slug);
+
+                    // Check if item moved between sections
+                    const wasInFeatured = metadata.featuredOrder.includes(draggedSlug);
+                    const isNowInFeatured = newOrder.includes(draggedSlug);
+
+                    if (wasInFeatured !== isNowInFeatured) {
+                        // Moved between sections
+                        if (isNowInFeatured) {
+                            if (!metadata.projects[draggedSlug]) metadata.projects[draggedSlug] = {};
+                            metadata.projects[draggedSlug].featured = true;
+                        } else {
+                            if (metadata.projects[draggedSlug]) {
+                                metadata.projects[draggedSlug].featured = false;
+                            }
+                        }
+                        metadata.featuredOrder = newOrder;
+                        markChanges();
+                        renderProjectList();
+                    } else if (isNowInFeatured && JSON.stringify(newOrder) !== JSON.stringify(metadata.featuredOrder)) {
+                        // Reordered within featured section
+                        metadata.featuredOrder = newOrder;
+                        markChanges();
+                        renderProjectList();
+                    }
+                });
             });
         }
 
