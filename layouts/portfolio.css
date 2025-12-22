@@ -7,9 +7,10 @@ body.layout-portfolio .hero {
     min-height: 100vh;
     display: flex;
     align-items: center;
-    padding: 0 5%;
+    justify-content: center;
+    padding: 6rem 5%;
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f1a 100%);
-    text-align: left;
+    text-align: center;
 }
 
 body.layout-portfolio .hero::before {
@@ -24,6 +25,7 @@ body.layout-portfolio .profile-stats {
 
 body.layout-portfolio .hero-content {
     max-width: 900px;
+    margin: 0 auto;
 }
 
 body.layout-portfolio .hero-title {
@@ -52,8 +54,59 @@ body.layout-portfolio .hero-description {
     margin-bottom: 2rem;
 }
 
+body.layout-portfolio .hero-about {
+    max-width: 700px;
+    margin: 0 auto 2.5rem;
+}
+
+body.layout-portfolio .hero-about p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 1.25rem;
+    opacity: 0.9;
+}
+
+body.layout-portfolio .hero-about p:first-child {
+    font-size: clamp(1.2rem, 2vw, 1.4rem);
+    font-style: italic;
+    opacity: 1;
+    margin-bottom: 1.5rem;
+}
+
+body.layout-portfolio .hero-skills {
+    margin-bottom: 2.5rem;
+}
+
+body.layout-portfolio .hero-skills h3 {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+    opacity: 0.6;
+}
+
+body.layout-portfolio .hero-skills .skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+body.layout-portfolio .hero-skills .skill {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 0.5rem 1.25rem;
+    border-radius: 0;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    color: var(--text-color);
+}
+
 body.layout-portfolio .hero-actions {
+    display: flex;
     flex-direction: row;
+    justify-content: center;
     gap: 1.5rem;
     margin-top: 2rem;
 }

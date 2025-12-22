@@ -747,7 +747,6 @@ def generate_index_html(discovered_folders, metadata_config):
                 <li><a href="#home" class="nav-link active">Home</a></li>
                 <li><a href="#featured" class="nav-link">Featured</a></li>
                 <li><a href="#timeline" class="nav-link">Journey</a></li>
-                <li><a href="#about" class="nav-link">About</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
         </div>
@@ -762,7 +761,15 @@ def generate_index_html(discovered_folders, metadata_config):
                 <div class="stat"><span class="stat-value">{total_projects}</span><span class="stat-label">projects</span></div>
                 <div class="stat"><span class="stat-value">{total_images}</span><span class="stat-label">images</span></div>
             </div>
-            <p class="hero-description">{hero.get("description", "")}</p>
+            <div class="hero-about">
+                {about_paragraphs}
+            </div>
+            <div class="hero-skills">
+                <h3>{about.get("skillsTitle", "Skills & Experience")}</h3>
+                <div class="skills-grid">
+                    {skills_html}
+                </div>
+            </div>
             <div class="hero-actions">
                 {youtube_html}
                 <a href="{hero.get("ctaLink", "#featured")}" class="cta-button">{hero.get("ctaText", "Explore My Work")}</a>
@@ -790,22 +797,6 @@ def generate_index_html(discovered_folders, metadata_config):
 
         <div class="journey-track">
 {timeline_html}
-        </div>
-    </section>
-
-    <section id="about" class="about">
-        <div class="container">
-            <h2 class="section-title">{about.get("title", "About Me")}</h2>
-            <div class="about-content">
-                <div class="about-text">
-                    {about_paragraphs}
-
-                    <h3>{about.get("skillsTitle", "Skills & Experience")}</h3>
-                    <div class="skills-grid">
-                        {skills_html}
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 
