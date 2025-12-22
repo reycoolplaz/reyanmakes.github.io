@@ -1,5 +1,5 @@
 {
-  "generated": "2025-12-21T21:14:31.747123",
+  "generated": "2025-12-21T21:23:59.051116",
   "total_projects": 15,
   "total_images": 242,
   "projects": {
@@ -10,7 +10,7 @@
       "year": "2025",
       "tags": "Sculpture \u2022 Art \u2022 3D Form",
       "category": "art",
-      "featured": false,
+      "featured": true,
       "page": "projects/makers-stuff-clay.html",
       "manifest": "gen/manifests/makers-stuff-clay.json"
     },
@@ -18,7 +18,7 @@
       "path": "Makers stuff/Furniture/Bed",
       "images": 14,
       "title": "Custom Bed Frame",
-      "year": "2024",
+      "year": "Spring 2024",
       "tags": "Woodworking \u2022 Furniture \u2022 Design",
       "category": "makers",
       "featured": true,
@@ -51,7 +51,7 @@
       "path": "Makers stuff/Go-Cart",
       "images": 16,
       "title": "Go-Kart",
-      "year": "2025",
+      "year": "Spring 2025",
       "tags": "Welding \u2022 Metal Fabrication \u2022 Mechanical",
       "category": "makers",
       "featured": true,
@@ -62,7 +62,7 @@
       "path": "Makers stuff/metal-work",
       "images": 4,
       "title": "Metal Work Projects",
-      "year": "2023",
+      "year": "Summer 2023",
       "tags": "Metalworking \u2022 Forging \u2022 Tools",
       "category": "makers",
       "featured": true,
@@ -76,7 +76,7 @@
       "year": "2023",
       "tags": "Woodworking \u2022 Craftsmanship \u2022 Design",
       "category": "makers",
-      "featured": false,
+      "featured": true,
       "page": "projects/makers-stuff-wood-work.html",
       "manifest": "gen/manifests/makers-stuff-wood-work.json"
     },
@@ -98,7 +98,7 @@
       "year": "2024",
       "tags": "Project \u2022 Build \u2022 Maker",
       "category": "community",
-      "featured": false,
+      "featured": true,
       "page": "projects/boy-scouts.html",
       "manifest": "gen/manifests/boy-scouts.json"
     },
@@ -109,7 +109,7 @@
       "year": "2024",
       "tags": "Project \u2022 Build \u2022 Maker",
       "category": "community",
-      "featured": false,
+      "featured": true,
       "page": "projects/boys-scout.html",
       "manifest": "gen/manifests/boys-scout.json"
     },
@@ -142,7 +142,7 @@
       "year": "2025",
       "tags": "Engineering \u2022 Design \u2022 Education",
       "category": "education",
-      "featured": false,
+      "featured": true,
       "page": "projects/school.html",
       "manifest": "gen/manifests/school.json"
     },
@@ -153,7 +153,7 @@
       "year": "2024-2025",
       "tags": "Sketching \u2022 Design \u2022 Visualization",
       "category": "art",
-      "featured": false,
+      "featured": true,
       "page": "projects/sketching.html",
       "manifest": "gen/manifests/sketching.json"
     },

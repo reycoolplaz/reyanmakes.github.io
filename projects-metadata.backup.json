@@ -193,17 +193,20 @@
   },
   "featuredOrder": [
     "makers-stuff-go-cart",
-    "njit-hcad-program-prototype",
-    "test",
     "makers-stuff-furniture-bed",
-    "photograph",
+    "makers-stuff-furniture-shelf",
+    "makers-stuff-furniture-temple",
+    "test",
+    "makers-stuff-metal-work",
+    "makers-stuff-wood-work",
+    "njit-hcad-program-prototype",
     "boys-scout-high-adventure-2024",
-    "makers-stuff-metal-work"
+    "photograph"
   ],
   "projects": {
     "makers-stuff-go-cart": {
       "title": "Go-Kart",
-      "year": "2025",
+      "year": "Spring 2025",
       "tags": "Welding \u2022 Metal Fabrication \u2022 Mechanical",
       "description": "A self-initiated low-budget metal fabrication project built from scrap materials and spare parts. Through hands-on experimentation I taught myself fabrication, welding, peer collaboration, real problem solving as a team while bringing the discarded materials into a functional vehicle. ",
       "featured": true,
@@ -211,7 +214,7 @@
     },
     "makers-stuff-furniture-bed": {
       "title": "Custom Bed Frame",
-      "year": "2024",
+      "year": "Spring 2024",
       "tags": "Woodworking \u2022 Furniture \u2022 Design",
       "description": "Loft bed designed and built from scratch to maximize room space. Custom joinery and finishing work.",
       "featured": true,
@@ -222,7 +225,7 @@
       "year": "2024",
       "tags": "Woodworking \u2022 Storage \u2022 Design",
       "description": "Custom storage solution built to fit perfectly under the bed frame. Maximizing space efficiency.",
-      "featured": false,
+      "featured": true,
       "category": "makers"
     },
     "makers-stuff-furniture-temple": {
@@ -230,12 +233,12 @@
       "year": "2024",
       "tags": "Carpentry \u2022 Community \u2022 Woodworking",
       "description": "Traditional temple construction project showcasing woodworking and carpentry skills. Learning from master craftsmen.",
-      "featured": false,
+      "featured": true,
       "category": "makers"
     },
     "makers-stuff-metal-work": {
       "title": "Metal Work Projects",
-      "year": "2023",
+      "year": "Summer 2023",
       "tags": "Metalworking \u2022 Forging \u2022 Tools",
       "description": "Hand-crafted knife, axe, and rings. Learning metalworking, grinding, and forging techniques.",
       "featured": true,
@@ -246,7 +249,7 @@
       "year": "2023",
       "tags": "Woodworking \u2022 Craftsmanship \u2022 Design",
       "description": "Various woodworking projects exploring different techniques and materials.",
-      "featured": false,
+      "featured": true,
       "category": "makers"
     },
     "makers-stuff-clay": {
