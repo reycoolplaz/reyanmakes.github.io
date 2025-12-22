@@ -1,5 +1,5 @@
 {
-  "generated": "2025-12-22T01:28:23.060943",
+  "generated": "2025-12-22T01:37:22.541134",
   "total_projects": 15,
   "total_images": 186,
   "projects": {
@@ -98,7 +98,7 @@
       "year": "2024",
       "tags": "Project \u2022 Build \u2022 Maker",
       "category": "community",
-      "featured": false,
+      "featured": true,
       "page": "projects/boy-scouts.html",
       "manifest": "gen/manifests/boy-scouts.json"
     },
@@ -120,7 +120,7 @@
       "year": "2021",
       "tags": "Project \u2022 Build \u2022 Maker",
       "category": "community",
-      "featured": false,
+      "featured": true,
       "page": "projects/boys-scout-high-adventure-2024.html",
       "manifest": "gen/manifests/boys-scout-high-adventure-2024.json"
     },
