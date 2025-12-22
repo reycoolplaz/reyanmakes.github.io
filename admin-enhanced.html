@@ -2072,13 +2072,22 @@
                     if (!draggedSlug) return;
 
                     const isFeaturedSection = section.id === 'featuredSection';
+                    let changed = false;
 
                     if (isFeaturedSection) {
-                        // Add to featured if not already
+                        // Get current DOM order (reflects drag position)
+                        const newOrder = [...featuredSection.querySelectorAll('.project-item')].map(el => el.dataset.slug);
+
                         if (!metadata.featuredOrder.includes(draggedSlug)) {
-                            metadata.featuredOrder.push(draggedSlug);
+                            // Adding new item to featured
+                            metadata.featuredOrder = newOrder;
                             if (!metadata.projects[draggedSlug]) metadata.projects[draggedSlug] = {};
                             metadata.projects[draggedSlug].featured = true;
+                            changed = true;
+                        } else if (JSON.stringify(newOrder) !== JSON.stringify(metadata.featuredOrder)) {
+                            // Reordering within featured
+                            metadata.featuredOrder = newOrder;
+                            changed = true;
                         }
                     } else {
                         // Remove from featured
@@ -2088,11 +2097,14 @@
                             if (metadata.projects[draggedSlug]) {
                                 metadata.projects[draggedSlug].featured = false;
                             }
+                            changed = true;
                         }
                     }
 
-                    markChanges();
-                    renderProjectList();
+                    if (changed) {
+                        markChanges();
+                        renderProjectList();
+                    }
                 });
             });
 
@@ -2106,19 +2118,6 @@
 
                 item.addEventListener('dragend', () => {
                     item.classList.remove('dragging');
-                    // Update featured order based on current DOM order
-                    const newOrder = [...featuredSection.querySelectorAll('.project-item')].map(el => el.dataset.slug);
-                    if (JSON.stringify(newOrder) !== JSON.stringify(metadata.featuredOrder)) {
-                        metadata.featuredOrder = newOrder;
-                        // Update featured flags
-                        Object.keys(metadata.projects || {}).forEach(slug => {
-                            if (metadata.projects[slug]) {
-                                metadata.projects[slug].featured = newOrder.includes(slug);
-                            }
-                        });
-                        markChanges();
-                        renderProjectList();
-                    }
                     draggedSlug = null;
                 });
 
