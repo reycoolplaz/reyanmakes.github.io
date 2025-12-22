@@ -43,6 +43,96 @@ def update_site_config(layout=None, theme=None):
     with open(SITE_CONFIG_FILE, 'w') as f:
         json.dump(config, f, indent=2)
 
+
+def regenerate_manifest(project_path, slug):
+    """Regenerate manifest for a specific project after upload"""
+    from datetime import datetime
+
+    images_dir = BASE_DIR / 'images' / project_path
+    manifest_dir = BASE_DIR / 'gen' / 'manifests'
+    manifest_dir.mkdir(parents=True, exist_ok=True)
+
+    # Get all images in the folder
+    image_extensions = {'.jpg', '.jpeg', '.png', '.gif', '.webp'}
+    images = []
+    if images_dir.exists():
+        for f in images_dir.iterdir():
+            if f.is_file() and f.suffix.lower() in image_extensions:
+                images.append(f.name)
+
+    # Load hidden images to exclude from count
+    hidden_list = []
+    if HIDDEN_IMAGES_FILE.exists():
+        with open(HIDDEN_IMAGES_FILE, 'r') as f:
+            hidden_data = json.load(f)
+            hidden_list = hidden_data.get(slug, [])
+
+    # Load custom order if exists
+    custom_order = []
+    if IMAGE_ORDER_FILE.exists():
+        with open(IMAGE_ORDER_FILE, 'r') as f:
+            order_data = json.load(f)
+            custom_order = order_data.get(slug, [])
+
+    # Apply custom order
+    if custom_order:
+        def get_order_index(img):
+            try:
+                return custom_order.index(img)
+            except ValueError:
+                return len(custom_order) + images.index(img)
+        images.sort(key=get_order_index)
+
+    # Filter out hidden images for the manifest
+    visible_images = [img for img in images if img not in hidden_list]
+
+    # Create manifest
+    manifest = {
+        'project': project_path,
+        'slug': slug,
+        'count': len(visible_images),
+        'total_count': len(images),
+        'images': visible_images,
+        'generated': datetime.now().isoformat()
+    }
+
+    manifest_file = manifest_dir / f'{slug}.json'
+    with open(manifest_file, 'w') as f:
+        json.dump(manifest, f, indent=2)
+
+    # Also update site-index.json
+    update_site_index(project_path, slug, len(visible_images))
+
+    return manifest
+
+
+def update_site_index(project_path, slug, image_count):
+    """Update site-index.json with new image count"""
+    site_index_file = BASE_DIR / 'gen' / 'site-index.json'
+
+    if site_index_file.exists():
+        with open(site_index_file, 'r') as f:
+            site_index = json.load(f)
+    else:
+        site_index = {'projects': {}, 'generated': ''}
+
+    if slug in site_index.get('projects', {}):
+        site_index['projects'][slug]['image_count'] = image_count
+    else:
+        # Add new project entry
+        site_index['projects'][slug] = {
+            'title': slug.replace('-', ' ').title(),
+            'path': project_path,
+            'image_count': image_count,
+            'manifest': f'gen/manifests/{slug}.json'
+        }
+
+    from datetime import datetime
+    site_index['generated'] = datetime.now().isoformat()
+
+    with open(site_index_file, 'w') as f:
+        json.dump(site_index, f, indent=2)
+
 # Simple password protection (change this!)
 ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'reyan2025')
 
@@ -494,6 +584,15 @@ def upload_images():
                 uploaded.append(str(filepath.name))
             except Exception as e:
                 errors.append(f'{filename}: {str(e)}')
+
+    # Regenerate manifest for this project so gallery updates immediately
+    if uploaded:
+        # Convert project_path to slug (e.g., "Makers stuff/Furniture/Temple" -> "makers-stuff-furniture-temple")
+        slug = project_path.lower().replace(' ', '-').replace('/', '-').replace('--', '-').strip('-')
+        try:
+            regenerate_manifest(project_path, slug)
+        except Exception as e:
+            print(f"Warning: Failed to regenerate manifest: {e}")
 
     return jsonify({
         'uploaded': uploaded,

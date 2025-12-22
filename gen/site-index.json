@@ -1,7 +1,7 @@
 {
-  "generated": "2025-12-21T22:08:00.749933",
+  "generated": "2025-12-21T22:19:00.491241",
   "total_projects": 15,
-  "total_images": 245,
+  "total_images": 253,
   "projects": {
     "makers-stuff-clay": {
       "path": "Makers stuff/Clay",
@@ -38,7 +38,7 @@
     },
     "makers-stuff-furniture-temple": {
       "path": "Makers stuff/Furniture/Temple",
-      "images": 4,
+      "images": 12,
       "title": "Temple Construction",
       "year": "2024",
       "tags": "Carpentry \u2022 Community \u2022 Woodworking",
