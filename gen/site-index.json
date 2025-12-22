@@ -1,7 +1,7 @@
 {
-  "generated": "2025-12-22T14:43:58.220193",
+  "generated": "2025-12-22T14:55:21.763276",
   "total_projects": 15,
-  "total_images": 189,
+  "total_images": 188,
   "projects": {
     "makers-stuff-clay": {
       "path": "Makers stuff/Clay",
@@ -27,7 +27,7 @@
     },
     "makers-stuff-furniture-shelf": {
       "path": "Makers stuff/Furniture/Shelf",
-      "images": 4,
+      "images": 3,
       "title": "Under-Bed Storage Shelf",
       "year": "2024",
       "tags": "Woodworking \u2022 Storage \u2022 Design",
