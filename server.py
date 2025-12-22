@@ -640,6 +640,13 @@ def delete_image():
         if thumb_path.exists():
             thumb_path.unlink()
 
+        # Regenerate manifest after deletion
+        slug = project_path.lower().replace(' ', '-').replace('/', '-').replace('--', '-').strip('-')
+        try:
+            regenerate_manifest(project_path, slug)
+        except Exception as e:
+            print(f"Warning: Failed to regenerate manifest after delete: {e}")
+
         return jsonify({'message': 'Image deleted successfully'})
 
     except Exception as e:
