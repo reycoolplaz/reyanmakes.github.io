@@ -1,7 +1,7 @@
 {
-  "generated": "2025-12-22T16:15:50.322853",
-  "total_projects": 15,
-  "total_images": 188,
+  "generated": "2025-12-22T16:18:33.273011",
+  "total_projects": 14,
+  "total_images": 156,
   "projects": {
     "makers-stuff-clay": {
       "path": "Makers stuff/Clay",
@@ -112,17 +112,6 @@
       "featured": true,
       "page": "projects/boys-scout.html",
       "manifest": "gen/manifests/boys-scout.json"
-    },
-    "boys-scout-high-adventure-2024": {
-      "path": "boys-scout-high-adventure-2024",
-      "images": 32,
-      "title": "Boys Scout - High Adventure 2021",
-      "year": "2021",
-      "tags": "Project \u2022 Build \u2022 Maker",
-      "category": "community",
-      "featured": true,
-      "page": "projects/boys-scout-high-adventure-2024.html",
-      "manifest": "gen/manifests/boys-scout-high-adventure-2024.json"
     },
     "photograph": {
       "path": "photograph",
