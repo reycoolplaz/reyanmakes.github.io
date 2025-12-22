@@ -1980,17 +1980,12 @@
             document.getElementById('projectCount').textContent = Object.keys(allProjects).length;
 
             const renderItem = ([slug, project], isFeatured, index) => {
-                const meta = metadata.projects[slug] || {};
-                const thumbPath = `gen/thumbnails/${project.path}`;
                 const isEmpty = project.images === 0;
                 return `
                     <div class="project-item ${currentProject === slug ? 'active' : ''} ${isEmpty ? 'empty-project' : ''} ${isFeatured ? 'featured-item' : ''}"
-                         data-slug="${slug}" draggable="true">
+                         data-slug="${slug}" draggable="true" onclick="selectProject('${slug}')">
                         <span class="drag-handle" title="Drag to reorder">⋮⋮</span>
-                        <img class="project-thumb" src="${thumbPath}/.thumb.jpg" onclick="selectProject('${slug}')"
-                             onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2248%22 height=%2248%22%3E%3Crect fill=%22%23e2e8f0%22 width=%2248%22 height=%2248%22/%3E%3C/svg%3E'"
-                             alt="${project.title}">
-                        <div class="project-info" onclick="selectProject('${slug}')">
+                        <div class="project-info">
                             <h4>${isFeatured ? `${index + 1}. ` : ''}${project.title}</h4>
                             <span>${isEmpty ? 'No images' : `${project.images} imgs`} • ${project.year}</span>
                         </div>
