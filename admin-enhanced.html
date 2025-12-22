@@ -1075,71 +1075,75 @@
                 <div id="projectList"></div>
             </div>
 
-            <!-- Template Selector Panel -->
-            <div class="template-panel">
-                <div class="template-header">
-                    <span>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
-                        </svg>
-                        Color Theme
-                    </span>
-                    <span id="currentTheme">default</span>
-                </div>
-                <div class="template-grid" id="templateGrid">
-                    <!-- Templates will be rendered by JS -->
-                </div>
-            </div>
-
-            <!-- Layout Selector Panel -->
-            <div class="template-panel" style="margin-top: 1rem;">
-                <div class="template-header" style="background: linear-gradient(135deg, #06b6d420, #06b6d405);">
-                    <span>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-                            <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
-                        </svg>
-                        Site Layout
-                    </span>
-                    <span id="currentLayout">modern</span>
-                </div>
-                <div class="template-grid" id="layoutGrid">
-                    <!-- Layouts will be rendered by JS -->
-                </div>
-            </div>
-
-            <!-- Site Content Editor -->
-            <div class="template-panel" style="margin-top: 1rem;">
-                <div class="template-header">
-                    <span>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
-                            <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                        </svg>
-                        Site Content
-                    </span>
-                </div>
-                <div style="padding: 0.75rem;">
-                    <button class="btn" style="width: 100%; background: var(--primary); color: white;" onclick="showContentEditor()">
-                        Edit Site Content
-                    </button>
-                </div>
-            </div>
         </aside>
 
         <!-- Content Area -->
         <main class="content-area">
-            <!-- No Selection State -->
-            <div id="emptyState" class="panel">
-                <div class="empty-state">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                        <circle cx="8.5" cy="8.5" r="1.5"/>
-                        <polyline points="21,15 16,10 5,21"/>
-                    </svg>
-                    <h3>Select a Project</h3>
-                    <p>Choose a project from the sidebar to edit its metadata and organize images.</p>
+            <!-- No Selection State - Site Settings -->
+            <div id="emptyState">
+                <h2 style="margin-bottom: 1.5rem; font-size: 1.25rem;">Site Settings</h2>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                    <!-- Color Theme Panel -->
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 0.5rem;">
+                                    <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
+                                </svg>
+                                Color Theme
+                            </h3>
+                            <span id="currentTheme" style="font-size: 0.85rem; color: var(--text-light);">default</span>
+                        </div>
+                        <div class="panel-body">
+                            <div class="template-grid" id="templateGrid">
+                                <!-- Templates will be rendered by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Layout Panel -->
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 0.5rem;">
+                                    <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+                                    <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+                                </svg>
+                                Site Layout
+                            </h3>
+                            <span id="currentLayout" style="font-size: 0.85rem; color: var(--text-light);">modern</span>
+                        </div>
+                        <div class="panel-body">
+                            <div class="template-grid" id="layoutGrid">
+                                <!-- Layouts will be rendered by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Site Content Panel -->
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h3>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 0.5rem;">
+                                    <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+                                    <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                </svg>
+                                Site Content
+                            </h3>
+                        </div>
+                        <div class="panel-body" style="text-align: center;">
+                            <p style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 1rem;">Edit hero, timeline, and contact sections</p>
+                            <button class="btn" style="background: var(--primary); color: white;" onclick="showContentEditor()">
+                                Edit Site Content
+                            </button>
+                        </div>
+                    </div>
                 </div>
+
+                <p style="margin-top: 2rem; font-size: 0.85rem; color: var(--text-light); text-align: center;">
+                    Select a project from the sidebar to edit its metadata and images.
+                </p>
             </div>
 
             <!-- Project Editor -->
