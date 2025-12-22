@@ -40,8 +40,23 @@ class Lightbox {
     }
 
     bindEvents() {
-        this.closeBtn.addEventListener('click', () => this.close());
+        // Close button - both click and touch for mobile
+        this.closeBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            this.close();
+        });
+        this.closeBtn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            this.close();
+        });
+
         this.overlay.addEventListener('click', () => this.close());
+        this.overlay.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            this.close();
+        });
 
         this.prevBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -192,8 +207,8 @@ function initializeGallery() {
         img.addEventListener('touchmove', function(e) {
             const deltaX = Math.abs(e.touches[0].clientX - touchStartX);
             const deltaY = Math.abs(e.touches[0].clientY - touchStartY);
-            // If finger moved more than 10px, it's a scroll not a tap
-            if (deltaX > 10 || deltaY > 10) {
+            // If finger moved more than 20px, it's a scroll not a tap
+            if (deltaX > 20 || deltaY > 20) {
                 touchMoved = true;
                 this.style.opacity = '1';
             }
