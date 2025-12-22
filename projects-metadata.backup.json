@@ -202,6 +202,7 @@
     "makers-stuff-wood-work",
     "njit-hcad-program-prototype",
     "makers-stuff-clay",
+    "school",
     "sketching",
     "photograph"
   ],
@@ -283,7 +284,7 @@
       "year": "2025",
       "tags": "Engineering \u2022 Design \u2022 Education",
       "description": "Design engineering projects from school, including the ball sorter mechanism and other engineering challenges.",
-      "featured": false,
+      "featured": true,
       "category": "education"
     },
     "njit-hcad-program-prototype": {
@@ -295,10 +296,10 @@
       "category": "education"
     },
     "test": {
-      "title": "Boys Scout - Eagle Project",
+      "title": "Boys Scout Eagle Project ",
       "year": "Fall 2025",
-      "tags": "Project \u2022 Build \u2022 Maker",
-      "description": "Boys Scout of America - Troop 193 - New Jersey, Plainsboro",
+      "tags": "Community Service \u2022 Leadership ",
+      "description": "Eagle project for Boys Scout of America - Troop 193 - New Jersey.",
       "featured": true,
       "category": "community"
     },

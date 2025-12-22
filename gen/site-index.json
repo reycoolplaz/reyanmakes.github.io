@@ -1,5 +1,5 @@
 {
-  "generated": "2025-12-21T21:31:11.074689",
+  "generated": "2025-12-21T21:54:48.103504",
   "total_projects": 15,
   "total_images": 242,
   "projects": {
@@ -160,9 +160,9 @@
     "test": {
       "path": "test",
       "images": 49,
-      "title": "Boys Scout - Eagle Project",
+      "title": "Boys Scout Eagle Project ",
       "year": "Fall 2025",
-      "tags": "Project \u2022 Build \u2022 Maker",
+      "tags": "Community Service \u2022 Leadership ",
       "category": "community",
       "featured": true,
       "page": "projects/test.html",
