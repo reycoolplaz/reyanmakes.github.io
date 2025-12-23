@@ -35,6 +35,10 @@ env/
 # OS
 .DS_Store
 Thumbs.db
+nul
+
+# Environment
+.env
 
 # Replit
 .replit

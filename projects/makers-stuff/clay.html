@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>School Design Projects | Reyan Makes</title>
-    <meta name="description" content="Design engineering projects from school, including the ball sorter mechanism and other engineering challenges.">
+    <title>Makers Stuff\Clay | Reyan Makes</title>
+    <meta name="description" content="Documentation of a maker project.">
     <link rel="stylesheet" href="../styles.css?v=20251223">
     <script src="../config-loader.js"></script>
 </head>
@@ -24,21 +24,21 @@
         <div class="container">
             <ul class="breadcrumb-list">
                 <li><a href="../index.html" class="breadcrumb-link">Home</a></li>
-                <li><span class="breadcrumb-current">School Design Projects</span></li>
+                <li><span class="breadcrumb-current">Makers Stuff\Clay</span></li>
             </ul>
         </div>
     </div>
 
     <section class="project-hero">
         <div class="project-hero-content">
-            <h1>School Design Projects</h1>
+            <h1>Makers Stuff\Clay</h1>
             <div class="project-hero-meta">
-                <span class="year-badge">2025</span>
+                <span class="year-badge">2024</span>
                 <span>•</span>
-                <span>Engineering • Design • Education</span>
+                <span>Project • Build • Maker</span>
             </div>
             <p class="project-hero-description">
-                Design engineering projects from school, including the ball sorter mechanism and other engineering challenges.
+                Documentation of a maker project.
             </p>
         </div>
     </section>
@@ -46,7 +46,7 @@
     <section style="padding: 4rem 0; background: var(--bg-secondary);">
         <div class="container">
             <h2 class="section-title">Gallery</h2>
-            <p class="section-subtitle">Documenting the entire process - 2 images</p>
+            <p class="section-subtitle">Documenting the entire process - 5 images</p>
 
             <div class="gallery-grid" id="gallery">
                 <!-- Images will be loaded dynamically from the manifest -->
@@ -70,9 +70,9 @@
     <script>
         // Load gallery images dynamically from manifest
         const gallery = document.getElementById('gallery');
-        const basePath = '../images/school/';
-        const thumbPath = '../gen/thumbnails/school/';
-        const manifestPath = '../gen/manifests/school.json';
+        const basePath = '../images/Makers stuff\Clay/';
+        const thumbPath = '../gen/thumbnails/Makers stuff\Clay/';
+        const manifestPath = '../gen/manifests/makers-stuff\clay.json';
         const isMobile = window.innerWidth <= 768;
 
         fetch(manifestPath)
@@ -91,7 +91,7 @@
                     const thumbFilename = filename.replace(/\.(jpg|jpeg|png|JPG|JPEG|PNG)$/i, '.jpg');
                     img.src = isMobile ? thumbPath + thumbFilename : basePath + filename;
                     img.dataset.fullImage = basePath + filename;
-                    img.alt = 'School Design Projects';
+                    img.alt = 'Makers Stuff\Clay';
                     img.className = 'gallery-image';
                     img.loading = 'lazy';
 

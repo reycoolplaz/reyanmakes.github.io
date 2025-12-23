@@ -783,6 +783,46 @@
         }
 
         /* Build Output */
+        .build-output-wrapper {
+            position: relative;
+            margin-top: 1rem;
+        }
+
+        .build-output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .build-output-header span {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .copy-btn {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .copy-btn.copied {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+        }
+
         .build-output {
             background: #1e1e1e;
             color: #d4d4d4;
@@ -793,7 +833,6 @@
             max-height: 200px;
             overflow-y: auto;
             white-space: pre-wrap;
-            margin-top: 1rem;
         }
 
         .build-output:empty::before {
@@ -1232,7 +1271,13 @@
                                 <strong>Result:</strong> <span id="lastBuildResult">No builds yet</span>
                             </div>
                         </div>
-                        <div class="build-output" id="buildOutput"></div>
+                        <div class="build-output-wrapper">
+                            <div class="build-output-header">
+                                <span>Build Output</span>
+                                <button class="copy-btn" id="copyBuildOutput" onclick="copyBuildOutput()">Copy</button>
+                            </div>
+                            <div class="build-output" id="buildOutput"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2627,6 +2672,30 @@
             setTimeout(() => {
                 toast.remove();
             }, 3000);
+        }
+
+        function copyBuildOutput() {
+            const outputEl = document.getElementById('buildOutput');
+            const copyBtn = document.getElementById('copyBuildOutput');
+            const text = outputEl.textContent;
+
+            if (!text || text.trim() === '') {
+                showToast('No build output to copy', 'warning');
+                return;
+            }
+
+            navigator.clipboard.writeText(text).then(() => {
+                copyBtn.textContent = 'Copied!';
+                copyBtn.classList.add('copied');
+                showToast('Build output copied to clipboard', 'success');
+
+                setTimeout(() => {
+                    copyBtn.textContent = 'Copy';
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                showToast('Failed to copy: ' + err, 'error');
+            });
         }
 
         // Upload functionality

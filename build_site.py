@@ -54,7 +54,7 @@ IMAGE_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.gif', '.webp', '.JPG', '.JPEG', '
 def load_metadata():
     """Load project metadata from JSON file"""
     if not METADATA_FILE.exists():
-        print(f"⚠️  Warning: {METADATA_FILE} not found. Using defaults.")
+        print(f"Warning: {METADATA_FILE} not found. Using defaults.")
         return {"projects": {}, "defaults": {}}
 
     with open(METADATA_FILE, 'r') as f:
@@ -88,7 +88,7 @@ def discover_image_folders(base_path):
     Skips nested subfolders to avoid duplicate galleries
     Returns dict mapping project_slug -> folder_path
     """
-    print("🔍 Discovering image folders...")
+    print("Discovering image folders...")
 
     discovered = {}
 
@@ -121,7 +121,7 @@ def discover_image_folders(base_path):
                 'images': sorted([img.name for img in images])
             }
 
-            print(f"  ✓ Found: {rel_path} ({len(images)} images) -> {slug}")
+            print(f"  + Found: {rel_path} ({len(images)} images) -> {slug}")
 
         # Always recurse into subdirectories unless too deep
         for subdir in sorted(path.iterdir()):
@@ -130,7 +130,7 @@ def discover_image_folders(base_path):
 
     scan_directory(base_path)
 
-    print(f"\n📊 Discovered {len(discovered)} image folders\n")
+    print(f"\nDiscovered {len(discovered)} image folders\n")
     return discovered
 
 # ============================================================================
@@ -155,12 +155,12 @@ def generate_thumbnail(image_path, thumb_path, size=THUMBNAIL_SIZE):
             img.save(thumb_path, 'JPEG', quality=THUMBNAIL_QUALITY, optimize=True)
             return True
     except Exception as e:
-        print(f"    ⚠️  Error processing {image_path.name}: {e}")
+        print(f"    Error processing {image_path.name}: {e}")
         return False
 
 def generate_all_thumbnails(discovered_folders):
     """Generate thumbnails for all images"""
-    print("📸 Generating thumbnails in /gen/thumbnails/...\n")
+    print("Generating thumbnails in /gen/thumbnails/...\n")
 
     total_images = 0
     total_thumbnails = 0
@@ -192,9 +192,9 @@ def generate_all_thumbnails(discovered_folders):
                 total_new += 1
 
         if new_thumbs > 0:
-            print(f"  ✓ {rel_path}: {new_thumbs} new thumbnails")
+            print(f"  + {rel_path}: {new_thumbs} new thumbnails")
 
-    print(f"\n  📊 Thumbnails: {total_thumbnails}/{total_images} ({total_new} new)\n")
+    print(f"\n  Thumbnails: {total_thumbnails}/{total_images} ({total_new} new)\n")
     return total_thumbnails
 
 # ============================================================================
@@ -233,14 +233,14 @@ def generate_manifest(slug, info, image_orders=None, hidden_images=None):
     manifest_file = MANIFESTS_BASE / f"{slug}.json"
     manifest_file.parent.mkdir(parents=True, exist_ok=True)
 
-    with open(manifest_file, 'w') as f:
+    with open(manifest_file, 'w', encoding='utf-8') as f:
         json.dump(manifest, f, indent=2)
 
     return manifest_file
 
 def generate_all_manifests(discovered_folders, image_orders=None, hidden_images=None):
     """Generate manifest files for all projects"""
-    print("📋 Generating manifests in /gen/manifests/...\n")
+    print("Generating manifests in /gen/manifests/...\n")
 
     for slug, info in discovered_folders.items():
         manifest_file = generate_manifest(slug, info, image_orders, hidden_images)
@@ -249,9 +249,9 @@ def generate_all_manifests(discovered_folders, image_orders=None, hidden_images=
         has_hidden = hidden_images and slug in hidden_images
         order_indicator = " (custom order)" if has_custom_order else ""
         hidden_indicator = f" ({len(hidden_images[slug])} hidden)" if has_hidden else ""
-        print(f"  ✓ {slug} → {rel_manifest}{order_indicator}{hidden_indicator}")
+        print(f"  + {slug} ->{rel_manifest}{order_indicator}{hidden_indicator}")
 
-    print(f"\n  📊 Generated {len(discovered_folders)} manifests\n")
+    print(f"\n  Generated {len(discovered_folders)} manifests\n")
 
 # ============================================================================
 # STEP 4: GENERATE PROJECT PAGES
@@ -401,7 +401,7 @@ def generate_project_page(slug, info, metadata, template='default', layout='defa
 
 def generate_all_project_pages(discovered_folders, metadata_config):
     """Generate HTML pages for all projects"""
-    print("📄 Generating project pages in /projects/...\n")
+    print("Generating project pages in /projects/...\n")
 
     # Ensure projects directory exists
     PROJECTS_BASE.mkdir(parents=True, exist_ok=True)
@@ -415,14 +415,15 @@ def generate_all_project_pages(discovered_folders, metadata_config):
         metadata = get_project_metadata(slug, projects_meta, defaults)
 
         output_file = PROJECTS_BASE / f"{slug}.html"
+        output_file.parent.mkdir(parents=True, exist_ok=True)
         html = generate_project_page(slug, info, metadata, template, layout)
 
-        with open(output_file, 'w') as f:
+        with open(output_file, 'w', encoding='utf-8') as f:
             f.write(html)
 
-        print(f"  ✓ {slug}.html ({info['image_count']} images)")
+        print(f"  + {slug}.html ({info['image_count']} images)")
 
-    print(f"\n  📊 Generated {len(discovered_folders)} project pages\n")
+    print(f"\n  Generated {len(discovered_folders)} project pages\n")
 
 # ============================================================================
 # STEP 5: GENERATE SITE INDEX
@@ -430,7 +431,7 @@ def generate_all_project_pages(discovered_folders, metadata_config):
 
 def generate_site_index(discovered_folders, metadata_config):
     """Generate a JSON index of all projects for easy reference"""
-    print("📇 Generating site index...\n")
+    print("Generating site index...\n")
 
     projects_meta = metadata_config.get("projects", {})
     defaults = metadata_config.get("defaults", {})
@@ -458,11 +459,11 @@ def generate_site_index(discovered_folders, metadata_config):
         }
 
     index_file = GEN_BASE / 'site-index.json'
-    with open(index_file, 'w') as f:
+    with open(index_file, 'w', encoding='utf-8') as f:
         json.dump(index, f, indent=2)
 
-    print(f"  ✓ Site index: {index_file.relative_to(BASE_DIR)}")
-    print(f"  📊 {index['total_projects']} projects, {index['total_images']} total images\n")
+    print(f"  + Site index: {index_file.relative_to(BASE_DIR)}")
+    print(f"  {index['total_projects']} projects, {index['total_images']} total images\n")
 
     return index
 
@@ -543,10 +544,10 @@ def update_index_theme(metadata_config):
             content
         )
 
-    with open(index_file, 'w') as f:
+    with open(index_file, 'w', encoding='utf-8') as f:
         f.write(content)
 
-    print(f"  ✓ Applied '{template}' theme to index.html\n")
+    print(f"  + Applied '{template}' theme to index.html\n")
 
 
 def update_index_layout(metadata_config):
@@ -603,15 +604,15 @@ def update_index_layout(metadata_config):
         # Add class to body tag
         content = content.replace('<body>', f'<body {body_class}>')
 
-    with open(index_file, 'w') as f:
+    with open(index_file, 'w', encoding='utf-8') as f:
         f.write(content)
 
-    print(f"  ✓ Applied '{layout}' layout to index.html\n")
+    print(f"  + Applied '{layout}' layout to index.html\n")
 
 
 def generate_index_html(discovered_folders, metadata_config):
     """Generate complete index.html from siteContent configuration"""
-    print("🏠 Generating index.html from configuration...\n")
+    print("Generating index.html from configuration...\n")
 
     site_content = metadata_config.get("siteContent", {})
     site_settings = metadata_config.get("siteSettings", {})
@@ -822,21 +823,21 @@ def generate_index_html(discovered_folders, metadata_config):
 
     # Write the generated index.html
     index_file = BASE_DIR / 'index.html'
-    with open(index_file, 'w') as f:
+    with open(index_file, 'w', encoding='utf-8') as f:
         f.write(html)
 
-    print(f"  ✓ Generated index.html with {len(featured_cards)} featured projects")
-    print(f"  ✓ Theme: {template}, Layout: {layout}")
-    print(f"  ✓ Timeline: {len(timeline.get('milestones', []))} milestones\n")
+    print(f"  + Generated index.html with {len(featured_cards)} featured projects")
+    print(f"  + Theme: {template}, Layout: {layout}")
+    print(f"  + Timeline: {len(timeline.get('milestones', []))} milestones\n")
 
 
 def update_index_featured(discovered_folders, metadata_config):
     """Update the Featured Builds section in index.html based on metadata"""
-    print("🏠 Updating Featured Builds in index.html...\n")
+    print("Updating Featured Builds in index.html...\n")
 
     index_file = BASE_DIR / 'index.html'
     if not index_file.exists():
-        print("  ⚠️  index.html not found, skipping featured update")
+        print("  Warning: index.html not found, skipping featured update")
         return
 
     # Get featured projects from metadata
@@ -859,12 +860,12 @@ def update_index_featured(discovered_folders, metadata_config):
         featured_projects.sort(key=lambda x: x[2].get('year', '0'), reverse=True)
 
     if not featured_projects:
-        print("  ⚠️  No featured projects found in metadata")
+        print("  Warning: No featured projects found in metadata")
         return
 
     print(f"  Found {len(featured_projects)} featured projects:")
     for slug, _, meta in featured_projects:
-        print(f"    • {meta.get('title', slug)} ({meta.get('year', 'N/A')})")
+        print(f"    -{meta.get('title', slug)} ({meta.get('year', 'N/A')})")
 
     # Generate the cards HTML
     cards_html = []
@@ -892,11 +893,11 @@ def update_index_featured(discovered_folders, metadata_config):
     new_content = re.sub(pattern, replacement, content, flags=re.DOTALL)
 
     if new_content != content:
-        with open(index_file, 'w') as f:
+        with open(index_file, 'w', encoding='utf-8') as f:
             f.write(new_content)
-        print(f"\n  ✓ Updated index.html with {len(featured_projects)} featured projects\n")
+        print(f"\n  + Updated index.html with {len(featured_projects)} featured projects\n")
     else:
-        print("\n  ℹ️  No changes needed to index.html\n")
+        print("\n  No changes needed to index.html\n")
 
 
 # ============================================================================
@@ -905,7 +906,7 @@ def update_index_featured(discovered_folders, metadata_config):
 
 def generate_site_config(metadata_config):
     """Generate site-config.json for dynamic CSS loading"""
-    print("⚙️  Generating site config...\n")
+    print("Generating site config...\n")
 
     site_settings = metadata_config.get("siteSettings", {})
 
@@ -915,10 +916,10 @@ def generate_site_config(metadata_config):
     }
 
     config_file = BASE_DIR / 'site-config.json'
-    with open(config_file, 'w') as f:
+    with open(config_file, 'w', encoding='utf-8') as f:
         json.dump(config, f, indent=2)
 
-    print(f"  ✓ site-config.json: layout={config['layout']}, theme={config['theme']}\n")
+    print(f"  + site-config.json: layout={config['layout']}, theme={config['theme']}\n")
     return config
 
 
@@ -929,7 +930,7 @@ def generate_site_config(metadata_config):
 def main():
     """Main build process"""
     print("=" * 70)
-    print("🏗️  REYAN MAKES - AUTOMATED SITE BUILDER")
+    print("REYAN MAKES - AUTOMATED SITE BUILDER")
     print("=" * 70)
     print(f"Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
 
@@ -940,26 +941,26 @@ def main():
 
     try:
         # Load metadata
-        print("📖 Loading project metadata...\n")
+        print("Loading project metadata...\n")
         metadata_config = load_metadata()
-        print(f"  ✓ Loaded {len(metadata_config.get('projects', {}))} project metadata entries\n")
+        print(f"  + Loaded {len(metadata_config.get('projects', {}))} project metadata entries\n")
 
         # Load custom image orders
         image_orders = load_image_orders()
         if image_orders:
-            print(f"  ✓ Loaded custom image orders for {len(image_orders)} projects\n")
+            print(f"  + Loaded custom image orders for {len(image_orders)} projects\n")
 
         # Load hidden images
         hidden_images = load_hidden_images()
         if hidden_images:
             total_hidden = sum(len(v) for v in hidden_images.values())
-            print(f"  ✓ Loaded {total_hidden} hidden images across {len(hidden_images)} projects\n")
+            print(f"  + Loaded {total_hidden} hidden images across {len(hidden_images)} projects\n")
 
         # Step 1: Discover all image folders
         discovered = discover_image_folders(IMAGES_BASE)
 
         if not discovered:
-            print("\n⚠️  No image folders found! Check your images directory.")
+            print("\nWarning: No image folders found! Check your images directory.")
             return 1
 
         # Step 2: Generate thumbnails
@@ -981,15 +982,15 @@ def main():
         generate_site_config(metadata_config)
 
         print("=" * 70)
-        print("✅ BUILD COMPLETE!")
+        print("BUILD COMPLETE!")
         print("=" * 70)
-        print("\n📊 Summary:")
-        print(f"  • Projects: {site_index['total_projects']}")
-        print(f"  • Total Images: {site_index['total_images']}")
-        print(f"  • Thumbnails: /gen/thumbnails/")
-        print(f"  • Manifests: /gen/manifests/")
-        print(f"  • Pages: /projects/")
-        print("\n📝 Next steps:")
+        print("\nSummary:")
+        print(f"  -Projects: {site_index['total_projects']}")
+        print(f"  -Total Images: {site_index['total_images']}")
+        print(f"  -Thumbnails: /gen/thumbnails/")
+        print(f"  -Manifests: /gen/manifests/")
+        print(f"  -Pages: /projects/")
+        print("\nNext steps:")
         print("  1. Review generated files in /gen/ and /projects/")
         print("  2. Update index.html if needed")
         print("  3. Test the site locally")
@@ -999,7 +1000,7 @@ def main():
         return 0
 
     except Exception as e:
-        print(f"\n❌ BUILD FAILED: {e}")
+        print(f"\nBUILD FAILED: {e}")
         import traceback
         traceback.print_exc()
         return 1

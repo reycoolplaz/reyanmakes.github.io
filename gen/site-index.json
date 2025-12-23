@@ -1,96 +1,8 @@
 {
-  "generated": "2025-12-22T16:18:33.273011",
+  "generated": "2025-12-23T14:07:13.005177",
   "total_projects": 14,
   "total_images": 156,
   "projects": {
-    "makers-stuff-clay": {
-      "path": "Makers stuff/Clay",
-      "images": 5,
-      "title": "Claywork- Overgrowth Sculpture",
-      "year": "Summer 2025",
-      "tags": "NJIT \u2022 Art \u2022 Clay \u2022 Architecture",
-      "category": "art",
-      "featured": true,
-      "page": "projects/makers-stuff-clay.html",
-      "manifest": "gen/manifests/makers-stuff-clay.json"
-    },
-    "makers-stuff-furniture-bed": {
-      "path": "Makers stuff/Furniture/Bed",
-      "images": 17,
-      "title": "Custom Bed Frame",
-      "year": "Spring 2024",
-      "tags": "Woodworking \u2022 Furniture \u2022 Design",
-      "category": "makers",
-      "featured": true,
-      "page": "projects/makers-stuff-furniture-bed.html",
-      "manifest": "gen/manifests/makers-stuff-furniture-bed.json"
-    },
-    "makers-stuff-furniture-shelf": {
-      "path": "Makers stuff/Furniture/Shelf",
-      "images": 3,
-      "title": "Under-Bed Storage Shelf",
-      "year": "2024",
-      "tags": "Woodworking \u2022 Storage \u2022 Design",
-      "category": "makers",
-      "featured": true,
-      "page": "projects/makers-stuff-furniture-shelf.html",
-      "manifest": "gen/manifests/makers-stuff-furniture-shelf.json"
-    },
-    "makers-stuff-furniture-temple": {
-      "path": "Makers stuff/Furniture/Temple",
-      "images": 8,
-      "title": "Temple Construction",
-      "year": "2024",
-      "tags": "Carpentry \u2022 Woodworking \u2022 Recycling",
-      "category": "makers",
-      "featured": true,
-      "page": "projects/makers-stuff-furniture-temple.html",
-      "manifest": "gen/manifests/makers-stuff-furniture-temple.json"
-    },
-    "makers-stuff-go-cart": {
-      "path": "Makers stuff/Go-Cart",
-      "images": 19,
-      "title": "Go-Kart",
-      "year": "Spring 2025",
-      "tags": "Welding \u2022 Metal Fabrication \u2022 Mechanical",
-      "category": "makers",
-      "featured": true,
-      "page": "projects/makers-stuff-go-cart.html",
-      "manifest": "gen/manifests/makers-stuff-go-cart.json"
-    },
-    "makers-stuff-metal-work": {
-      "path": "Makers stuff/metal-work",
-      "images": 4,
-      "title": "Metal Work Projects",
-      "year": "Summer 2023",
-      "tags": "Metalworking \u2022 Forging \u2022 Tools",
-      "category": "makers",
-      "featured": true,
-      "page": "projects/makers-stuff-metal-work.html",
-      "manifest": "gen/manifests/makers-stuff-metal-work.json"
-    },
-    "makers-stuff-wood-work": {
-      "path": "Makers stuff/wood-work",
-      "images": 5,
-      "title": "Woodworking Projects",
-      "year": "2023",
-      "tags": "Woodworking \u2022 Craftsmanship \u2022 Design",
-      "category": "makers",
-      "featured": true,
-      "page": "projects/makers-stuff-wood-work.html",
-      "manifest": "gen/manifests/makers-stuff-wood-work.json"
-    },
-    "njit-hcad-program-prototype": {
-      "path": "NJIT-HCAD program prototype",
-      "images": 12,
-      "title": "NJIT Cave Shed Prototype",
-      "year": "Summer 2025",
-      "tags": "Architecture \u2022 Design \u2022 NJIT Program",
-      "category": "education",
-      "featured": true,
-      "page": "projects/njit-hcad-program-prototype.html",
-      "manifest": "gen/manifests/njit-hcad-program-prototype.json"
-    },
     "boy-scouts": {
       "path": "boy-scouts",
       "images": 17,
@@ -112,6 +24,94 @@
       "featured": true,
       "page": "projects/boys-scout.html",
       "manifest": "gen/manifests/boys-scout.json"
+    },
+    "makers-stuff\\clay": {
+      "path": "Makers stuff\\Clay",
+      "images": 5,
+      "title": "Makers Stuff\\Clay",
+      "year": "2024",
+      "tags": "Project \u2022 Build \u2022 Maker",
+      "category": "makers",
+      "featured": false,
+      "page": "projects/makers-stuff\\clay.html",
+      "manifest": "gen/manifests/makers-stuff\\clay.json"
+    },
+    "makers-stuff\\furniture\\bed": {
+      "path": "Makers stuff\\Furniture\\Bed",
+      "images": 17,
+      "title": "Makers Stuff\\Furniture\\Bed",
+      "year": "2024",
+      "tags": "Project \u2022 Build \u2022 Maker",
+      "category": "makers",
+      "featured": false,
+      "page": "projects/makers-stuff\\furniture\\bed.html",
+      "manifest": "gen/manifests/makers-stuff\\furniture\\bed.json"
+    },
+    "makers-stuff\\furniture\\shelf": {
+      "path": "Makers stuff\\Furniture\\Shelf",
+      "images": 3,
+      "title": "Makers Stuff\\Furniture\\Shelf",
+      "year": "2024",
+      "tags": "Project \u2022 Build \u2022 Maker",
+      "category": "makers",
+      "featured": false,
+      "page": "projects/makers-stuff\\furniture\\shelf.html",
+      "manifest": "gen/manifests/makers-stuff\\furniture\\shelf.json"
+    },
+    "makers-stuff\\furniture\\temple": {
+      "path": "Makers stuff\\Furniture\\Temple",
+      "images": 8,
+      "title": "Makers Stuff\\Furniture\\Temple",
+      "year": "2024",
+      "tags": "Project \u2022 Build \u2022 Maker",
+      "category": "makers",
+      "featured": false,
+      "page": "projects/makers-stuff\\furniture\\temple.html",
+      "manifest": "gen/manifests/makers-stuff\\furniture\\temple.json"
+    },
+    "makers-stuff\\go-cart": {
+      "path": "Makers stuff\\Go-Cart",
+      "images": 19,
+      "title": "Makers Stuff\\Go Cart",
+      "year": "2024",
+      "tags": "Project \u2022 Build \u2022 Maker",
+      "category": "makers",
+      "featured": false,
+      "page": "projects/makers-stuff\\go-cart.html",
+      "manifest": "gen/manifests/makers-stuff\\go-cart.json"
+    },
+    "makers-stuff\\metal-work": {
+      "path": "Makers stuff\\metal-work",
+      "images": 4,
+      "title": "Makers Stuff\\Metal Work",
+      "year": "2024",
+      "tags": "Project \u2022 Build \u2022 Maker",
+      "category": "makers",
+      "featured": false,
+      "page": "projects/makers-stuff\\metal-work.html",
+      "manifest": "gen/manifests/makers-stuff\\metal-work.json"
+    },
+    "makers-stuff\\wood-work": {
+      "path": "Makers stuff\\wood-work",
+      "images": 5,
+      "title": "Makers Stuff\\Wood Work",
+      "year": "2024",
+      "tags": "Project \u2022 Build \u2022 Maker",
+      "category": "makers",
+      "featured": false,
+      "page": "projects/makers-stuff\\wood-work.html",
+      "manifest": "gen/manifests/makers-stuff\\wood-work.json"
+    },
+    "njit-hcad-program-prototype": {
+      "path": "NJIT-HCAD program prototype",
+      "images": 12,
+      "title": "NJIT Cave Shed Prototype",
+      "year": "Summer 2025",
+      "tags": "Architecture \u2022 Design \u2022 NJIT Program",
+      "category": "education",
+      "featured": true,
+      "page": "projects/njit-hcad-program-prototype.html",
+      "manifest": "gen/manifests/njit-hcad-program-prototype.json"
     },
     "photograph": {
       "path": "photograph",
