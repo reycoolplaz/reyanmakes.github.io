@@ -1025,11 +1025,11 @@ def delete_project():
 
 
 if __name__ == '__main__':
-    print("🚀 Starting development server...")
-    print("📝 Main site: http://localhost:5000")
-    print("🔧 Admin panel: http://localhost:5000/admin")
-    print("✨ Enhanced admin: http://localhost:5000/admin-enhanced")
-    print(f"🔑 Admin password: {ADMIN_PASSWORD}")
+    print("Starting development server...")
+    print("Main site: http://localhost:5000")
+    print("Admin panel: http://localhost:5000/admin")
+    print("Enhanced admin: http://localhost:5000/admin-enhanced")
+    print(f"Admin password: {ADMIN_PASSWORD}")
     print("\nPress Ctrl+C to stop the server\n")
 
     app.run(host='0.0.0.0', port=5000, debug=True, use_reloader=False)
