@@ -1,26 +1,20 @@
 {
   "project": "boy-scouts",
   "slug": "boy-scouts",
-  "count": 17,
-  "total_count": 17,
+  "count": 11,
+  "total_count": 11,
   "images": [
     "258b04f9-58d0-4b43-86e8-bf8f8df304b6.jpg",
     "03da2db1-b636-42fb-93b1-f17b781fd4d3.jpg",
-    "0857030f-e53f-4263-8218-c22252dfb04e.jpg",
     "1b27b08e-7f6b-46bf-b815-d92abc92d29d.jpg",
-    "62237a0a-3882-4d10-bfaa-079b592af424.jpg",
-    "8317ba44-436c-44c7-b297-1191f70817e9.jpg",
     "854509d3-8746-4a9e-b7a1-d6c0cf5e6836.jpg",
     "IMG_20240806_140603829_HDR.jpg",
     "IMG_9854.jpg",
     "IMG_9860.jpg",
     "IMG_9871.jpg",
-    "b1479c27-d1c9-4287-b6b7-9c9812c12fb9.jpg",
-    "b4e42899-03e7-4678-8dad-112eb91fb4f1.jpg",
     "bbdceb06-9701-4d9b-a68b-8351024e84d6.jpg",
     "c0f208fc-734d-44e5-b4aa-30ddad4abe9e.jpg",
-    "e12661d8-00e5-47f6-9b42-d51c3a3d5540.jpg",
     "eadd2a94-5248-4d7c-9e75-454c9964d082.jpg"
   ],
-  "generated": "2025-12-24T13:16:03.320212"
+  "generated": "2025-12-24T15:58:48.281565"
 }

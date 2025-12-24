@@ -1,5 +1,5 @@
 {
-  "generated": "2025-12-24T13:16:03.357734",
+  "generated": "2025-12-24T16:00:50.631900",
   "total_projects": 14,
   "total_images": 155,
   "projects": {
@@ -12,7 +12,8 @@
       "category": "community",
       "featured": true,
       "page": "projects/boy-scouts.html",
-      "manifest": "gen/manifests/boy-scouts.json"
+      "manifest": "gen/manifests/boy-scouts.json",
+      "image_count": 11
     },
     "boys-scout": {
       "path": "boys-scout",
@@ -122,7 +123,8 @@
       "category": "art",
       "featured": true,
       "page": "projects/photograph.html",
-      "manifest": "gen/manifests/photograph.json"
+      "manifest": "gen/manifests/photograph.json",
+      "image_count": 5
     },
     "school": {
       "path": "school",
@@ -133,7 +135,8 @@
       "category": "education",
       "featured": true,
       "page": "projects/school.html",
-      "manifest": "gen/manifests/school.json"
+      "manifest": "gen/manifests/school.json",
+      "image_count": 1
     },
     "sketching": {
       "path": "sketching",
@@ -144,7 +147,8 @@
       "category": "art",
       "featured": true,
       "page": "projects/sketching.html",
-      "manifest": "gen/manifests/sketching.json"
+      "manifest": "gen/manifests/sketching.json",
+      "image_count": 0
     },
     "test": {
       "path": "test",
