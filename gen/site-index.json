@@ -1,31 +1,8 @@
 {
-  "generated": "2025-12-24T16:00:50.631900",
-  "total_projects": 14,
-  "total_images": 155,
+  "generated": "2025-12-24T16:39:35.373594",
+  "total_projects": 13,
+  "total_images": 145,
   "projects": {
-    "boy-scouts": {
-      "path": "boy-scouts",
-      "images": 17,
-      "title": "Boy Scouts - Biking Trip",
-      "year": "2024",
-      "tags": "Project \u2022 Build \u2022 Maker",
-      "category": "community",
-      "featured": true,
-      "page": "projects/boy-scouts.html",
-      "manifest": "gen/manifests/boy-scouts.json",
-      "image_count": 11
-    },
-    "boys-scout": {
-      "path": "boys-scout",
-      "images": 7,
-      "title": "Boys Scout - Shed",
-      "year": "2023",
-      "tags": "Community Service \u2022 Volunteering \u2022 Maker",
-      "category": "community",
-      "featured": true,
-      "page": "projects/boys-scout.html",
-      "manifest": "gen/manifests/boys-scout.json"
-    },
     "makers-stuff-clay": {
       "path": "makers-stuff-clay",
       "images": 4,
@@ -38,7 +15,7 @@
       "manifest": "gen/manifests/makers-stuff-clay.json"
     },
     "makers-stuff-furniture-bed": {
-      "path": "Makers stuff\\Furniture\\Bed",
+      "path": "Makers stuff/Furniture/Bed",
       "images": 17,
       "title": "Custom Bed Frame",
       "year": "Spring 2024",
@@ -49,7 +26,7 @@
       "manifest": "gen/manifests/makers-stuff-furniture-bed.json"
     },
     "makers-stuff-furniture-shelf": {
-      "path": "Makers stuff\\Furniture\\Shelf",
+      "path": "Makers stuff/Furniture/Shelf",
       "images": 3,
       "title": "Under-Bed Storage Shelf",
       "year": "2024",
@@ -60,7 +37,7 @@
       "manifest": "gen/manifests/makers-stuff-furniture-shelf.json"
     },
     "makers-stuff-furniture-temple": {
-      "path": "Makers stuff\\Furniture\\Temple",
+      "path": "Makers stuff/Furniture/Temple",
       "images": 8,
       "title": "Temple Construction",
       "year": "2024",
@@ -71,7 +48,7 @@
       "manifest": "gen/manifests/makers-stuff-furniture-temple.json"
     },
     "makers-stuff-go-cart": {
-      "path": "Makers stuff\\Go-Cart",
+      "path": "Makers stuff/Go-Cart",
       "images": 19,
       "title": "Go-Kart",
       "year": "Spring 2025",
@@ -82,7 +59,7 @@
       "manifest": "gen/manifests/makers-stuff-go-cart.json"
     },
     "makers-stuff-metal-work": {
-      "path": "Makers stuff\\metal-work",
+      "path": "Makers stuff/metal-work",
       "images": 4,
       "title": "Metal Work Projects",
       "year": "Summer 2023",
@@ -93,7 +70,7 @@
       "manifest": "gen/manifests/makers-stuff-metal-work.json"
     },
     "makers-stuff-wood-work": {
-      "path": "Makers stuff\\wood-work",
+      "path": "Makers stuff/wood-work",
       "images": 5,
       "title": "Woodworking Projects",
       "year": "2023",
@@ -114,46 +91,54 @@
       "page": "projects/njit-hcad-program-prototype.html",
       "manifest": "gen/manifests/njit-hcad-program-prototype.json"
     },
+    "boy-scouts": {
+      "path": "boy-scouts",
+      "images": 11,
+      "title": "BSA - High Adventure(s)",
+      "year": "2019-2025",
+      "tags": "Adventure \u2022 Exploration \u2022 Challenge",
+      "category": "education",
+      "featured": true,
+      "page": "projects/boy-scouts.html",
+      "manifest": "gen/manifests/boy-scouts.json"
+    },
+    "boys-scout": {
+      "path": "boys-scout",
+      "images": 7,
+      "title": "BSA - Shed",
+      "year": "2023",
+      "tags": "Community Service \u2022 Volunteering \u2022 Maker",
+      "category": "community",
+      "featured": true,
+      "page": "projects/boys-scout.html",
+      "manifest": "gen/manifests/boys-scout.json"
+    },
     "photograph": {
       "path": "photograph",
-      "images": 6,
+      "images": 5,
       "title": "Photography Portfolio",
       "year": "2024-2025",
       "tags": "Photography \u2022 Visual Art \u2022 Nature",
       "category": "art",
       "featured": true,
       "page": "projects/photograph.html",
-      "manifest": "gen/manifests/photograph.json",
-      "image_count": 5
+      "manifest": "gen/manifests/photograph.json"
     },
     "school": {
       "path": "school",
-      "images": 2,
+      "images": 1,
       "title": "School Design Projects",
       "year": "2025",
       "tags": "Engineering \u2022 Design \u2022 Education",
       "category": "education",
       "featured": true,
       "page": "projects/school.html",
-      "manifest": "gen/manifests/school.json",
-      "image_count": 1
-    },
-    "sketching": {
-      "path": "sketching",
-      "images": 2,
-      "title": "Sketches & Drawings",
-      "year": "2024-2025",
-      "tags": "Sketching \u2022 Design \u2022 Visualization",
-      "category": "art",
-      "featured": true,
-      "page": "projects/sketching.html",
-      "manifest": "gen/manifests/sketching.json",
-      "image_count": 0
+      "manifest": "gen/manifests/school.json"
     },
     "test": {
       "path": "test",
       "images": 49,
-      "title": "Boys Scout Eagle Project ",
+      "title": "BSA Eagle Project ",
       "year": "Fall 2025",
       "tags": "Community Service \u2022 Leadership ",
       "category": "community",

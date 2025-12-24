@@ -714,9 +714,11 @@ def generate_index_html(discovered_folders, metadata_config):
     )
 
     # Generate contact links
+    def make_contact_link(link):
+        target = 'target="_blank"' if not link["url"].startswith("mailto:") else ""
+        return f'<a href="{link["url"]}" class="contact-button" {target}>{link["label"]}</a>'
     contact_links = '\n                '.join(
-        f'<a href="{link["url"]}" class="contact-button" {"target=\"_blank\"" if not link["url"].startswith("mailto:") else ""}>{link["label"]}</a>'
-        for link in contact.get("links", [])
+        make_contact_link(link) for link in contact.get("links", [])
     )
 
     # Generate YouTube social pill

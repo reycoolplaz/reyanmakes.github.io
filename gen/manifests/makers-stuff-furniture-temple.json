@@ -1,17 +1,17 @@
 {
-  "project": "Makers stuff\\Furniture\\Temple",
+  "project": "Makers stuff/Furniture/Temple",
   "slug": "makers-stuff-furniture-temple",
   "count": 8,
   "total_count": 8,
   "images": [
     "Temple_front_view.jpg",
+    "Temple_side_view2.jpg",
+    "Temple_side_view1_1.jpg",
     "Temple_Process_3.jpg",
     "Temple_Process_1.jpg",
     "temple_in_progress1.jpg",
     "temple_in_progress2.jpg",
-    "Temple_Finished_Brown_1.jpg",
-    "Temple_side_view1_1.jpg",
-    "Temple_side_view2.jpg"
+    "Temple_Finished_Brown_1.jpg"
   ],
-  "generated": "2025-12-24T13:16:03.326536"
+  "generated": "2025-12-24T16:39:35.371083"
 }
