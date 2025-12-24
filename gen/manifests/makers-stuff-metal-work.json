@@ -1,13 +1,12 @@
 {
   "project": "Makers stuff/metal-work",
   "slug": "makers-stuff-metal-work",
-  "count": 4,
+  "count": 3,
   "total_count": 4,
   "images": [
     "rings.jpg",
     "axe_and_knife.jpg",
-    "jewellery_pendants.jpg",
-    "metal_works.png"
+    "jewellery_pendants.jpg"
   ],
-  "generated": "2025-12-24T16:59:46.002455"
+  "generated": "2025-12-24T17:01:01.994117"
 }
