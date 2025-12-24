@@ -231,6 +231,39 @@ def build_status_endpoint():
     return jsonify(build_status)
 
 
+@app.route('/api/git-pull', methods=['POST'])
+def git_pull():
+    """Pull latest changes from GitHub"""
+    data = request.get_json()
+    password = data.get('password', '')
+
+    if password != ADMIN_PASSWORD:
+        return jsonify({'error': 'Unauthorized'}), 401
+
+    try:
+        result = subprocess.run(
+            ['git', 'pull'],
+            cwd=BASE_DIR,
+            capture_output=True,
+            text=True
+        )
+
+        if result.returncode == 0:
+            return jsonify({
+                'success': True,
+                'message': 'Pull successful',
+                'output': result.stdout
+            })
+        else:
+            return jsonify({
+                'success': False,
+                'error': result.stderr or result.stdout
+            }), 500
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
 @app.route('/api/publish', methods=['POST'])
 def publish_site():
     """Commit and push changes to git"""

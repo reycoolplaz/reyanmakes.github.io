@@ -1059,6 +1059,14 @@
         <div class="header-content">
             <h1 onclick="showSiteSettings()" style="cursor: pointer;" title="Back to Site Settings">Portfolio Manager</h1>
             <div class="header-actions">
+                <button class="btn btn-outline" onclick="gitPull()" id="pullBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/>
+                        <polyline points="8,18 12,22 16,18"/>
+                        <line x1="12" y1="2" x2="12" y2="22"/>
+                    </svg>
+                    Pull
+                </button>
                 <button class="btn btn-outline" onclick="previewSite()">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
@@ -2610,6 +2618,39 @@
             } catch (error) {
                 showToast(error.message, 'error');
                 btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16,6 12,2 8,6"/><line x1="12" y1="2" x2="12" y2="15"/></svg> Publish';
+                btn.disabled = false;
+            }
+        }
+
+        async function gitPull() {
+            const btn = document.getElementById('pullBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Pulling...';
+
+            try {
+                const res = await fetch('/api/git-pull', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password })
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    throw new Error(data.error || 'Pull failed');
+                }
+
+                showToast(data.message || 'Pull successful!', 'success');
+                if (data.output) {
+                    console.log('Git pull output:', data.output);
+                }
+                // Reload page to show any new changes
+                setTimeout(() => location.reload(), 1000);
+
+            } catch (error) {
+                showToast(error.message, 'error');
+            } finally {
+                btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="8,18 12,22 16,18"/><line x1="12" y1="2" x2="12" y2="22"/></svg> Pull';
                 btn.disabled = false;
             }
         }
