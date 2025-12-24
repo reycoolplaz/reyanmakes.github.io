@@ -191,7 +191,7 @@ def index():
 
 @app.route('/admin')
 def admin():
-    return send_from_directory('.', 'admin.html')
+    return send_from_directory('.', 'admin-enhanced.html')
 
 @app.route('/<path:path>')
 def serve_file(path):
