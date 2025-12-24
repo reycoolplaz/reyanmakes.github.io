@@ -112,7 +112,8 @@ def discover_image_folders(base_path):
         if images:
             # Create slug from relative path
             rel_path = path.relative_to(base_path)
-            slug = str(rel_path).lower().replace(' ', '-').replace('/', '-')
+            # Platform-agnostic: use Path.parts to avoid OS-specific separators
+            slug = '-'.join(rel_path.parts).lower().replace(' ', '-')
 
             discovered[slug] = {
                 'path': path,

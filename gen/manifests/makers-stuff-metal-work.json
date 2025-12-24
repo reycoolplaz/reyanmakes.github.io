@@ -1,5 +1,5 @@
 {
-  "project": "Makers stuff/metal-work",
+  "project": "Makers stuff\\metal-work",
   "slug": "makers-stuff-metal-work",
   "count": 4,
   "total_count": 4,
@@ -9,5 +9,5 @@
     "metal_works.png",
     "jewellery_pendants.jpg"
   ],
-  "generated": "2025-12-22T16:18:33.266378"
+  "generated": "2025-12-24T13:13:34.408381"
 }

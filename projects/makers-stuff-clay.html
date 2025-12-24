@@ -3,12 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claywork- Overgrowth Sculpture | Reyan Makes</title>
-    <meta name="description" content="I attended HCAD Architecture summer course at NJIT. I enjoyed building the prototypes and making lots of sketches. This program helped me decide on pursuing a Design career in future.
+    <title>Claywork - 'Overgrowth', NJIT Summer Portfolio Program | Reyan Makes</title>
+    <meta name="description" content="Overgrowth, a concept-driven clay sculpture exploring the gradual way nature takes over human made constructions over time. This sculpture was created during the NJIT summer portfolio workshop as an exploration of the concept Nature vs Industry.
 
-This is one of my favourite sculptures that I made during the summer portfolio building course at HCAD, NJIT. I am a very nature loving person. I spent weekends afternoons, weekdays after school roaming around neighborhood preserve, boating in creeks and the wetlands. I have seen abandoned houses and how nature took over it slowly. I have tried to represent the supreme power of nature over man's creation in this sculpture.
+Growing up, I spent a lot of time in nature, walking through neighborhood preserves, wetlands and creeks. I closely watched the plant and vine formation, how the well-balanced organic network slowly consumes the abandoned man-made structures. That natural network, balance and reclaim process became the core idea behind this piece.
+I began the project with a detailed sketch to construct the formation and movement of the vines. It is inspired by the plumbing and electrical systems of our houses, the rigid geometrical network is similar to the flexible network of plant structures. 
+
+The central structure was built from cardboard glued together, has visible glue marks and glue sticking out to make it look decaying. While wire and clay was used to create the vines, shaped by hand and knife to create flowing, plant-like forms that wrap, climb, and burst outward. 
+
+Through this process, I focused on how soft, irregular growth can visually overpower a stable geometric base. The final sculpture reflects my interest in the study of formation, balance and transformation found in nature and how they are applied in real-world designs. 
 ">
-    <link rel="stylesheet" href="../styles.css?v=20251222">
+    <link rel="stylesheet" href="../styles.css?v=20251224">
     <script src="../config-loader.js"></script>
 </head>
 <body>
@@ -27,23 +32,28 @@ This is one of my favourite sculptures that I made during the summer portfolio b
         <div class="container">
             <ul class="breadcrumb-list">
                 <li><a href="../index.html" class="breadcrumb-link">Home</a></li>
-                <li><span class="breadcrumb-current">Claywork- Overgrowth Sculpture</span></li>
+                <li><span class="breadcrumb-current">Claywork - 'Overgrowth', NJIT Summer Portfolio Program</span></li>
             </ul>
         </div>
     </div>
 
     <section class="project-hero">
         <div class="project-hero-content">
-            <h1>Claywork- Overgrowth Sculpture</h1>
+            <h1>Claywork - 'Overgrowth', NJIT Summer Portfolio Program</h1>
             <div class="project-hero-meta">
-                <span class="year-badge">Summer 2025</span>
+                <span class="year-badge">2025</span>
                 <span>•</span>
                 <span>NJIT • Art • Clay • Architecture</span>
             </div>
             <p class="project-hero-description">
-                I attended HCAD Architecture summer course at NJIT. I enjoyed building the prototypes and making lots of sketches. This program helped me decide on pursuing a Design career in future.
+                Overgrowth, a concept-driven clay sculpture exploring the gradual way nature takes over human made constructions over time. This sculpture was created during the NJIT summer portfolio workshop as an exploration of the concept Nature vs Industry.
 
-This is one of my favourite sculptures that I made during the summer portfolio building course at HCAD, NJIT. I am a very nature loving person. I spent weekends afternoons, weekdays after school roaming around neighborhood preserve, boating in creeks and the wetlands. I have seen abandoned houses and how nature took over it slowly. I have tried to represent the supreme power of nature over man's creation in this sculpture.
+Growing up, I spent a lot of time in nature, walking through neighborhood preserves, wetlands and creeks. I closely watched the plant and vine formation, how the well-balanced organic network slowly consumes the abandoned man-made structures. That natural network, balance and reclaim process became the core idea behind this piece.
+I began the project with a detailed sketch to construct the formation and movement of the vines. It is inspired by the plumbing and electrical systems of our houses, the rigid geometrical network is similar to the flexible network of plant structures. 
+
+The central structure was built from cardboard glued together, has visible glue marks and glue sticking out to make it look decaying. While wire and clay was used to create the vines, shaped by hand and knife to create flowing, plant-like forms that wrap, climb, and burst outward. 
+
+Through this process, I focused on how soft, irregular growth can visually overpower a stable geometric base. The final sculpture reflects my interest in the study of formation, balance and transformation found in nature and how they are applied in real-world designs. 
 
             </p>
         </div>
@@ -52,7 +62,7 @@ This is one of my favourite sculptures that I made during the summer portfolio b
     <section style="padding: 4rem 0; background: var(--bg-secondary);">
         <div class="container">
             <h2 class="section-title">Gallery</h2>
-            <p class="section-subtitle">Documenting the entire process - 5 images</p>
+            <p class="section-subtitle">Documenting the entire process - 4 images</p>
 
             <div class="gallery-grid" id="gallery">
                 <!-- Images will be loaded dynamically from the manifest -->
@@ -72,12 +82,12 @@ This is one of my favourite sculptures that I made during the summer portfolio b
         </div>
     </footer>
 
-    <script src="../lightbox.js?v=20251222"></script>
+    <script src="../lightbox.js?v=20251224"></script>
     <script>
         // Load gallery images dynamically from manifest
         const gallery = document.getElementById('gallery');
-        const basePath = '../images/Makers stuff/Clay/';
-        const thumbPath = '../gen/thumbnails/Makers stuff/Clay/';
+        const basePath = '../images/makers-stuff-clay/';
+        const thumbPath = '../gen/thumbnails/makers-stuff-clay/';
         const manifestPath = '../gen/manifests/makers-stuff-clay.json';
         const isMobile = window.innerWidth <= 768;
 
@@ -97,7 +107,7 @@ This is one of my favourite sculptures that I made during the summer portfolio b
                     const thumbFilename = filename.replace(/\.(jpg|jpeg|png|JPG|JPEG|PNG)$/i, '.jpg');
                     img.src = isMobile ? thumbPath + thumbFilename : basePath + filename;
                     img.dataset.fullImage = basePath + filename;
-                    img.alt = 'Claywork- Overgrowth Sculpture';
+                    img.alt = 'Claywork - 'Overgrowth', NJIT Summer Portfolio Program';
                     img.className = 'gallery-image';
                     img.loading = 'lazy';
 

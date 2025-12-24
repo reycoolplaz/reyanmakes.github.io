@@ -1,5 +1,5 @@
 {
-  "project": "Makers stuff/Furniture/Bed",
+  "project": "Makers stuff\\Furniture\\Bed",
   "slug": "makers-stuff-furniture-bed",
   "count": 12,
   "total_count": 17,
@@ -17,5 +17,5 @@
     "Bed_perspective.jpg",
     "IMG_7084.jpg"
   ],
-  "generated": "2025-12-22T16:18:33.265442"
+  "generated": "2025-12-24T13:13:34.404921"
 }
