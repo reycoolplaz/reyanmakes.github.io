@@ -12,6 +12,7 @@ import shutil
 from pathlib import Path
 import threading
 import time
+import logging
 from PIL import Image
 import pillow_heif
 
@@ -20,6 +21,18 @@ pillow_heif.register_heif_opener()
 
 app = Flask(__name__)
 CORS(app)
+
+# Set up file logging
+LOG_FILE = Path(__file__).parent / 'server.log'
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler(LOG_FILE),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
 
 BASE_DIR = Path(__file__).parent
 METADATA_FILE = BASE_DIR / 'projects-metadata.json'
@@ -267,15 +280,15 @@ def git_pull():
 @app.route('/api/publish', methods=['POST'])
 def publish_site():
     """Commit and push changes to git"""
+    logger.info("Publish request received")
     data = request.get_json()
     password = data.get('password', '')
 
     if password != ADMIN_PASSWORD:
+        logger.warning("Publish failed: unauthorized")
         return jsonify({'error': 'Unauthorized'}), 401
 
     try:
-        import subprocess
-
         # Stage all changes
         subprocess.run(['git', 'add', '-A'], cwd=BASE_DIR, check=True)
 
@@ -288,6 +301,7 @@ def publish_site():
         )
 
         if not result.stdout.strip():
+            logger.info("No changes to publish")
             return jsonify({'message': 'No changes to publish'})
 
         # Commit with a standard message
@@ -299,13 +313,24 @@ def publish_site():
         )
 
         # Push to remote
-        subprocess.run(['git', 'push'], cwd=BASE_DIR, check=True)
+        push_result = subprocess.run(
+            ['git', 'push'],
+            cwd=BASE_DIR,
+            capture_output=True,
+            text=True
+        )
+        if push_result.returncode != 0:
+            logger.error(f"Git push failed: {push_result.stderr}")
+            return jsonify({'error': f'Push failed: {push_result.stderr}'}), 500
 
+        logger.info("Published successfully")
         return jsonify({'success': True, 'message': 'Published successfully'})
 
     except subprocess.CalledProcessError as e:
+        logger.error(f"Git operation failed: {str(e)}")
         return jsonify({'error': f'Git operation failed: {str(e)}'}), 500
     except Exception as e:
+        logger.error(f"Publish error: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 
