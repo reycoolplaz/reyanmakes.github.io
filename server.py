@@ -16,9 +16,14 @@ import logging
 from PIL import Image
 import pillow_heif
 from dotenv import load_dotenv
+from github import Github
 
 # Load environment variables from .env file
 load_dotenv()
+
+# GitHub API config (for containerized deployment)
+GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN')
+GITHUB_REPO = os.environ.get('GITHUB_REPO', 'reycoolplaz/reyanmakes.github.io')
 
 # Register HEIF opener with Pillow
 pillow_heif.register_heif_opener()
@@ -283,7 +288,7 @@ def git_pull():
 
 @app.route('/api/publish', methods=['POST'])
 def publish_site():
-    """Commit and push changes to git"""
+    """Commit and push changes to git (uses GitHub API if token set, else git CLI)"""
     logger.info("Publish request received")
     data = request.get_json()
     password = data.get('password', '')
@@ -292,6 +297,20 @@ def publish_site():
         logger.warning("Publish failed: unauthorized")
         return jsonify({'error': 'Unauthorized'}), 401
 
+    try:
+        # Use GitHub API if token is set (for containerized deployment)
+        if GITHUB_TOKEN:
+            return publish_via_github_api()
+        else:
+            return publish_via_git_cli()
+
+    except Exception as e:
+        logger.error(f"Publish error: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+
+def publish_via_git_cli():
+    """Publish using git CLI (for local development)"""
     try:
         # Stage all changes
         subprocess.run(['git', 'add', '-A'], cwd=BASE_DIR, check=True)
@@ -327,15 +346,99 @@ def publish_site():
             logger.error(f"Git push failed: {push_result.stderr}")
             return jsonify({'error': f'Push failed: {push_result.stderr}'}), 500
 
-        logger.info("Published successfully")
+        logger.info("Published successfully via git CLI")
         return jsonify({'success': True, 'message': 'Published successfully'})
 
     except subprocess.CalledProcessError as e:
         logger.error(f"Git operation failed: {str(e)}")
         return jsonify({'error': f'Git operation failed: {str(e)}'}), 500
+
+
+def publish_via_github_api():
+    """Publish using GitHub API (for containerized deployment)"""
+    try:
+        g = Github(GITHUB_TOKEN)
+        repo = g.get_repo(GITHUB_REPO)
+
+        # Get list of changed files (tracked files that differ from repo)
+        changed_files = []
+
+        # Files that the admin panel modifies
+        files_to_check = [
+            'projects-metadata.json',
+            'image-orders.json',
+            'hidden-images.json',
+            'index.html',
+            'gen/site-index.json',
+        ]
+
+        # Add all manifest files
+        manifests_dir = BASE_DIR / 'gen' / 'manifests'
+        if manifests_dir.exists():
+            for f in manifests_dir.glob('*.json'):
+                files_to_check.append(f'gen/manifests/{f.name}')
+
+        # Add all project HTML files
+        projects_dir = BASE_DIR / 'projects'
+        if projects_dir.exists():
+            for f in projects_dir.glob('*.html'):
+                files_to_check.append(f'projects/{f.name}')
+
+        for file_path in files_to_check:
+            local_path = BASE_DIR / file_path
+            if not local_path.exists():
+                continue
+
+            with open(local_path, 'r') as f:
+                local_content = f.read()
+
+            try:
+                # Get file from repo
+                repo_file = repo.get_contents(file_path)
+                repo_content = repo_file.decoded_content.decode('utf-8')
+
+                if local_content != repo_content:
+                    changed_files.append({
+                        'path': file_path,
+                        'content': local_content,
+                        'sha': repo_file.sha
+                    })
+            except Exception:
+                # File doesn't exist in repo, create it
+                changed_files.append({
+                    'path': file_path,
+                    'content': local_content,
+                    'sha': None
+                })
+
+        if not changed_files:
+            logger.info("No changes to publish")
+            return jsonify({'message': 'No changes to publish'})
+
+        # Update each changed file
+        commit_msg = 'chore: update site content via admin panel'
+        for file_info in changed_files:
+            if file_info['sha']:
+                repo.update_file(
+                    file_info['path'],
+                    commit_msg,
+                    file_info['content'],
+                    file_info['sha']
+                )
+            else:
+                repo.create_file(
+                    file_info['path'],
+                    commit_msg,
+                    file_info['content']
+                )
+            logger.info(f"Updated: {file_info['path']}")
+
+        logger.info(f"Published {len(changed_files)} files via GitHub API")
+        return jsonify({'success': True, 'message': f'Published {len(changed_files)} files'})
+
     except Exception as e:
-        logger.error(f"Publish error: {str(e)}")
-        return jsonify({'error': str(e)}), 500
+        logger.error(f"GitHub API error: {str(e)}")
+        return jsonify({'error': f'GitHub API error: {str(e)}'}), 500
 
 
 @app.route('/api/metadata', methods=['POST'])
