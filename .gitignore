@@ -47,3 +47,4 @@ nul
 .cache/
 .local/
 server.log
+projects-metadata.backup.json
