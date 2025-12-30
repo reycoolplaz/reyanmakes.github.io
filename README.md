@@ -10,13 +10,14 @@ Framework-free static site with an automated build system. Just add images and r
 # Build the site (after adding/removing images)
 python3 build_site.py
 
-# Run local server
-./run_server.sh
+# Run server
+./run.sh        # dev mode (Flask)
+./run.sh prod   # production mode (Gunicorn)
 ```
 
 Then visit:
 - **Main site**: http://localhost:5000
-- **Admin panel**: http://localhost:5000/admin (password: `reyan2025`)
+- **Admin panel**: http://localhost:5000/admin
 
 ## Directory Structure
 
@@ -45,7 +46,8 @@ reyanmakes.github.io/
 │
 ├── convert_heic.py            # Convert HEIC images
 ├── convert_cr2.py             # Convert CR2 raw images
-└── run_server.sh              # Quick start script
+├── run.sh                     # Start server (dev/prod)
+└── .env.example               # Environment template
 ```
 
 ## Workflow
@@ -74,7 +76,7 @@ python3 -m venv venv
 ./venv/bin/pip install -r requirements.txt
 ```
 
-Dependencies: Flask, Pillow
+Dependencies: Flask, Pillow, Gunicorn
 
 ## Tips
 
