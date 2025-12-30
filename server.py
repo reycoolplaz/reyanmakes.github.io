@@ -15,6 +15,10 @@ import time
 import logging
 from PIL import Image
 import pillow_heif
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Register HEIF opener with Pillow
 pillow_heif.register_heif_opener()
