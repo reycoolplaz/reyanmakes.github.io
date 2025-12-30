@@ -78,6 +78,38 @@ python3 -m venv venv
 
 Dependencies: Flask, Pillow, Gunicorn
 
+## How It Works
+
+### Build Architecture
+
+```
+Local Machine                          GitHub
+─────────────                          ──────
+1. Edit via /admin
+      ↓
+2. Click "Build"
+      ↓
+3. build_site.py runs locally
+   - Generates thumbnails
+   - Creates manifests
+   - Updates HTML
+      ↓
+4. Click "Publish"
+      ↓
+5. git push ──────────────────────→ Repository
+                                        ↓
+                                   GitHub Pages
+                                   (static hosting)
+                                        ↓
+                                   Live site
+```
+
+**Key points:**
+- All building happens on your machine
+- GitHub Pages is just a static file server
+- No server-side processing on GitHub
+- Generated files (`/gen/`, `/projects/`) are version-controlled
+
 ## Tips
 
 - **Supported formats**: JPG, JPEG, PNG, GIF, WEBP
