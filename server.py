@@ -597,12 +597,6 @@ def toggle_image_visibility():
         return jsonify({'error': str(e)}), 500
 
 
-@app.route('/admin-enhanced')
-def admin_enhanced():
-    """Serve enhanced admin panel"""
-    return send_from_directory('.', 'admin-enhanced.html')
-
-
 @app.route('/api/upload', methods=['POST'])
 def upload_images():
     """Upload images to a project folder"""
@@ -1086,7 +1080,6 @@ if __name__ == '__main__':
     print("Starting development server...")
     print("Main site: http://localhost:5000")
     print("Admin panel: http://localhost:5000/admin")
-    print("Enhanced admin: http://localhost:5000/admin-enhanced")
     print(f"Admin password: {ADMIN_PASSWORD}")
     print("\nPress Ctrl+C to stop the server\n")
 
