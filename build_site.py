@@ -820,6 +820,7 @@ def generate_index_html(discovered_folders, metadata_config):
     </footer>
 
     <script src="script.js{version_suffix}"></script>
+    <script src="edit-mode.js"></script>
 </body>
 </html>
 '''
