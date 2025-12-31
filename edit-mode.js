@@ -572,7 +572,13 @@
     function init() {
         addStyles();
         enableEditing();
-        createToolbar();
+
+        // Only show toolbar if NOT embedded in iframe (admin panel handles save)
+        const isEmbedded = window.parent !== window;
+        if (!isEmbedded) {
+            createToolbar();
+        }
+
         setupChangeTracking();
         setupParentCommunication();
 
