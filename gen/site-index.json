@@ -1,5 +1,5 @@
 {
-  "generated": "2025-12-31T03:37:03.280254",
+  "generated": "2025-12-31T03:40:19.703646",
   "total_projects": 13,
   "total_images": 145,
   "projects": {
@@ -52,7 +52,7 @@
       "images": 19,
       "title": "Go-Kart",
       "year": "Spring 2025",
-      "tags": "Welding \u2022 Metal",
+      "tags": "Welding \u2022 Metal \u2022 Mechanical",
       "category": "makers",
       "featured": true,
       "page": "projects/makers-stuff-go-cart.html",
