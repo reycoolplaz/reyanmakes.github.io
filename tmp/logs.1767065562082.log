@@ -1,0 +1,33 @@
+2025-12-30T03:07:30.000000000Z [inf]  Starting Container
+2025-12-30T03:07:31.481228138Z [err]  [2025-12-30 03:07:30 +0000] [3] [INFO] Booting worker with pid: 3
+2025-12-30T03:07:31.481314647Z [err]  [2025-12-30 03:07:30 +0000] [1] [INFO] Starting gunicorn 23.0.0
+2025-12-30T03:07:31.481323550Z [err]  [2025-12-30 03:07:30 +0000] [1] [INFO] Listening at: http://0.0.0.0:5000 (1)
+2025-12-30T03:07:31.481329827Z [err]  [2025-12-30 03:07:30 +0000] [1] [INFO] Using worker: sync
+2025-12-30T03:07:31.481336291Z [err]  [2025-12-30 03:07:30 +0000] [2] [INFO] Booting worker with pid: 2
+2025-12-30T03:11:18.000000000Z [inf]  Starting Container
+2025-12-30T03:11:22.000000000Z [inf]  Stopping Container
+2025-12-30T03:16:41.000000000Z [inf]  Starting Container
+2025-12-30T03:16:42.896796367Z [err]  [2025-12-30 03:16:41 +0000] [1] [INFO] Starting gunicorn 23.0.0
+2025-12-30T03:16:42.896801909Z [err]  [2025-12-30 03:16:41 +0000] [1] [INFO] Listening at: http://0.0.0.0:5000 (1)
+2025-12-30T03:16:42.896807025Z [err]  [2025-12-30 03:16:41 +0000] [1] [INFO] Using worker: sync
+2025-12-30T03:16:42.896812499Z [err]  [2025-12-30 03:16:41 +0000] [2] [INFO] Booting worker with pid: 2
+2025-12-30T03:16:42.896817962Z [err]  [2025-12-30 03:16:41 +0000] [3] [INFO] Booting worker with pid: 3
+2025-12-30T03:16:45.000000000Z [inf]  Stopping Container
+2025-12-30T03:16:50.271161683Z [err]  [2025-12-30 03:16:45 +0000] [3] [INFO] Worker exiting (pid: 3)
+2025-12-30T03:16:50.271170335Z [err]  [2025-12-30 03:16:45 +0000] [1] [INFO] Shutting down: Master
+2025-12-30T03:16:50.271238835Z [err]  [2025-12-30 03:16:45 +0000] [1] [INFO] Handling signal: term
+2025-12-30T03:16:50.271242808Z [err]  [2025-12-30 03:16:45 +0000] [2] [INFO] Worker exiting (pid: 2)
+2025-12-30T03:18:22.969199862Z [err]  2025-12-30 03:18:16,283 - INFO - Publish request received
+2025-12-30T03:18:22.969205575Z [err]  2025-12-30 03:18:16,284 - ERROR - Publish error: [Errno 2] No such file or directory: 'git'
+2025-12-30T03:18:22.969211607Z [err]  2025-12-30 03:18:20,732 - INFO - Publish request received
+2025-12-30T03:18:22.969215887Z [err]  2025-12-30 03:18:20,732 - ERROR - Publish error: [Errno 2] No such file or directory: 'git'
+2025-12-30T03:24:16.000000000Z [inf]  Starting Container
+2025-12-30T03:24:19.000000000Z [inf]  Stopping Container
+2025-12-30T03:24:23.508525636Z [err]  [2025-12-30 03:24:19 +0000] [1] [INFO] Handling signal: term
+2025-12-30T03:24:23.508536915Z [err]  [2025-12-30 03:24:19 +0000] [2] [INFO] Worker exiting (pid: 2)
+2025-12-30T03:24:23.508541900Z [err]  [2025-12-30 03:24:19 +0000] [3] [INFO] Worker exiting (pid: 3)
+2025-12-30T03:24:23.508546189Z [err]  [2025-12-30 03:24:19 +0000] [1] [INFO] Shutting down: Master
+2025-12-30T03:25:06.986206497Z [err]  2025-12-30 03:25:00,280 - INFO - Publish request received
+2025-12-30T03:25:06.986210271Z [err]  2025-12-30 03:25:00,299 - ERROR - Publish error: [Errno 2] No such file or directory: 'git'
+2025-12-30T03:31:58.124048927Z [err]  2025-12-30 03:31:52,069 - INFO - Publish request received
+2025-12-30T03:31:58.124059070Z [err]  2025-12-30 03:31:52,070 - ERROR - Publish error: [Errno 2] No such file or directory: 'git'
