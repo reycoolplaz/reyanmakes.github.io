@@ -574,8 +574,10 @@
         enableEditing();
 
         // Only show toolbar if NOT embedded in iframe (admin panel handles save)
-        const isEmbedded = window.parent !== window;
-        console.log('[Edit Mode] isEmbedded:', isEmbedded);
+        // Check both: URL param (explicit) and window.parent check (fallback)
+        const embeddedParam = params.get('embedded') === 'true';
+        const isEmbedded = embeddedParam || window.parent !== window;
+        console.log('[Edit Mode] isEmbedded:', isEmbedded, '(param:', embeddedParam, ', window check:', window.parent !== window, ')');
         if (!isEmbedded) {
             createToolbar();
         }
