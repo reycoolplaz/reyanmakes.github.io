@@ -407,8 +407,163 @@
         document.addEventListener('input', (e) => {
             if (e.target.classList.contains('editable')) {
                 markDirty();
+                // Notify parent (admin) of changes
+                notifyParent('content-changed', collectData());
             }
         });
+    }
+
+    // ==================== PARENT COMMUNICATION ====================
+    // Notify parent window (admin panel) of events
+    function notifyParent(type, data) {
+        if (window.parent && window.parent !== window) {
+            window.parent.postMessage({ type, data }, '*');
+        }
+    }
+
+    // Listen for messages from parent (admin panel)
+    function setupParentCommunication() {
+        window.addEventListener('message', (event) => {
+            const { type, path, value, data } = event.data || {};
+
+            if (type === 'update-content') {
+                // Update a specific field
+                updateContentByPath(path, value);
+            }
+
+            if (type === 'set-content') {
+                // Set all content from admin
+                if (data) setAllContent(data);
+            }
+        });
+
+        // Notify parent that edit mode is ready
+        setTimeout(() => {
+            notifyParent('edit-mode-ready', collectData());
+        }, 500);
+    }
+
+    // Update content by dot-notation path
+    function updateContentByPath(path, value) {
+        if (!path) return;
+
+        const mapping = {
+            'hero.title': '.hero-title',
+            'hero.subtitle': '.hero-subtitle',
+            'hero.ctaText': '.cta-button',
+            'skillsTitle': '.hero-skills h3',
+            'hero.social.youtube.label': '.social-pill.youtube span',
+            'hero.social.youtube.url': '.social-pill.youtube'
+        };
+
+        const selector = mapping[path];
+        if (selector) {
+            const el = document.querySelector(selector);
+            if (el) {
+                if (path.endsWith('.url')) {
+                    el.href = value;
+                } else {
+                    el.textContent = value;
+                }
+                markDirty();
+            }
+        }
+
+        // Handle arrays
+        if (path === 'skills' && Array.isArray(value)) {
+            updateSkills(value);
+        }
+        if (path === 'about' && Array.isArray(value)) {
+            updateAbout(value);
+        }
+        if (path === 'contact' && Array.isArray(value)) {
+            updateContact(value);
+        }
+    }
+
+    // Update skills from array
+    function updateSkills(skills) {
+        const grid = document.querySelector('.skills-grid');
+        if (!grid) return;
+
+        // Remove existing skills (keep add button)
+        grid.querySelectorAll('.skill').forEach(s => s.remove());
+
+        // Add new skills
+        const addBtn = grid.querySelector('.edit-add-btn');
+        skills.forEach(skill => {
+            const div = document.createElement('div');
+            div.className = 'skill editable';
+            div.contentEditable = true;
+            div.textContent = skill;
+
+            const deleteBtn = document.createElement('span');
+            deleteBtn.className = 'edit-delete-btn';
+            deleteBtn.textContent = '×';
+            deleteBtn.onclick = (e) => {
+                e.stopPropagation();
+                div.remove();
+                markDirty();
+                notifyParent('content-changed', collectData());
+            };
+            div.appendChild(deleteBtn);
+
+            if (addBtn) {
+                grid.insertBefore(div, addBtn);
+            } else {
+                grid.appendChild(div);
+            }
+        });
+        markDirty();
+    }
+
+    // Update about paragraphs from array
+    function updateAbout(paragraphs) {
+        const container = document.querySelector('.hero-about');
+        if (!container) return;
+
+        container.innerHTML = '';
+        paragraphs.forEach(text => {
+            const p = document.createElement('p');
+            p.className = 'editable';
+            p.contentEditable = true;
+            p.textContent = text;
+            container.appendChild(p);
+        });
+        markDirty();
+    }
+
+    // Update contact links from array
+    function updateContact(contacts) {
+        const container = document.querySelector('.contact-links');
+        if (!container) return;
+
+        container.innerHTML = '';
+        contacts.forEach(({ label, url }) => {
+            const a = document.createElement('a');
+            a.className = 'contact-button';
+            a.href = url || '#';
+            a.textContent = label;
+            container.appendChild(a);
+        });
+        markDirty();
+    }
+
+    // Set all content at once
+    function setAllContent(data) {
+        if (data.hero) {
+            if (data.hero.title) updateContentByPath('hero.title', data.hero.title);
+            if (data.hero.subtitle) updateContentByPath('hero.subtitle', data.hero.subtitle);
+            if (data.hero.ctaText) updateContentByPath('hero.ctaText', data.hero.ctaText);
+            if (data.hero.social?.youtube) {
+                updateContentByPath('hero.social.youtube.url', data.hero.social.youtube.url);
+                updateContentByPath('hero.social.youtube.label', data.hero.social.youtube.label);
+            }
+        }
+        if (data.skillsTitle) updateContentByPath('skillsTitle', data.skillsTitle);
+        if (data.skills) updateSkills(data.skills);
+        if (data.about) updateAbout(data.about);
+        if (data.contact) updateContact(data.contact);
     }
 
     // Initialize
@@ -417,6 +572,7 @@
         enableEditing();
         createToolbar();
         setupChangeTracking();
+        setupParentCommunication();
 
         // Warn before leaving with unsaved changes
         window.addEventListener('beforeunload', (e) => {
