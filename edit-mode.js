@@ -424,9 +424,11 @@
     // Listen for messages from parent (admin panel)
     function setupParentCommunication() {
         window.addEventListener('message', (event) => {
+            console.log('[Edit Mode] Received message:', event.data);
             const { type, path, value, data } = event.data || {};
 
             if (type === 'update-content') {
+                console.log('[Edit Mode] Updating:', path, '=', value);
                 // Update a specific field
                 updateContentByPath(path, value);
             }
