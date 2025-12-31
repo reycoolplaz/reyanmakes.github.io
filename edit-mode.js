@@ -3,12 +3,19 @@
  * Enables WYSIWYG editing when ?edit=true is in URL
  */
 (function() {
+    console.log('[Edit Mode] Script loaded, URL:', location.href);
+
     const params = new URLSearchParams(location.search);
     const editMode = params.get('edit') === 'true';
     const adminUrl = params.get('admin') || '';
     const token = params.get('token') || '';
 
-    if (!editMode) return;
+    console.log('[Edit Mode] editMode =', editMode, 'location.search =', location.search);
+
+    if (!editMode) {
+        console.log('[Edit Mode] Edit mode not enabled, exiting');
+        return;
+    }
 
     console.log('[Edit Mode] Activated');
 
