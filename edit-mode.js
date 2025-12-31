@@ -575,6 +575,7 @@
 
         // Only show toolbar if NOT embedded in iframe (admin panel handles save)
         const isEmbedded = window.parent !== window;
+        console.log('[Edit Mode] isEmbedded:', isEmbedded);
         if (!isEmbedded) {
             createToolbar();
         }
@@ -590,7 +591,7 @@
             }
         });
 
-        console.log('[Edit Mode] Ready - click on any highlighted element to edit');
+        console.log('[Edit Mode] Ready - click on any highlighted element to edit', isEmbedded ? '(embedded)' : '(standalone)');
     }
 
     // Run when DOM is ready
