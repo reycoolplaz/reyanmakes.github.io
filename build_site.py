@@ -78,6 +78,54 @@ def load_hidden_images():
     with open(HIDDEN_IMAGES_FILE, 'r') as f:
         return json.load(f)
 
+
+# ============================================================================
+# EDITOR.JS BLOCK RENDERER
+# ============================================================================
+
+def render_editorjs_block(block):
+    """
+    Render an Editor.js block to HTML.
+    Supports: paragraph, header, list, quote, delimiter
+    """
+    block_type = block.get('type', 'paragraph')
+    data = block.get('data', {})
+
+    if block_type == 'paragraph':
+        text = data.get('text', '')
+        return f'<p>{text}</p>'
+
+    elif block_type == 'header':
+        text = data.get('text', '')
+        level = data.get('level', 2)
+        level = max(2, min(6, level))  # Clamp between h2-h6
+        return f'<h{level}>{text}</h{level}>'
+
+    elif block_type == 'list':
+        items = data.get('items', [])
+        style = data.get('style', 'unordered')
+        tag = 'ol' if style == 'ordered' else 'ul'
+        items_html = '\n'.join(f'<li>{item}</li>' for item in items)
+        return f'<{tag}>{items_html}</{tag}>'
+
+    elif block_type == 'quote':
+        text = data.get('text', '')
+        caption = data.get('caption', '')
+        quote_html = f'<blockquote>{text}'
+        if caption:
+            quote_html += f'<cite>— {caption}</cite>'
+        quote_html += '</blockquote>'
+        return quote_html
+
+    elif block_type == 'delimiter':
+        return '<hr class="content-divider">'
+
+    else:
+        # Unknown block type - render as paragraph
+        text = data.get('text', str(data))
+        return f'<p>{text}</p>'
+
+
 # ============================================================================
 # STEP 1: DISCOVER IMAGE FOLDERS
 # ============================================================================
@@ -703,10 +751,18 @@ def generate_index_html(discovered_folders, metadata_config):
 
     timeline_html = '\n\n'.join(milestones_html)
 
-    # Generate about paragraphs
-    about_paragraphs = '\n                    '.join(
-        f'<p>{p}</p>' for p in about.get("paragraphs", [])
-    )
+    # Generate about paragraphs (supports both legacy and Editor.js block format)
+    about_blocks = about.get("blocks", [])
+    if about_blocks:
+        # Editor.js block format
+        about_paragraphs = '\n                    '.join(
+            render_editorjs_block(block) for block in about_blocks
+        )
+    else:
+        # Legacy paragraph array format
+        about_paragraphs = '\n                    '.join(
+            f'<p>{p}</p>' for p in about.get("paragraphs", [])
+        )
 
     # Generate skills
     skills_html = '\n                        '.join(

@@ -1,86 +1,172 @@
 /**
- * Edit Mode for Portfolio Site
- * Enables WYSIWYG editing when ?edit=true is in URL
+ * Edit Mode for Portfolio Site - Editor.js + AI Integration
+ * Modern block-based editing with AI assistance
  */
 (function() {
     const params = new URLSearchParams(location.search);
     const editMode = params.get('edit') === 'true';
     const adminUrl = params.get('admin') || '';
     const token = params.get('token') || '';
+    const isEmbedded = params.get('embedded') === 'true' || window.parent !== window;
 
     if (!editMode) return;
 
-    console.log('[Edit Mode] Activated');
+    console.log('[Edit Mode] Activated with Editor.js');
 
-    // Store original content for cancel
-    let originalContent = null;
+    // Track state
+    let isDirty = false;
+    let aboutEditor = null;
 
-    // Element to data path mapping
-    const editableConfig = [
-        { selector: '.hero-title', path: 'hero.title', type: 'single' },
-        { selector: '.hero-subtitle', path: 'hero.subtitle', type: 'single' },
-        { selector: '.hero-about p', path: 'about.paragraphs', type: 'array' },
-        { selector: '.hero-skills h3', path: 'about.skillsTitle', type: 'single' },
-        { selector: '.skill', path: 'about.skills', type: 'array' },
-        { selector: '.social-pill.youtube span', path: 'hero.social.youtube.label', type: 'single' },
-        { selector: '.cta-button', path: 'hero.ctaText', type: 'single' },
-        { selector: '.section-title', path: null, type: 'single' }, // Multiple, handle separately
-        { selector: '.milestone-card h3', path: 'milestones.title', type: 'milestone' },
-        { selector: '.milestone-card > p:first-of-type', path: 'milestones.description', type: 'milestone' },
-        { selector: '.contact-description', path: 'contact.description', type: 'single' },
+    // ==================== SCRIPT LOADING ====================
+    const EDITOR_JS_SCRIPTS = [
+        'https://cdn.jsdelivr.net/npm/@editorjs/editorjs@2.28.2/dist/editorjs.umd.min.js',
+        'https://cdn.jsdelivr.net/npm/@editorjs/header@2.8.1/dist/header.umd.min.js',
+        'https://cdn.jsdelivr.net/npm/@editorjs/list@1.9.0/dist/list.umd.min.js',
+        'https://cdn.jsdelivr.net/npm/@editorjs/quote@2.6.0/dist/quote.umd.min.js',
+        'https://cdn.jsdelivr.net/npm/@editorjs/delimiter@1.4.0/dist/delimiter.umd.min.js'
     ];
 
-    // Make elements editable
-    function enableEditing() {
-        editableConfig.forEach(config => {
-            document.querySelectorAll(config.selector).forEach((el, idx) => {
-                el.contentEditable = true;
-                el.classList.add('editable');
-                el.dataset.editPath = config.path;
-                el.dataset.editType = config.type;
-                el.dataset.editIndex = idx;
-
-                // Prevent link navigation while editing
-                el.addEventListener('click', e => {
-                    if (el.isContentEditable) {
-                        e.preventDefault();
-                    }
-                });
-            });
-        });
-
-        // Add hover effect for skills to show they're editable
-        document.querySelectorAll('.skills-grid').forEach(grid => {
-            const addBtn = document.createElement('button');
-            addBtn.className = 'edit-add-btn';
-            addBtn.textContent = '+ Add Skill';
-            addBtn.onclick = () => addSkill(grid);
-            grid.appendChild(addBtn);
-        });
-
-        // Add delete buttons to skills
-        document.querySelectorAll('.skill').forEach(skill => {
-            const deleteBtn = document.createElement('span');
-            deleteBtn.className = 'edit-delete-btn';
-            deleteBtn.textContent = '×';
-            deleteBtn.onclick = (e) => {
-                e.stopPropagation();
-                skill.remove();
-                markDirty();
-            };
-            skill.appendChild(deleteBtn);
+    async function loadScript(src) {
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
         });
     }
 
-    // Add a new skill
+    async function loadEditorJS() {
+        console.log('[Edit Mode] Loading Editor.js...');
+        for (const src of EDITOR_JS_SCRIPTS) {
+            await loadScript(src);
+        }
+        console.log('[Edit Mode] Editor.js loaded');
+    }
+
+    // ==================== EDITOR INITIALIZATION ====================
+    async function initAboutEditor() {
+        const aboutContainer = document.querySelector('.hero-about');
+        if (!aboutContainer) return;
+
+        // Get current content and convert to blocks
+        const paragraphs = aboutContainer.querySelectorAll('p');
+        const blocks = Array.from(paragraphs).map(p => ({
+            type: 'paragraph',
+            data: { text: p.innerHTML }
+        }));
+
+        // Create editor holder
+        aboutContainer.innerHTML = '<div id="about-editor"></div>';
+
+        // Initialize Editor.js
+        aboutEditor = new EditorJS({
+            holder: 'about-editor',
+            placeholder: 'Start writing your story...',
+            tools: {
+                header: {
+                    class: Header,
+                    config: {
+                        placeholder: 'Enter a header',
+                        levels: [2, 3, 4],
+                        defaultLevel: 3
+                    }
+                },
+                list: {
+                    class: List,
+                    inlineToolbar: true
+                },
+                quote: {
+                    class: Quote,
+                    config: {
+                        quotePlaceholder: 'Enter a quote',
+                        captionPlaceholder: 'Quote author'
+                    }
+                },
+                delimiter: Delimiter
+            },
+            data: {
+                blocks: blocks.length > 0 ? blocks : [
+                    { type: 'paragraph', data: { text: 'Tell your story here...' } }
+                ]
+            },
+            onChange: () => {
+                markDirty();
+                notifyParentOfChanges();
+            }
+        });
+
+        await aboutEditor.isReady;
+        console.log('[Edit Mode] About editor ready');
+    }
+
+    // ==================== SIMPLE EDITABLE ELEMENTS ====================
+    // Keep simple contenteditable for hero title, subtitle, etc.
+    const simpleEditables = [
+        { selector: '.hero-title', path: 'hero.title' },
+        { selector: '.hero-subtitle', path: 'hero.subtitle' },
+        { selector: '.hero-skills h3', path: 'skillsTitle' },
+        { selector: '.cta-button', path: 'hero.ctaText' },
+        { selector: '.contact-description', path: 'contact.description' }
+    ];
+
+    function enableSimpleEditing() {
+        simpleEditables.forEach(({ selector }) => {
+            const el = document.querySelector(selector);
+            if (el) {
+                el.contentEditable = true;
+                el.classList.add('editable');
+                el.addEventListener('input', () => {
+                    markDirty();
+                    notifyParentOfChanges();
+                });
+            }
+        });
+
+        // Skills with add/delete
+        enableSkillsEditing();
+    }
+
+    function enableSkillsEditing() {
+        const grid = document.querySelector('.skills-grid');
+        if (!grid) return;
+
+        // Add button
+        const addBtn = document.createElement('button');
+        addBtn.className = 'edit-add-btn';
+        addBtn.innerHTML = '+ Add Skill';
+        addBtn.onclick = () => addSkill(grid);
+        grid.appendChild(addBtn);
+
+        // Make skills editable with delete
+        grid.querySelectorAll('.skill').forEach(skill => {
+            skill.contentEditable = true;
+            skill.classList.add('editable');
+            addDeleteButton(skill);
+        });
+    }
+
     function addSkill(grid) {
         const skill = document.createElement('div');
         skill.className = 'skill editable';
         skill.contentEditable = true;
-        skill.dataset.editPath = 'about.skills';
-        skill.dataset.editType = 'array';
         skill.textContent = 'New Skill';
+        addDeleteButton(skill);
 
+        const addBtn = grid.querySelector('.edit-add-btn');
+        grid.insertBefore(skill, addBtn);
+        skill.focus();
+
+        // Select text
+        const range = document.createRange();
+        range.selectNodeContents(skill.firstChild);
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+
+        markDirty();
+    }
+
+    function addDeleteButton(skill) {
         const deleteBtn = document.createElement('span');
         deleteBtn.className = 'edit-delete-btn';
         deleteBtn.textContent = '×';
@@ -88,77 +174,35 @@
             e.stopPropagation();
             skill.remove();
             markDirty();
+            notifyParentOfChanges();
         };
         skill.appendChild(deleteBtn);
-
-        // Insert before the add button
-        const addBtn = grid.querySelector('.edit-add-btn');
-        grid.insertBefore(skill, addBtn);
-        skill.focus();
-
-        // Select all text
-        const range = document.createRange();
-        range.selectNodeContents(skill.childNodes[0]);
-        const sel = window.getSelection();
-        sel.removeAllRanges();
-        sel.addRange(range);
-
-        markDirty();
     }
 
-    // Collect all edited data
-    function collectData() {
+    // ==================== DATA COLLECTION ====================
+    async function collectData() {
         const data = {
             hero: {
-                title: '',
-                subtitle: '',
-                ctaText: '',
-                ctaLink: '',
-                social: { youtube: { url: '', label: '' } }
+                title: document.querySelector('.hero-title')?.textContent.trim() || '',
+                subtitle: document.querySelector('.hero-subtitle')?.textContent.trim() || '',
+                ctaText: document.querySelector('.cta-button')?.textContent.trim() || '',
+                ctaLink: document.querySelector('.cta-button')?.getAttribute('href') || '#featured',
+                social: {
+                    youtube: {
+                        url: document.querySelector('.social-pill.youtube')?.getAttribute('href') || '',
+                        label: document.querySelector('.social-pill.youtube span')?.textContent.trim() || ''
+                    }
+                }
             },
-            about: [],
+            skillsTitle: document.querySelector('.hero-skills h3')?.textContent.trim() || '',
             skills: [],
-            skillsTitle: '',
+            aboutBlocks: null,
             contact: [],
             milestones: []
         };
 
-        // Hero title
-        const heroTitle = document.querySelector('.hero-title');
-        if (heroTitle) data.hero.title = heroTitle.textContent.trim();
-
-        // Hero subtitle
-        const heroSubtitle = document.querySelector('.hero-subtitle');
-        if (heroSubtitle) data.hero.subtitle = heroSubtitle.textContent.trim();
-
-        // CTA button
-        const ctaBtn = document.querySelector('.cta-button');
-        if (ctaBtn) {
-            data.hero.ctaText = ctaBtn.textContent.trim();
-            data.hero.ctaLink = ctaBtn.getAttribute('href') || '#featured';
-        }
-
-        // YouTube
-        const ytPill = document.querySelector('.social-pill.youtube');
-        if (ytPill) {
-            const ytSpan = ytPill.querySelector('span');
-            data.hero.social.youtube.label = ytSpan ? ytSpan.textContent.trim() : '';
-            data.hero.social.youtube.url = ytPill.getAttribute('href') || '';
-        }
-
-        // About paragraphs
-        document.querySelectorAll('.hero-about p').forEach(p => {
-            const text = p.textContent.trim();
-            if (text) data.about.push(text);
-        });
-
-        // Skills title
-        const skillsTitle = document.querySelector('.hero-skills h3');
-        if (skillsTitle) data.skillsTitle = skillsTitle.textContent.trim();
-
-        // Skills
+        // Collect skills
         document.querySelectorAll('.skill').forEach(skill => {
-            // Get text content without the delete button
             const text = Array.from(skill.childNodes)
                 .filter(n => n.nodeType === Node.TEXT_NODE)
                 .map(n => n.textContent.trim())
@@ -166,7 +210,17 @@
             if (text) data.skills.push(text);
         });
 
-        // Contact links - preserve existing structure
+        // Collect Editor.js blocks
+        if (aboutEditor) {
+            try {
+                const editorData = await aboutEditor.save();
+                data.aboutBlocks = editorData.blocks;
+            } catch (e) {
+                console.error('[Edit Mode] Failed to save editor:', e);
+            }
+        }
+
+        // Collect contacts
         document.querySelectorAll('.contact-button').forEach(btn => {
             data.contact.push({
                 label: btn.textContent.trim(),
@@ -174,336 +228,175 @@
             });
         });
 
-        // Milestones - more complex, preserve structure
-        document.querySelectorAll('.milestone').forEach((milestone, idx) => {
-            const year = milestone.querySelector('.milestone-year');
-            const card = milestone.querySelector('.milestone-card');
-            const title = card?.querySelector('h3');
-            const desc = card?.querySelector('p:not(.milestone-label)');
-
+        // Collect milestones
+        document.querySelectorAll('.milestone').forEach(milestone => {
+            const year = milestone.querySelector('.milestone-year')?.textContent.trim();
+            const title = milestone.querySelector('.milestone-card h3')?.textContent.trim();
+            const desc = milestone.querySelector('.milestone-card p:not(.milestone-label)')?.textContent.trim();
             if (title || desc) {
-                data.milestones.push({
-                    year: year?.textContent.trim() || '',
-                    title: title?.textContent.trim() || '',
-                    description: desc?.textContent.trim() || '',
-                    // Preserve other fields from original
-                });
+                data.milestones.push({ year, title, description: desc });
             }
         });
 
         return data;
     }
 
-    // Track if changes were made
-    let isDirty = false;
-    function markDirty() {
-        isDirty = true;
-        const saveBtn = document.getElementById('edit-save-btn');
-        if (saveBtn) saveBtn.classList.add('has-changes');
+    // ==================== AI INTEGRATION ====================
+    function createAIButton() {
+        const aiBtn = document.createElement('button');
+        aiBtn.id = 'ai-assist-btn';
+        aiBtn.className = 'ai-assist-btn';
+        aiBtn.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                <path d="M2 17l10 5 10-5"/>
+                <path d="M2 12l10 5 10-5"/>
+            </svg>
+            AI Assist
+        `;
+        aiBtn.onclick = showAIModal;
+        document.body.appendChild(aiBtn);
     }
 
-    // Create floating toolbar
-    function createToolbar() {
-        const toolbar = document.createElement('div');
-        toolbar.id = 'edit-toolbar';
-        toolbar.innerHTML = `
-            <div class="edit-toolbar-content">
-                <span class="edit-mode-label">Edit Mode</span>
-                <button id="edit-save-btn" class="edit-btn save">Save Changes</button>
-                <button id="edit-cancel-btn" class="edit-btn cancel">Cancel</button>
+    function showAIModal() {
+        // Remove existing modal
+        document.getElementById('ai-modal')?.remove();
+
+        const modal = document.createElement('div');
+        modal.id = 'ai-modal';
+        modal.className = 'ai-modal';
+        modal.innerHTML = `
+            <div class="ai-modal-content">
+                <div class="ai-modal-header">
+                    <h3>AI Assistant</h3>
+                    <button class="ai-modal-close" onclick="this.closest('.ai-modal').remove()">×</button>
+                </div>
+                <div class="ai-modal-body">
+                    <p>What would you like AI to help with?</p>
+                    <textarea id="ai-prompt" placeholder="e.g., 'Write a professional bio for a high school maker' or 'Add a skills section about woodworking'"></textarea>
+                    <div class="ai-suggestions">
+                        <button class="ai-suggestion" data-prompt="Rewrite my bio to sound more professional">More professional</button>
+                        <button class="ai-suggestion" data-prompt="Make my bio more casual and friendly">More casual</button>
+                        <button class="ai-suggestion" data-prompt="Add a paragraph about my passion for making things">Add passion paragraph</button>
+                        <button class="ai-suggestion" data-prompt="Suggest 5 relevant skills for a maker/builder">Suggest skills</button>
+                    </div>
+                </div>
+                <div class="ai-modal-footer">
+                    <button class="ai-cancel-btn" onclick="this.closest('.ai-modal').remove()">Cancel</button>
+                    <button class="ai-generate-btn" onclick="generateWithAI()">Generate</button>
+                </div>
+                <div class="ai-loading" style="display:none">
+                    <div class="ai-spinner"></div>
+                    <span>AI is thinking...</span>
+                </div>
             </div>
         `;
-        document.body.appendChild(toolbar);
+        document.body.appendChild(modal);
 
-        // Save handler
-        document.getElementById('edit-save-btn').onclick = saveChanges;
+        // Suggestion button handlers
+        modal.querySelectorAll('.ai-suggestion').forEach(btn => {
+            btn.onclick = () => {
+                document.getElementById('ai-prompt').value = btn.dataset.prompt;
+            };
+        });
 
-        // Cancel handler
-        document.getElementById('edit-cancel-btn').onclick = () => {
-            if (isDirty && !confirm('Discard changes?')) return;
-            window.close();
-        };
+        // Focus textarea
+        document.getElementById('ai-prompt').focus();
     }
 
-    // Save changes to admin API
-    async function saveChanges() {
-        const saveBtn = document.getElementById('edit-save-btn');
-        const originalText = saveBtn.textContent;
-        saveBtn.textContent = 'Saving...';
-        saveBtn.disabled = true;
+    // Make generateWithAI globally accessible
+    window.generateWithAI = async function() {
+        const prompt = document.getElementById('ai-prompt').value.trim();
+        if (!prompt) return;
+
+        const modal = document.getElementById('ai-modal');
+        const loading = modal.querySelector('.ai-loading');
+        const footer = modal.querySelector('.ai-modal-footer');
+
+        loading.style.display = 'flex';
+        footer.style.display = 'none';
 
         try {
-            const data = collectData();
-            console.log('[Edit Mode] Saving:', data);
+            // Get current content for context
+            const currentData = await collectData();
 
-            if (!adminUrl) {
-                // No admin URL - show data for manual copy
-                alert('Changes collected! Admin URL not configured.\n\nData:\n' + JSON.stringify(data, null, 2));
-                return;
-            }
-
-            const response = await fetch(`${adminUrl}/api/sites/reyanmakes.github.io/content`, {
+            const response = await fetch(`${adminUrl}/api/ai/generate`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     ...(token ? { 'Authorization': `Bearer ${token}` } : {})
                 },
                 credentials: 'include',
-                body: JSON.stringify(data)
+                body: JSON.stringify({
+                    prompt,
+                    currentContent: currentData,
+                    section: 'about'
+                })
             });
 
-            if (response.ok) {
-                isDirty = false;
-                saveBtn.textContent = 'Saved!';
-                saveBtn.classList.remove('has-changes');
-                saveBtn.classList.add('saved');
+            if (!response.ok) throw new Error('AI request failed');
 
-                setTimeout(() => {
-                    saveBtn.textContent = originalText;
-                    saveBtn.classList.remove('saved');
-                    saveBtn.disabled = false;
-                }, 2000);
-            } else {
-                throw new Error(`Save failed: ${response.status}`);
-            }
-        } catch (err) {
-            console.error('[Edit Mode] Save error:', err);
-            alert('Failed to save: ' + err.message);
-            saveBtn.textContent = originalText;
-            saveBtn.disabled = false;
-        }
-    }
+            const result = await response.json();
+            console.log('[AI] Generated:', result);
 
-    // Add edit mode styles dynamically
-    function addStyles() {
-        const style = document.createElement('style');
-        style.textContent = `
-            /* Edit Mode Styles */
-            .editable {
-                outline: 2px dashed transparent;
-                outline-offset: 4px;
-                transition: outline-color 0.2s, background-color 0.2s;
-                cursor: text;
-                min-width: 20px;
-                min-height: 1em;
-            }
-            .editable:hover {
-                outline-color: rgba(99, 102, 241, 0.4);
-            }
-            .editable:focus {
-                outline-color: #6366f1;
-                outline-style: solid;
-                background-color: rgba(99, 102, 241, 0.1);
-            }
+            // Apply AI-generated blocks
+            if (result.blocks && aboutEditor) {
+                // Get current blocks and add new ones
+                const currentBlocks = (await aboutEditor.save()).blocks;
+                const newBlocks = [...currentBlocks, ...result.blocks];
 
-            /* Skill editing */
-            .skill.editable {
-                position: relative;
-                padding-right: 24px !important;
-            }
-            .edit-delete-btn {
-                position: absolute;
-                right: 6px;
-                top: 50%;
-                transform: translateY(-50%);
-                width: 16px;
-                height: 16px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background: #ef4444;
-                color: white;
-                border-radius: 50%;
-                font-size: 12px;
-                cursor: pointer;
-                opacity: 0;
-                transition: opacity 0.2s;
-            }
-            .skill.editable:hover .edit-delete-btn {
-                opacity: 1;
-            }
-            .edit-add-btn {
-                background: transparent;
-                border: 2px dashed rgba(255,255,255,0.3);
-                color: rgba(255,255,255,0.6);
-                padding: 0.5rem 1rem;
-                border-radius: 20px;
-                cursor: pointer;
-                font-size: 0.85rem;
-                transition: all 0.2s;
-            }
-            .edit-add-btn:hover {
-                border-color: rgba(255,255,255,0.6);
-                color: white;
-            }
-
-            /* Floating Toolbar */
-            #edit-toolbar {
-                position: fixed;
-                bottom: 2rem;
-                left: 50%;
-                transform: translateX(-50%);
-                z-index: 99999;
-                animation: slideUp 0.3s ease;
-            }
-            @keyframes slideUp {
-                from { transform: translateX(-50%) translateY(100px); opacity: 0; }
-                to { transform: translateX(-50%) translateY(0); opacity: 1; }
-            }
-            .edit-toolbar-content {
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-                background: white;
-                padding: 0.75rem 1.5rem;
-                border-radius: 50px;
-                box-shadow: 0 10px 40px rgba(0,0,0,0.25);
-            }
-            .edit-mode-label {
-                font-weight: 600;
-                color: #6366f1;
-                font-size: 0.9rem;
-            }
-            .edit-btn {
-                padding: 0.6rem 1.25rem;
-                border: none;
-                border-radius: 25px;
-                font-weight: 600;
-                font-size: 0.9rem;
-                cursor: pointer;
-                transition: all 0.2s;
-            }
-            .edit-btn.save {
-                background: #6366f1;
-                color: white;
-            }
-            .edit-btn.save:hover {
-                background: #4f46e5;
-                transform: translateY(-1px);
-            }
-            .edit-btn.save.has-changes {
-                background: #f59e0b;
-            }
-            .edit-btn.save.saved {
-                background: #10b981;
-            }
-            .edit-btn.cancel {
-                background: #f3f4f6;
-                color: #374151;
-            }
-            .edit-btn.cancel:hover {
-                background: #e5e7eb;
-            }
-            .edit-btn:disabled {
-                opacity: 0.7;
-                cursor: not-allowed;
-            }
-        `;
-        document.head.appendChild(style);
-    }
-
-    // Track changes
-    function setupChangeTracking() {
-        document.addEventListener('input', (e) => {
-            if (e.target.classList.contains('editable')) {
+                // Clear and reinitialize editor with new content
+                aboutEditor.destroy();
+                aboutEditor = new EditorJS({
+                    holder: 'about-editor',
+                    tools: {
+                        header: { class: Header, config: { levels: [2, 3, 4], defaultLevel: 3 } },
+                        list: { class: List, inlineToolbar: true },
+                        quote: { class: Quote },
+                        delimiter: Delimiter
+                    },
+                    data: { blocks: result.replaceAll ? result.blocks : newBlocks },
+                    onChange: () => { markDirty(); notifyParentOfChanges(); }
+                });
+                await aboutEditor.isReady;
                 markDirty();
-                // Notify parent (admin) of changes
-                notifyParent('content-changed', collectData());
-            }
-        });
-    }
-
-    // ==================== PARENT COMMUNICATION ====================
-    // Notify parent window (admin panel) of events
-    function notifyParent(type, data) {
-        if (window.parent && window.parent !== window) {
-            window.parent.postMessage({ type, data }, '*');
-        }
-    }
-
-    // Listen for messages from parent (admin panel)
-    function setupParentCommunication() {
-        window.addEventListener('message', (event) => {
-            console.log('[Edit Mode] Received message:', event.data);
-            const { type, path, value, data } = event.data || {};
-
-            if (type === 'update-content') {
-                console.log('[Edit Mode] Updating:', path, '=', value);
-                // Update a specific field
-                updateContentByPath(path, value);
             }
 
-            if (type === 'set-content') {
-                // Set all content from admin
-                if (data) setAllContent(data);
-            }
-        });
-
-        // Notify parent that edit mode is ready
-        setTimeout(() => {
-            notifyParent('edit-mode-ready', collectData());
-        }, 500);
-    }
-
-    // Update content by dot-notation path
-    function updateContentByPath(path, value) {
-        if (!path) return;
-
-        // Handle theme/layout changes (live preview)
-        if (path === 'theme') {
-            updateTheme(value);
-            return;
-        }
-        if (path === 'layout') {
-            updateLayout(value);
-            return;
-        }
-
-        const mapping = {
-            'hero.title': '.hero-title',
-            'hero.subtitle': '.hero-subtitle',
-            'hero.ctaText': '.cta-button',
-            'skillsTitle': '.hero-skills h3',
-            'hero.social.youtube.label': '.social-pill.youtube span',
-            'hero.social.youtube.url': '.social-pill.youtube'
-        };
-
-        const selector = mapping[path];
-        if (selector) {
-            const el = document.querySelector(selector);
-            if (el) {
-                if (path.endsWith('.url')) {
-                    el.href = value;
-                } else {
-                    el.textContent = value;
+            // Apply suggested skills if provided
+            if (result.skills) {
+                const grid = document.querySelector('.skills-grid');
+                if (grid) {
+                    result.skills.forEach(skillText => {
+                        const skill = document.createElement('div');
+                        skill.className = 'skill editable';
+                        skill.contentEditable = true;
+                        skill.textContent = skillText;
+                        addDeleteButton(skill);
+                        const addBtn = grid.querySelector('.edit-add-btn');
+                        grid.insertBefore(skill, addBtn);
+                    });
+                    markDirty();
                 }
-                markDirty();
             }
-        }
 
-        // Handle arrays
-        if (path === 'skills' && Array.isArray(value)) {
-            updateSkills(value);
-        }
-        if (path === 'about' && Array.isArray(value)) {
-            updateAbout(value);
-        }
-        if (path === 'contact' && Array.isArray(value)) {
-            updateContact(value);
-        }
-    }
+            modal.remove();
+            notifyParentOfChanges();
 
-    // Update theme CSS dynamically
+        } catch (err) {
+            console.error('[AI] Error:', err);
+            alert('AI generation failed: ' + err.message);
+            loading.style.display = 'none';
+            footer.style.display = 'flex';
+        }
+    };
+
+    // ==================== THEME/LAYOUT HANDLING ====================
     function updateTheme(themeName) {
-        console.log('[Edit Mode] Switching theme to:', themeName);
         const themeId = 'dynamic-theme-css';
         let themeLink = document.getElementById(themeId);
-
         if (themeName === 'default' || !themeName) {
-            // Remove theme CSS for default
             if (themeLink) themeLink.remove();
         } else {
-            // Add or update theme CSS link
             if (!themeLink) {
                 themeLink = document.createElement('link');
                 themeLink.id = themeId;
@@ -514,27 +407,16 @@
         }
     }
 
-    // Update layout CSS and body class dynamically
     function updateLayout(layoutName) {
-        console.log('[Edit Mode] Switching layout to:', layoutName);
         const layoutId = 'dynamic-layout-css';
         let layoutLink = document.getElementById(layoutId);
-
-        // Remove old layout classes
         document.body.classList.forEach(cls => {
-            if (cls.startsWith('layout-')) {
-                document.body.classList.remove(cls);
-            }
+            if (cls.startsWith('layout-')) document.body.classList.remove(cls);
         });
-
         if (layoutName === 'default' || !layoutName) {
-            // Remove layout CSS for default
             if (layoutLink) layoutLink.remove();
         } else {
-            // Add body class for layout
             document.body.classList.add(`layout-${layoutName}`);
-
-            // Add or update layout CSS link
             if (!layoutLink) {
                 layoutLink = document.createElement('link');
                 layoutLink.id = layoutId;
@@ -545,103 +427,179 @@
         }
     }
 
-    // Update skills from array
-    function updateSkills(skills) {
-        const grid = document.querySelector('.skills-grid');
-        if (!grid) return;
-
-        // Remove existing skills (keep add button)
-        grid.querySelectorAll('.skill').forEach(s => s.remove());
-
-        // Add new skills
-        const addBtn = grid.querySelector('.edit-add-btn');
-        skills.forEach(skill => {
-            const div = document.createElement('div');
-            div.className = 'skill editable';
-            div.contentEditable = true;
-            div.textContent = skill;
-
-            const deleteBtn = document.createElement('span');
-            deleteBtn.className = 'edit-delete-btn';
-            deleteBtn.textContent = '×';
-            deleteBtn.onclick = (e) => {
-                e.stopPropagation();
-                div.remove();
-                markDirty();
-                notifyParent('content-changed', collectData());
-            };
-            div.appendChild(deleteBtn);
-
-            if (addBtn) {
-                grid.insertBefore(div, addBtn);
-            } else {
-                grid.appendChild(div);
-            }
-        });
-        markDirty();
+    // ==================== PARENT COMMUNICATION ====================
+    function markDirty() {
+        isDirty = true;
     }
 
-    // Update about paragraphs from array
-    function updateAbout(paragraphs) {
-        const container = document.querySelector('.hero-about');
-        if (!container) return;
-
-        container.innerHTML = '';
-        paragraphs.forEach(text => {
-            const p = document.createElement('p');
-            p.className = 'editable';
-            p.contentEditable = true;
-            p.textContent = text;
-            container.appendChild(p);
-        });
-        markDirty();
-    }
-
-    // Update contact links from array
-    function updateContact(contacts) {
-        const container = document.querySelector('.contact-links');
-        if (!container) return;
-
-        container.innerHTML = '';
-        contacts.forEach(({ label, url }) => {
-            const a = document.createElement('a');
-            a.className = 'contact-button';
-            a.href = url || '#';
-            a.textContent = label;
-            container.appendChild(a);
-        });
-        markDirty();
-    }
-
-    // Set all content at once
-    function setAllContent(data) {
-        if (data.hero) {
-            if (data.hero.title) updateContentByPath('hero.title', data.hero.title);
-            if (data.hero.subtitle) updateContentByPath('hero.subtitle', data.hero.subtitle);
-            if (data.hero.ctaText) updateContentByPath('hero.ctaText', data.hero.ctaText);
-            if (data.hero.social?.youtube) {
-                updateContentByPath('hero.social.youtube.url', data.hero.social.youtube.url);
-                updateContentByPath('hero.social.youtube.label', data.hero.social.youtube.label);
-            }
+    function notifyParent(type, data) {
+        if (window.parent && window.parent !== window) {
+            window.parent.postMessage({ type, data }, '*');
         }
-        if (data.skillsTitle) updateContentByPath('skillsTitle', data.skillsTitle);
-        if (data.skills) updateSkills(data.skills);
-        if (data.about) updateAbout(data.about);
-        if (data.contact) updateContact(data.contact);
     }
 
-    // Initialize
-    function init() {
+    async function notifyParentOfChanges() {
+        const data = await collectData();
+        notifyParent('content-changed', data);
+    }
+
+    function setupParentCommunication() {
+        window.addEventListener('message', (event) => {
+            const { type, path, value, data } = event.data || {};
+
+            if (type === 'update-content') {
+                if (path === 'theme') updateTheme(value);
+                else if (path === 'layout') updateLayout(value);
+            }
+
+            if (type === 'set-content' && data) {
+                // Handle content updates from parent
+            }
+        });
+
+        // Notify parent when ready
+        setTimeout(async () => {
+            notifyParent('edit-mode-ready', await collectData());
+        }, 1000);
+    }
+
+    // ==================== STYLES ====================
+    function addStyles() {
+        const style = document.createElement('style');
+        style.textContent = `
+            /* Editable elements */
+            .editable {
+                outline: 2px dashed transparent;
+                outline-offset: 4px;
+                transition: outline-color 0.2s, background-color 0.2s;
+                cursor: text;
+                min-width: 20px;
+                min-height: 1em;
+            }
+            .editable:hover { outline-color: rgba(99, 102, 241, 0.4); }
+            .editable:focus {
+                outline-color: #6366f1;
+                outline-style: solid;
+                background-color: rgba(99, 102, 241, 0.1);
+            }
+
+            /* Skill editing */
+            .skill.editable { position: relative; padding-right: 24px !important; }
+            .edit-delete-btn {
+                position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+                width: 16px; height: 16px; display: flex; align-items: center; justify-content: center;
+                background: #ef4444; color: white; border-radius: 50%; font-size: 12px;
+                cursor: pointer; opacity: 0; transition: opacity 0.2s;
+            }
+            .skill.editable:hover .edit-delete-btn { opacity: 1; }
+            .edit-add-btn {
+                background: transparent; border: 2px dashed rgba(255,255,255,0.3);
+                color: rgba(255,255,255,0.6); padding: 0.5rem 1rem; border-radius: 20px;
+                cursor: pointer; font-size: 0.85rem; transition: all 0.2s;
+            }
+            .edit-add-btn:hover { border-color: rgba(255,255,255,0.6); color: white; }
+
+            /* Editor.js container */
+            #about-editor {
+                background: rgba(255,255,255,0.05);
+                border-radius: 12px;
+                padding: 1rem;
+                min-height: 200px;
+            }
+            #about-editor .ce-block__content { max-width: 100%; }
+            #about-editor .ce-toolbar__content { max-width: 100%; }
+            #about-editor .codex-editor__redactor { padding-bottom: 100px !important; }
+
+            /* AI Assist Button */
+            .ai-assist-btn {
+                position: fixed; bottom: 2rem; right: 2rem; z-index: 99998;
+                display: flex; align-items: center; gap: 0.5rem;
+                background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+                color: white; border: none; padding: 0.75rem 1.25rem;
+                border-radius: 50px; font-weight: 600; font-size: 0.9rem;
+                cursor: pointer; box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+                transition: all 0.2s;
+            }
+            .ai-assist-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(99, 102, 241, 0.5); }
+
+            /* AI Modal */
+            .ai-modal {
+                position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+                background: rgba(0,0,0,0.7); z-index: 99999;
+                display: flex; align-items: center; justify-content: center;
+                animation: fadeIn 0.2s ease;
+            }
+            @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+            .ai-modal-content {
+                background: white; border-radius: 16px; width: 90%; max-width: 500px;
+                box-shadow: 0 25px 50px rgba(0,0,0,0.3); overflow: hidden;
+            }
+            .ai-modal-header {
+                display: flex; justify-content: space-between; align-items: center;
+                padding: 1rem 1.5rem; border-bottom: 1px solid #e5e7eb;
+            }
+            .ai-modal-header h3 { margin: 0; color: #1f2937; }
+            .ai-modal-close {
+                background: none; border: none; font-size: 1.5rem;
+                color: #6b7280; cursor: pointer;
+            }
+            .ai-modal-body { padding: 1.5rem; }
+            .ai-modal-body p { margin: 0 0 1rem; color: #4b5563; }
+            .ai-modal-body textarea {
+                width: 100%; height: 100px; padding: 0.75rem; border: 1px solid #d1d5db;
+                border-radius: 8px; font-size: 0.95rem; resize: none;
+                font-family: inherit;
+            }
+            .ai-modal-body textarea:focus { outline: none; border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,0.1); }
+            .ai-suggestions {
+                display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem;
+            }
+            .ai-suggestion {
+                background: #f3f4f6; border: 1px solid #e5e7eb; padding: 0.5rem 0.75rem;
+                border-radius: 20px; font-size: 0.8rem; cursor: pointer; transition: all 0.2s;
+            }
+            .ai-suggestion:hover { background: #e5e7eb; border-color: #6366f1; }
+            .ai-modal-footer {
+                display: flex; justify-content: flex-end; gap: 0.75rem;
+                padding: 1rem 1.5rem; border-top: 1px solid #e5e7eb;
+            }
+            .ai-cancel-btn {
+                padding: 0.6rem 1.25rem; border: 1px solid #d1d5db;
+                background: white; border-radius: 8px; cursor: pointer;
+            }
+            .ai-generate-btn {
+                padding: 0.6rem 1.25rem; background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;
+            }
+            .ai-loading {
+                display: flex; align-items: center; justify-content: center; gap: 0.75rem;
+                padding: 2rem; color: #6366f1;
+            }
+            .ai-spinner {
+                width: 24px; height: 24px; border: 3px solid #e5e7eb;
+                border-top-color: #6366f1; border-radius: 50%;
+                animation: spin 0.8s linear infinite;
+            }
+            @keyframes spin { to { transform: rotate(360deg); } }
+        `;
+        document.head.appendChild(style);
+    }
+
+    // ==================== INITIALIZATION ====================
+    async function init() {
         addStyles();
-        enableEditing();
 
-        // Only show toolbar if NOT embedded in iframe (admin panel handles save)
-        const isEmbedded = params.get('embedded') === 'true' || window.parent !== window;
-        if (!isEmbedded) {
-            createToolbar();
-        }
+        // Load Editor.js
+        await loadEditorJS();
 
-        setupChangeTracking();
+        // Initialize editors
+        await initAboutEditor();
+        enableSimpleEditing();
+
+        // Add AI button
+        createAIButton();
+
+        // Setup communication
         setupParentCommunication();
 
         // Warn before leaving with unsaved changes
@@ -652,7 +610,7 @@
             }
         });
 
-        console.log('[Edit Mode] Ready - click on any highlighted element to edit');
+        console.log('[Edit Mode] Ready with Editor.js + AI');
     }
 
     // Run when DOM is ready
