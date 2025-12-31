@@ -169,8 +169,10 @@
         "Design & Sketching",
         "Resourcefulness",
         "Problem Solving",
-        "Fabrication"
-      ]
+        "Fabrication",
+        "Test"
+      ],
+      "blocks": []
     },
     "contact": {
       "title": "Let's Connect",
