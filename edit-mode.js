@@ -449,6 +449,16 @@
     function updateContentByPath(path, value) {
         if (!path) return;
 
+        // Handle theme/layout changes (live preview)
+        if (path === 'theme') {
+            updateTheme(value);
+            return;
+        }
+        if (path === 'layout') {
+            updateLayout(value);
+            return;
+        }
+
         const mapping = {
             'hero.title': '.hero-title',
             'hero.subtitle': '.hero-subtitle',
@@ -480,6 +490,58 @@
         }
         if (path === 'contact' && Array.isArray(value)) {
             updateContact(value);
+        }
+    }
+
+    // Update theme CSS dynamically
+    function updateTheme(themeName) {
+        console.log('[Edit Mode] Switching theme to:', themeName);
+        const themeId = 'dynamic-theme-css';
+        let themeLink = document.getElementById(themeId);
+
+        if (themeName === 'default' || !themeName) {
+            // Remove theme CSS for default
+            if (themeLink) themeLink.remove();
+        } else {
+            // Add or update theme CSS link
+            if (!themeLink) {
+                themeLink = document.createElement('link');
+                themeLink.id = themeId;
+                themeLink.rel = 'stylesheet';
+                document.head.appendChild(themeLink);
+            }
+            themeLink.href = `themes/${themeName}.css?v=${Date.now()}`;
+        }
+    }
+
+    // Update layout CSS and body class dynamically
+    function updateLayout(layoutName) {
+        console.log('[Edit Mode] Switching layout to:', layoutName);
+        const layoutId = 'dynamic-layout-css';
+        let layoutLink = document.getElementById(layoutId);
+
+        // Remove old layout classes
+        document.body.classList.forEach(cls => {
+            if (cls.startsWith('layout-')) {
+                document.body.classList.remove(cls);
+            }
+        });
+
+        if (layoutName === 'default' || !layoutName) {
+            // Remove layout CSS for default
+            if (layoutLink) layoutLink.remove();
+        } else {
+            // Add body class for layout
+            document.body.classList.add(`layout-${layoutName}`);
+
+            // Add or update layout CSS link
+            if (!layoutLink) {
+                layoutLink = document.createElement('link');
+                layoutLink.id = layoutId;
+                layoutLink.rel = 'stylesheet';
+                document.head.appendChild(layoutLink);
+            }
+            layoutLink.href = `layouts/${layoutName}.css?v=${Date.now()}`;
         }
     }
 
