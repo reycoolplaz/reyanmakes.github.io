@@ -23,7 +23,7 @@
     "siteTitle": "Reyan Makes \u2014 Builder, Designer, Maker",
     "siteDescription": "Reyan Bhattacharjee is a high school maker from Plainsboro, NJ who designs and builds things from go-karts to furniture.",
     "hero": {
-      "title": "Hi, I'm Reyan.",
+      "title": "Hi, I'm Reyan..",
       "subtitle": "High School Maker \u2022 Builder \u2022 Creator",
       "ctaText": "Explore My Work",
       "ctaLink": "#featured"
@@ -66,6 +66,13 @@
               "label": "Boys Scout - Eagle Project",
               "project": "test"
             }
+          ],
+          "linkedProjects": [
+            "makers-stuff-go-cart",
+            "makers-stuff-metal-work",
+            "njit-hcad-program-prototype",
+            "photograph",
+            "test"
           ]
         },
         {
@@ -98,6 +105,13 @@
               "label": "Boy Scouts - Whitewater Rafting",
               "project": "boy-scouts"
             }
+          ],
+          "linkedProjects": [
+            "makers-stuff-furniture-bed",
+            "makers-stuff-furniture-shelf",
+            "makers-stuff-furniture-temple",
+            "makers-stuff-wood-work",
+            "boy-scouts"
           ]
         },
         {
@@ -122,6 +136,11 @@
               "label": "School Projects",
               "project": "school"
             }
+          ],
+          "linkedProjects": [
+            "makers-stuff-clay",
+            "sketching",
+            "school"
           ]
         },
         {
@@ -146,6 +165,11 @@
               "label": "Boys Scout - High Adventure 2021",
               "project": "boys-scout-high-adventure-2024"
             }
+          ],
+          "linkedProjects": [
+            "sketching",
+            "makers-stuff-clay",
+            "boys-scout-high-adventure-2024"
           ]
         }
       ]
